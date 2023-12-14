@@ -4,54 +4,23 @@
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script>
-    AFRAME.registerComponent('log', {
-        schema: {
-            event: { type: 'string', default: '' },
-            message: { type: 'string', default: 'Hello, World!' }
-        },
-        init: function () {
-            console.log("INITTTTTTT");
-            //console.log(this);
-
-            var self = this;
-            this.eventHandlerFn = function ()  {console.log("Funcion del evento"); console.log(self.data.message); };
-
-        },
-        update: function (oldData) {
-            console.log("UPDATEEEEE");
-            console.log(this);
-            console.log(oldData);
-
-            var data = this.data;
-            var el = this.el;
-            if (data.event !== oldData.event) {
-                console.log("DATA EVENT es diferente al old")
-                if (oldData.event) {
-                    console.log("OLD DATA EVENT EXSITE")
-                    el.removeEventListener(oldData.event, this.eventHandlerFn);
-                }
-                if (data.event) {
-                    console.log("DATA EVENT EXSITE")
-                    el.addEventListener(data.event, this.eventHandlerFn);
-                }
-            }
-            if (!data.event) {
-                console.log("DATA EVENT no EXSITE mensaje")
-                console.log(data.message);
-            }
-        }, 
-        remove: function () {
-            console.log("REMOVEEEE");
-
-            var data = this.data;
-            var el = this.el;
-            if (data.event) {
-                el.removeEventListener(data.event, this.eventHandlerFn);
-            }
-        }
-
+    AFRAME.registerComponent('changecolortime', {
+      init: function () {
+        var lastIndex = -1;
+        var COLORS = ['red', 'green', 'blue'];
+        this.setcolortime = function (){
+          var self = this; 
+          setTimeout(function () {
+            console.log("¡Han pasado 2 segundos!");
+            lastIndex = (lastIndex + 1) % COLORS.length;
+            self.setAttribute('material', 'color', COLORS[lastIndex])
+          }, 2000);
+        };
+      },
+      update: function () {
+        this.el.addEventListener('click', this.setcolortime);
+      }
     });
-
 
   </script>
 
@@ -59,18 +28,11 @@
 <body>
 
   <a-scene >
-    <a-entity log="event: anEvent; message: Hello, Metaverse!"></a-entity>
-
-    <a-sphere position="0 1.25 -5" radius="1.25" color="orange" ></a-sphere>
-
+    <a-sphere position="0 1.25 -5" radius="1.25" color="orange" changecolortime></a-sphere>
     <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" ></a-plane>
     <a-sky color="#abaff4" ></a-sky>
-    <a-camera>
-      <a-cursor geometry="primitive: ring" material="color: black;"></a-cursor>
-    </a-camera>
+    <a-entity cursor="fuse: false; rayOrigin: mouse"></a-entity>
   </a-scene>
-
-
 
 </body>
 </html>
