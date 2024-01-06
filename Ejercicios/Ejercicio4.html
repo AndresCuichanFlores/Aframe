@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script>
+    AFRAME.registerComponent('changecolortime', {
+        init: function () {
+            var lastIndex = -1;
+            var COLORS = ['red', 'green', 'yellow'];
+            this.setcolortime = function () {
+                var self = this;
+                setTimeout(function () {
+                    console.log("¡Han pasado 2 segundos!");
+                    lastIndex = (lastIndex + 1) % COLORS.length;
+                    self.setAttribute('material', 'color', COLORS[lastIndex])
+                }, 2000);
+            };
+        },
+        update: function () {
+            this.el.addEventListener('click', this.setcolortime);
+        }
+    });
+
+    AFRAME.registerComponent('create3box', {
+        init: function () {
+            var self = this; 
+            var entityEl = document.createElement('a-entity');
+            entityEl.setAttribute('geometry', {
+                primitive: 'box',
+                height: 1.5,
+                width: 0.33,
+                depth: 1.5
+            });
+            entityEl.setAttribute('material', {
+                color: '#53B2ED'
+            });
+            entityEl.setAttribute('changecolortime', '');
+
+            var entityE2 = document.createElement('a-entity');
+            entityE2.setAttribute('geometry', {
+                primitive: 'box',
+                height: 1.5,
+                width: 0.33,
+                depth: 1.5
+            });
+            entityE2.setAttribute('material', {
+                color: '#5553ED'
+            });
+            entityE2.setAttribute('changecolortime', '');
+            entityE2.object3D.position.set(-0.33, 0, 0);
+
+            var entityE3 = document.createElement('a-entity');
+            entityE3.setAttribute('geometry', {
+                primitive: 'box',
+                height: 1.5,
+                width: 0.33,
+                depth: 1.5
+            });
+            entityE3.setAttribute('material', {
+                color: '#5381ED'
+            });
+            entityE3.setAttribute('changecolortime', '');
+            entityE3.object3D.position.set(0.33, 0, 0);
+
+            this.add3box = function (){
+                this.appendChild(entityEl);
+                this.appendChild(entityE2);
+                this.appendChild(entityE3);
+                this.removeEventListener('click', self.add3box);
+            };
+        },
+      update: function () {
+        this.el.addEventListener('click', this.add3box);
+      }
+    });
+
+    AFRAME.registerComponent('animacion_vueltas', {
+
+        init: function () {
+            console.log("INIT");
+        },
+        update: function () {
+            console.log("update");
+            var self = this;
+            self.el.setAttribute('animation', {
+                property: 'rotation',
+                to: '0 0 360',
+                loop: true,
+                dur: 4000,
+                easing: 'linear',
+                delay: 1500
+            });
+
+        }
+    });
+
+  </script>
+
+</head>
+<body>
+
+  <a-scene >
+
+    <a-entity rotation="0 0 0" animacion_vueltas>
+        <a-sphere position="0 4 -8" color="#22BCFA" changecolortime ></a-sphere>
+    </a-entity>
+
+    <a-box position="-4 1 -4" rotation="0 0 0" color="#53EDC4" create3box></a-box>
+    <a-sphere position="-4 1.5 -12" radius="1.25" color="orange" changecolortime></a-sphere>  
+    <a-plane position="0 0 -8" rotation="-90 0 0" width="8" height="8" color="#f94984" ></a-plane>
+    <a-sky color="#abaff4" ></a-sky>
+    <a-entity cursor="fuse: false; rayOrigin: mouse"></a-entity>
+  </a-scene>
+
+</body>
+</html>
