@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+
+    <script>
+        AFRAME.registerComponent('changecolortime', {
+            init: function () {
+                var lastIndex = -1;
+                var COLORS = ['red', 'green', 'yellow'];
+                this.setcolortime = function () {
+                    var self = this;
+                    setTimeout(function () {
+                        console.log("¡Han pasado 2 segundos!");
+                        lastIndex = (lastIndex + 1) % COLORS.length;
+                        self.setAttribute('material', 'color', COLORS[lastIndex])
+                    }, 2000);
+                };
+            },
+            update: function () {
+                this.el.addEventListener('click', this.setcolortime);
+            }
+        });
+
+        AFRAME.registerComponent('create3box', {
+            init: function () {
+                var self = this; 
+                var entityEl = document.createElement('a-entity');
+                entityEl.setAttribute('geometry', {
+                    primitive: 'box',
+                    height: 1.5,
+                    width: 0.33,
+                    depth: 1.5
+                });
+                entityEl.setAttribute('material', {
+                    color: '#53B2ED'
+                });
+                entityEl.setAttribute('changecolortime', '');
+
+                var entityE2 = document.createElement('a-entity');
+                entityE2.setAttribute('geometry', {
+                    primitive: 'box',
+                    height: 1.5,
+                    width: 0.33,
+                    depth: 1.5
+                });
+                entityE2.setAttribute('material', {
+                    color: '#5553ED'
+                });
+                entityE2.setAttribute('changecolortime', '');
+                entityE2.object3D.position.set(-0.33, 0, 0);
+
+                var entityE3 = document.createElement('a-entity');
+                entityE3.setAttribute('geometry', {
+                    primitive: 'box',
+                    height: 1.5,
+                    width: 0.33,
+                    depth: 1.5
+                });
+                entityE3.setAttribute('material', {
+                    color: '#5381ED'
+                });
+                entityE3.setAttribute('changecolortime', '');
+                entityE3.object3D.position.set(0.33, 0, 0);
+
+                this.add3box = function (){
+                    this.appendChild(entityEl);
+                    this.appendChild(entityE2);
+                    this.appendChild(entityE3);
+                    this.removeEventListener('click', self.add3box);
+                };
+            },
+        update: function () {
+            this.el.addEventListener('click', this.add3box);
+        }
+        });
+
+        AFRAME.registerComponent('animacion_vueltas', {
+
+            init: function () {
+                console.log("INIT");
+            },
+            update: function () {
+                console.log("update");
+                var self = this;
+                self.el.setAttribute('animation', {
+                    property: 'rotation',
+                    to: '0 0 360',
+                    loop: true,
+                    dur: 4000,
+                    easing: 'linear',
+                    delay: 1500
+                });
+            }
+        });
+
+        AFRAME.registerComponent('spawn-in-circle', {
+            schema: {
+                radius: { type: 'number', default: 1 }
+            },
+
+            init: function () {
+                var el = this.el;
+                var center = el.getAttribute('position');
+
+                var angleRad = this.getRandomAngleInRadians();
+                var circlePoint = this.randomPointOnCircle(this.data.radius, angleRad);
+                var worldPoint = { x: circlePoint.x + center.x, y: center.y, z: circlePoint.y + center.z };
+                el.setAttribute('position', worldPoint);
+
+                var angleDeg = angleRad * 180 / Math.PI;
+                var angleToCenter = -1 * angleDeg + 90;
+                angleRad = THREE.MathUtils.degToRad(angleToCenter);
+                el.object3D.rotation.set(0, angleRad, 0);
+            },
+
+            getRandomAngleInRadians: function () {
+                return Math.random() * Math.PI * 2;
+            },
+
+            randomPointOnCircle: function (radius, angleRad) {
+                var x = Math.cos(angleRad) * radius;
+                var y = Math.sin(angleRad) * radius;
+                return { x: x, y: y };
+            }
+        });
+    </script>
+
+</head>
+<body>
+    <a-scene networked-scene="app: myApp;room: room1;debug: true;">
+
+        <a-assets>
+            <template id="avatar-template">
+              <a-entity class="avatar">
+                <a-sphere class="head"
+                  color="#5985ff"
+                  scale="0.45 0.5 0.4"
+                ></a-sphere>
+                <a-entity class="face"
+                  position="0 0.05 0"
+                >
+                  <a-sphere class="eye"
+                    color="#efefef"
+                    position="0.16 0.1 -0.35"
+                    scale="0.12 0.12 0.12"
+                  >
+                    <a-sphere class="pupil"
+                      color="#000"
+                      position="0 0 -1"
+                      scale="0.2 0.2 0.2"
+                    ></a-sphere>
+                  </a-sphere>
+                  <a-sphere class="eye"
+                    color="#efefef"
+                    position="-0.16 0.1 -0.35"
+                    scale="0.12 0.12 0.12"
+                  >
+                    <a-sphere class="pupil"
+                      color="#000"
+                      position="0 0 -1"
+                      scale="0.2 0.2 0.2"
+                    ></a-sphere>
+                  </a-sphere>
+                </a-entity>
+              </a-entity>
+            </template>
+
+            <!-- Cube -->
+            <template id="cube-template">
+                <a-entity>
+                    <a-box class="cube" color="orange"></a-box>
+                </a-entity>
+            </template>
+
+        </a-assets>
+
+
+
+
+        
+        <a-entity id="player" networked="template:#avatar-template;attachTemplateToLocal:false;" camera position="0 1.3 0" wasd-controls look-controls spawn-in-circle="radius:3;"></a-entity>
+
+        <a-entity id="cube-example" networked="template:#cube-template" position="-4 1.5 -12" ></a-entity>
+
+
+        
+
+        <a-entity cursor="fuse: false; rayOrigin: mouse"></a-entity>
+        <a-sky color="#abaff4" ></a-sky>
+    </a-scene>
+</body>
+</html>
