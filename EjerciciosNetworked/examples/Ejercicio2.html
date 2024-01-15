@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+    <script src="/js/color-changer.component.js"></script>
+    <script src="/js/spawn-in-circle.component.js"></script>
+
+    <script>
+      AFRAME.registerComponent('animacion_vueltas', {
+
+        init: function () {
+          console.log("INIT ANIMACION");
+        },
+        update: function () {
+          console.log("update");
+          var self = this;
+          self.el.setAttribute('animation', {
+            property: 'rotation',
+            to: '0 0 360',
+            loop: true,
+            dur: 4000,
+            easing: 'linear'
+          });
+
+        }
+      });
+    </script>
+
+    <script>
+      // see issue https://github.com/networked-aframe/networked-aframe/issues/267
+      console.log("*****SCRIPTTTTTT***");
+      NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+      console.log(NAF.schemas.getComponentsOriginal);
+
+      NAF.schemas.getComponents = (template) => {
+        console.log("*****template***");
+        console.log(template);
+        if (!NAF.schemas.hasTemplate('#sphere-animacion-template')) {
+          console.log("*****HAStemplate***");
+          
+          NAF.schemas.add({
+            template: '#sphere-animacion-template',
+            components: [
+              'position',
+              'animation',
+              'animacion_vueltas',
+              {
+                component: 'material',
+                property: 'color'
+              }
+            ]
+          });
+        }
+
+        console.log(NAF.schemas);
+        const components = NAF.schemas.getComponentsOriginal(template);
+        console.log("*****FINNNNN***");
+        return components;
+      };
+    </script>
+
+
+
+</head>
+<body>
+    <a-scene cursor="rayOrigin: mouse" raycaster="objects:.raycastable" networked-scene="room: basic-persistent; debug: true;adapter: wseasyrtc">
+
+      <a-assets>
+
+        <!-- /sphere-template -->
+        <template id="sphere-template">
+          <a-entity class="raycastable" geometry="primitive: sphere" material="color: red" color-changer></a-entity>
+        </template>
+
+        <!-- /sphere-animacion-template -->
+        <template id="sphere-animacion-template">
+          <a-entity rotation="0 0 0" animacion_vueltas>
+            <a-entity class="raycastable" position="0 4 -8" geometry="primitive: sphere" material="color: blue" color-changer></a-entity>
+          </a-entity>
+        </template>
+
+
+
+      </a-assets>
+
+
+      <!-- /sphere -->
+      <a-entity networked="template:#sphere-template;networkId:sp23her2e33232;" position="-4 1.5 -12"></a-entity>
+
+      <a-entity networked="template:#sphere-animacion-template;networkId:sp23hdfeer2e33es232;" ></a-entity>
+
+      <a-plane position="0 0 -8" rotation="-90 0 0" width="8" height="8" color="#f94984" ></a-plane>
+      <a-sky color="#abaff4" ></a-sky>
+
+    </a-scene>
+</body>
+</html>
