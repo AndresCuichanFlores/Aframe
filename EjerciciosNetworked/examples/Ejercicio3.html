@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+    <script src="/js/color-changer.component.js"></script>
+    <script src="/js/spawn-in-circle.component.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+</head>
+
+<body>
+    <a-scene cursor="rayOrigin: mouse" raycaster="objects:.raycastable"
+        networked-scene="room: basic-persistent; debug: true;adapter: wseasyrtc">
+
+        <a-assets>
+            <!-- /box-template -->
+            <template id="box-template">
+                <a-entity geometry="primitive: box" material="color: blue" hoverable grabbable stretchable draggable droppable ></a-entity>
+            </template>
+        </a-assets>
+
+        <!-- /box -->
+        <a-entity id="boxxx" networked="template:#box-template;networkId:sp23her2e3323e2;" position="0 1.5 -4" ></a-entity>
+
+        <a-entity>
+            <a-entity sphere-collider="objects: #boxxx" super-hands hand-controls="hand: left"></a-entity>
+            <a-entity sphere-collider="objects: #boxxx" super-hands hand-controls="hand: right"></a-entity>
+        </a-entity>
+
+        <a-plane position="0 0 -8" rotation="-90 0 0" width="8" height="8" color="#f94984"></a-plane>
+        <a-sky color="#abaff4"></a-sky>
+
+    </a-scene>
+</body>
+
+</html>
