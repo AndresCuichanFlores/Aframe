@@ -169,7 +169,7 @@
         oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)" ■/>
 
     <!-- SCENE -->
-    <a-scene  networked-scene="room: basic-persistent; debug: true;adapter: wseasyrtc">
+    <a-scene  networked-scene="room: basic-persistent; debug: true; adapter: easyrtc; audio: true;">
 
          <!-- ASSETS -->
         <a-assets>
@@ -181,7 +181,7 @@
 
             <!-- head-template -->
             <template id="head-template">
-                <a-entity class="avatar" player-info >
+                <a-entity class="avatar" player-info networked-audio-source >
 
                     <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
 
