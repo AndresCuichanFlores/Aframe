@@ -104,12 +104,11 @@
                 this.nametag = this.el.querySelector('.nametag');
                 this.nametagtop = this.el.querySelector('.nametagtop');
                 console.log("################## INIT player-info");
-                //console.log(this.el);
                 this.ownedByLocalUser = this.el.id === 'player';
                 if (this.ownedByLocalUser) {
+                    console.log("################## dentro del if del player");
                     this.nametagInput = document.getElementById('username-overlay');
                     this.nametagInput.value = this.data.name;
-
                     document.querySelector('#color-changer').style.backgroundColor = this.data.color;
                     document.querySelector('#color-changer').style.color = this.data.color;
                 }
@@ -120,7 +119,9 @@
                 if (this.head) {
                     this.head.setAttribute('material', 'color', this.data.color);
                 }
-                if (this.nametag) this.nametag.setAttribute('value', this.data.name);
+                if (this.nametag) {
+                    this.nametag.setAttribute('value', this.data.name);
+                }       
                 if (this.nametagtop) {
                     console.log("DENTROOOOO nametagtop");
                     console.log(this.data.message);
@@ -169,7 +170,7 @@
         oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)" ■/>
 
     <!-- SCENE -->
-    <a-scene  networked-scene="room: basic-persistent; debug: true; adapter: easyrtc; audio: true;">
+    <a-scene  networked-scene="room: basic-persistent; debug: true; adapter: easyrtc; audio: false;">
 
          <!-- ASSETS -->
         <a-assets>
@@ -181,7 +182,7 @@
 
             <!-- head-template -->
             <template id="head-template">
-                <a-entity class="avatar" player-info networked-audio-source >
+                <a-entity class="avatar" player-info  networked-audio-source >
 
                     <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
 

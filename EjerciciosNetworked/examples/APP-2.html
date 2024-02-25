@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+
+    <script src="/js/color-changer.component.js"></script>
+    <script src="/js/spawn-in-circle.component.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/styleChat.css">
+
+    <!-- libreria extra de controles -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.controls.min.js"></script>
+    
+    <script>
+        NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+        NAF.schemas.getComponents = (template) => {
+          if (!NAF.schemas.hasTemplate('#avatar-man-template')) {
+            NAF.schemas.add({
+              template: '#avatar-man-template',
+              components: [
+                'position',
+                'rotation',
+                'player-info'
+              ]
+            });
+          }
+
+          if (!NAF.schemas.hasTemplate('#sphere-template')) {
+            NAF.schemas.add({
+              template: '#sphere-template',
+              components: [
+                'position',
+                {
+                  component: 'material',
+                  property: 'color'
+                }
+              ]
+            });
+          }
+
+          const components = NAF.schemas.getComponentsOriginal(template);
+          return components;
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("################## DOM CARGADO" );
+            const form = document.querySelector('#form');
+            const input = document.querySelector('#input');
+            const username = document.querySelector('#username-overlay');
+            const log = document.querySelector('.messages');
+
+            // when you want to send a message
+            form.addEventListener('submit', (evt) => {
+                evt.preventDefault();
+                console.log("########### subit" );
+
+                if (input.value === '') {
+                    alert('Please enter a message');
+                    return; 
+                } else {
+                    log.textContent += username.value + ': ' + input.value + '\n';
+                    document.getElementById('player').setAttribute('player-info', 'message', input.value);
+                }
+
+                NAF.connection.broadcastDataGuaranteed('chat', {
+                    txt: input.value,
+                    name: username.value
+                });
+
+                input.value = '';
+                log.scrollTop = log.scrollHeight;
+            });
+
+            // when a "chat" type message arrives
+            NAF.connection.subscribeToDataChannel('chat', (senderId, dataType, data, targetId) => {
+                log.textContent += data.name + ': ' + data.txt + '\n';
+                log.scrollTop = log.scrollHeight;
+            });
+        });
+
+    </script>
+
+    <script>
+        AFRAME.registerComponent('player-info', {
+            schema: {
+                name: { type: 'string', default: 'User-' + Math.round(Math.random() * 1000) },
+                message: { type: 'string', default: '' }
+            },
+
+            init: function () {
+                console.log("################## INIT player-info");
+                this.nametag = this.el.querySelector('.nametag');
+                this.ownedByLocalUser = this.el.id === 'player';
+                if (this.ownedByLocalUser) {
+                    this.nametagInput = document.getElementById('username-overlay');
+                    this.nametagInput.value = this.data.name;
+                }
+            },
+
+            update: function () {
+                console.log("################## UPDATE player-info");
+                if (this.nametag) {
+                    this.nametag.setAttribute('value', this.data.name);
+                }
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <!-- Chat Elements //// -->
+    <div class="chat">
+        <form id="form">
+            <div style="display: flex">
+                <input type="text" name="" autocomplete="off" id="input" />
+                <button id="send-btn">Enviar</button>
+            </div>
+        </form>
+        <div class="messages"></div>
+    </div>
+
+    <!-- TAG Elements //// -->
+    <input id="username-overlay" style="z-index: 100; bottom: 24px; left: 10px; position: fixed"
+        oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)" ■/>
+
+    <!-- SCENE -->
+    <a-scene  cursor="rayOrigin: mouse" raycaster="objects:.raycastable" networked-scene="room: basic-persistent; debug: true; adapter: easyrtc; audio: false;">
+
+         <!-- ASSETS -->
+        <a-assets>
+
+            <!-- rig-template -->
+            <template id="rig-template">
+                <a-entity></a-entity>
+            </template>
+
+            <!-- avatar-man-template -->
+            <template id="avatar-man-template">
+                <a-entity player-info networked-audio-source>
+                    <a-asset-item id="avatar-man" src="assets/pmariano-fullbody.glb"></a-asset-item>
+                    <a-entity gltf-model="#avatar-man" rotation="0 180 0"></a-entity>
+                    <a-text class="nametag" value="?" rotation="0 180 0" position="0.3 -0.20 0" side="double" scale=".6 .6 .6" color="black"></a-text>
+                </a-entity>
+            </template>
+
+            <!-- /sphere-template -->
+            <template id="sphere-template">
+                <a-entity class="raycastable" geometry="primitive: sphere" material="color: red" color-changer></a-entity>
+            </template>
+
+        </a-assets>
+
+        <!-- ENTITIES-->
+        <a-entity id="rig" movement-controls="fly:true;" spawn-in-circle="radius:2" networked="template:#rig-template;" >
+            <a-entity id="player" camera position="0 4.5 0" look-controls networked="template:#avatar-man-template;" visible="false">
+            </a-entity>
+        </a-entity>
+
+        <a-entity networked="template:#sphere-template;networkId:sphere121;" position="0 1.5 -7"></a-entity>
+
+        <!-- ENVIORENT-->
+        <a-plane position="0 0 -8" rotation="-90 0 0" width="8" height="8" color="#01DC95"></a-plane>
+        <a-sky color="#abaff4"></a-sky>
+        <a-entity light="type:ambient;intensity:0.7"></a-entity>
+
+    </a-scene>
+</body>
+
+</html>
