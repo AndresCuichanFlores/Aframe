@@ -12,8 +12,8 @@ const easyrtc = require("open-easyrtc");      // EasyRTC external module
 
 const https = require("https");
 const fs = require("fs");
-const privateKeyPath = path.join(__dirname, "..", "..","..", "certificados", "127.0.0.1-key.pem");
-const privateCertificatePath = path.join(__dirname, "..", "..", "..", "certificados", "127.0.0.1.pem");
+const privateKeyPath = path.join(__dirname, "..", "..","..", "Otros/certificados", "127.0.0.1-key.pem");
+const privateCertificatePath = path.join(__dirname, "..", "..", "..", "Otros/certificados", "127.0.0.1.pem");
 const privateKey = fs.readFileSync(privateKeyPath, "utf8");
 const certificate = fs.readFileSync(privateCertificatePath, "utf8");
 const credentials = { key: privateKey, cert: certificate };
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Serve the files from the examples folder
-app.use(express.static(path.resolve(__dirname, "..", "examples")));
+app.use(express.static(path.resolve(__dirname, "..", "..")));
 
 // Start Express http server
 // const webServer = http.createServer(app);
