@@ -14,7 +14,7 @@ AFRAME.registerComponent('ui-querys', {
     * Called once when component is attached. Generally for initial setup.
     */
     init: function () {
-        console.log("WELCOME TO UI: Control your data.")
+        console.log("################## babia ui2 -- Init  ##################");
     },
 
     /**
@@ -25,12 +25,6 @@ AFRAME.registerComponent('ui-querys', {
         console.log("################## babia ui2 -- Update  ##################");
         const self = this
         let data = this.data
-
-        // Unregister from old producer
-        if (this.targetComponent) {
-            console.log("################## babia ui2 -- Update 1  ##################");
-            this.targetComponent.notiBuffer.unregister(this.notiBufferId)
-        };
 
         // Find the target component
         self.targetComponent = this.findTargetComponent(data, this)
@@ -68,21 +62,6 @@ AFRAME.registerComponent('ui-querys', {
         console.log('Generating interface...')
         console.log("################## babia ui2 -- updateInterface3  ##################");
         self.interface = generateInterface(self, self.dataMetrics, self.el)
-
-
-        document.addEventListener('controllerconnected', (event) => {
-            console.log("################## babia ui2 -- updateInterface 4  ##################");
-            while (self.el.firstChild)
-                self.el.firstChild.remove();
-            // event.detail.name ----> which VR controller
-            controller = event.detail.name;
-            let hand = event.target.getAttribute(controller).hand
-            if (hand === 'left' && !document.querySelector('#babia-menu-hand')) {
-                console.log("################## babia ui2 -- updateInterface5  ##################");
-                self.handController = event.target.id
-                insertInterfaceOnHand(self, self.handController)
-            }
-        });
     },
 
     findQuerierComponents: function () {
@@ -221,6 +200,7 @@ let selection_events = (entity, visualizer, isData) => {
     entity.addEventListener('click', function () {
         // Change parameters
         if (entity.property && entity.metric) {
+            console.log("################## babia ui2 -- click 1  ##################");
             // When change from width/depth to area or vice-versa to boats component
             if (visualizer.attrName == 'babia-boats' && entity.property == "area") {
                 visualizer.el.removeAttribute(visualizer.attrName, 'width')
@@ -236,10 +216,14 @@ let selection_events = (entity, visualizer, isData) => {
             visualizer.el.setAttribute(visualizer.attrName, entity.property, entity.metric)
             // Change selected querier in visualializer (from)
         } else if (entity.from) {
+            console.log("################## babia ui2 -- click 2  ##################");
+            console.dir(visualizer);
             visualizer.el.setAttribute(visualizer.attrName, "from", entity.from)
         } else if (entity.nodes) {
+            console.log("################## babia ui2 -- click 3  ##################");
             visualizer.el.setAttribute(visualizer.attrName, 'nodesFrom', entity.nodes)
         } else if (entity.links) {
+            console.log("################## babia ui2 -- click 4  ##################");
             visualizer.el.setAttribute(visualizer.attrName, 'linksFrom', entity.links)
         }
     });
