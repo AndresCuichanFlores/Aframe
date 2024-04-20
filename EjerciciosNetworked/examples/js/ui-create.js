@@ -1,17 +1,24 @@
 
 AFRAME.registerComponent('ui-create', {
     schema: {
-        linesSeparation: { type: 'number', default: 0.3 }
+        linesSeparation: { type: 'number', default: 0.3 },
+        menuDataSelect: { type: 'string'  },
+        menuGraphSelect: { type: 'string'}
+
     },
 
     init: function () {
         console.log("################## ui-create -- Init  ##################");
+        this.findQuerierComponents();
+        this.updateInterface();
     },
 
     update: function (oldData) {
         console.log("################## ui-create -- Update  ##################");
-        this.findQuerierComponents();
-        this.updateInterface();
+        console.log("SELECTTTTTT: ");
+        console.log(this.data.menuGraphSelect);
+        console.log(this.data.menuDataSelect);
+
     },
 
     dataMetrics: undefined,
@@ -19,10 +26,6 @@ AFRAME.registerComponent('ui-create', {
     dataMenu: {
         graph: ["babia-pie", "babia-barsmap", "babia-cyls"],
         data: []
-    },
-    dataMenuSelect: {
-        graph: undefined,
-        data: undefined
     },
 
 
@@ -50,7 +53,7 @@ let generateInterface = (self, parent) => {
     let posX = 0
     let maxX = 0
     self.interface = document.createElement('a-entity');
-    self.interface.id = "babia-menu-create";
+    self.interface.classList.add("babia-menu-create");
     let keys = Object.keys(self.dataMenu);
 
     keys.forEach(function (key) {
@@ -60,7 +63,7 @@ let generateInterface = (self, parent) => {
         self.dataMenu[key].forEach(value => {
             posX += 3.25
             let button = createDataSelect(self, key, value, posX, posY)
-            button.classList.add("babiaxraycasterclass")
+            //button.classList.add("babiaxraycasterclass")
             self.interface.appendChild(button)
         });
 
@@ -105,15 +108,18 @@ let createDataSelect = (self, key, value, positionX, positionY) => {
     console.log("################## ui-create  -- createDataSelect  ##################");
     let entity = document.createElement('a-box')
 
+    entity.setAttribute('networked', 'template: #data-select-box-template');
+    entity.setAttribute('networked', 'networkId:' + value);
     entity.classList.add(key);
-    entity.classList.add("babiaxraycasterclass")
+    //entity.classList.add("babiaxraycasterclass")
     entity.setAttribute('position', { x: positionX, y: positionY, z: 0 })
     entity.setAttribute('rotation', { x: 0, y: 0, z: 0 })
     entity.setAttribute('height', 0.8)
     entity.setAttribute('width', 3)
     entity.setAttribute('depth', 0.01)
 
-    let text = document.createElement('a-entity')
+    let text = document.createElement('a-entity');
+    text.classList.add("data-select-box-text");
     text.setAttribute('text', {
         'value': value,
         'align': 'center',
@@ -133,7 +139,7 @@ let createButton = (self, parent, positionX, positionY) => {
     console.log("################## ui-create  -- createButton  ##################");
     let entity = document.createElement('a-box')
 
-    entity.classList.add("babiaxraycasterclass")
+    //entity.classList.add("babiaxraycasterclass")
     entity.setAttribute('position', { x: positionX, y: positionY, z: 0 })
     entity.setAttribute('rotation', { x: 0, y: 0, z: 0 })
     entity.setAttribute('height', 0.8)
@@ -174,20 +180,21 @@ let createButton = (self, parent, positionX, positionY) => {
         console.log("################## babia ui2 -- click Create button ##################");
         entity.click = true;
         entity.children[0].setAttribute('text', { color: 'black' });
-        entity.setAttribute('color', '#8A8A8A')
-        console.dir(self.dataMenuSelect);
+        entity.setAttribute('color', '#8A8A8A'),
 
+        console.log(self.data.menuGraphSelect);
+        console.log(self.data.menuDataSelect);
 
         let entityGraph = document.createElement('a-entity');
-        let idEntityGraph = self.dataMenuSelect.graph + '-' + self.dataMenuSelect.data;
-        entityGraph.setAttribute(self.dataMenuSelect.graph, 
+        let idEntityGraph = self.data.menuGraphSelect + '-' + self.data.menuDataSelect;
+        entityGraph.setAttribute(self.data.menuGraphSelect, 
             { 
-                from: self.dataMenuSelect.data, 
+                from: self.data.menuDataSelect, 
                 legend: true,
                 palette: 'blues',
                 key: 'model',
                 size: 'sales',
-                title: self.dataMenuSelect.data,
+                title: self.data.menuDataSelect,
                 titlePosition: '4.2 0 1.5'
             })
 
@@ -196,17 +203,26 @@ let createButton = (self, parent, positionX, positionY) => {
         entityGraph.setAttribute('scale', '2 2 2');
         entityGraph.setAttribute('id', idEntityGraph);
 
+        entityGraph.setAttribute('networked', 'template: #ui-create-babia-pie-template');
+        entityGraph.setAttribute('networked', 'networkId: babiepie123');
+
         var scene = parent.sceneEl;
         scene.appendChild(entityGraph);
 
-        const entityUiCreate = document.querySelector('#ui_create');
+
+        
+        /*
+        let entityUiCreate = document.querySelector('#ui_data-pie');
+        console.log("entityUiCreate:");
+        console.dir(entityUiCreate);
         scene.removeChild(entityUiCreate);
 
-        let interfaceFull = document.createElement('a-entity');
+        
         interfaceFull.setAttribute('babia-ui', 'target', idEntityGraph);
         interfaceFull.setAttribute('position', '0 0 -2');
         interfaceFull.setAttribute('scale', '0.4 0.7 0.5');
         scene.appendChild(interfaceFull);
+        */
 
     });
     
@@ -234,13 +250,25 @@ let selection_events = (self, key, entity) => {
     });
 
     entity.addEventListener('click', function () {
-        console.log("################## babia ui2 -- click  ##################");
-        self.dataMenuSelect[key] = entity.children[0].getAttribute('text').value;
-        console.dir(self.dataMenuSelect);
+        console.log("################## babia ui2 -- click  FIELD ##################");
+        //NAF.utils.takeOwnership(this);
+        var valueSelect;
 
-        document.querySelectorAll('.' + key).forEach(entityValue => {
+        if(key === "data"){
+            self.data.menuDataSelect = entity.children[0].getAttribute('text').value;
+            valueSelect = self.data.menuDataSelect;
+        }else{
+            self.data.menuGraphSelect = entity.children[0].getAttribute('text').value;
+            valueSelect = self.data.menuGraphSelect;
+        }
+        console.log("SELECTTTTTT: ");
+        console.log(self.data.menuGraphSelect);
+        console.log(self.data.menuDataSelect);
+
+        document.querySelectorAll('.' + key).forEach(entityValue => {   
             let dataValue = entityValue.children[0].getAttribute('text').value;
-            if(self.dataMenuSelect[key] === dataValue){
+            if(valueSelect === dataValue){
+                //console.log("entra")
                 entity.children[0].setAttribute('text', { color: 'black' });
                 entity.setAttribute('color', '#8A8A8A')
                 entity.click = true;

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- Aframe extras movilidad -->
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.2.0/dist/aframe-extras.min.js"></script>
+  <!-- Babia -->
+  <script src="https://unpkg.com/aframe-babia-components/dist/aframe-babia-components.min.js"></script>
+  <!-- Enviorement -->
+  <script src="https://unpkg.com/aframe-environment-component@1.3.4/dist/aframe-environment-component.min.js"></script>
+
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+
+  <script src="./js/ui-querys.js"></script>
+
+</head>
+
+<body>
+  <a-scene environment>
+
+    <!-- Assets -->
+    <a-assets>
+      <img id="floor" src="assets/floor-texture.jpg">
+      <img id="metalic" src="assets/metalic-texture.jpg">
+    </a-assets>
+
+    <!-- Camera -->
+    <a-entity movement-controls="fly: true" position="0 5 5">
+      <a-entity camera position="0 0 0" look-controls></a-entity>
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+      <a-entity laser-controls="hand: right"></a-entity>
+    </a-entity>
+
+    <a-entity id="Mamiferos" babia-queryjson="url: ./dataJSON/dataBD.json"></a-entity>
+    <a-entity id="Anfibios" babia-queryjson="url: ./dataJSON/dataBD2.json"></a-entity>
+    <a-entity id="Peces" babia-queryjson="url: ./dataJSON/dataBD3.json"></a-entity>
+    <a-entity id="dataCity" babia-queryjson="url: ./dataJSON/data.json"></a-entity>
+
+    <a-entity id="treetest" babia-treebuilder="field: id; split_by: /; from: dataCity"></a-entity>
+
+    <!--
+    <a-entity id="data-pie" position="0 6 -6" rotation="90 0 0" scale="2 2 2"
+      babia-pie='from:Mamiferos; key:model; size: sales; legend: true; palette: blues; title:UI Component; titlePosition: 3.5 0 -1.5; animation:true' >
+    </a-entity>
+    
+    <a-entity id="data-pie" position="0 6 -6" rotation="90 0 0" scale="2 2 2"
+      babia-doughnut='from:Mamiferos; key:model; size: sales; legend: true; palette: blues; title:UI Component; titlePosition: 3.5 0 -2.5; animation:true' >
+    </a-entity>
+    
+    <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="2 2 2"
+      babia-bars='from:Mamiferos; x_axis:motor; height: doors; legend: true; axis: true; axis_name: true; palette: blues; animation: true' >
+    </a-entity>
+    
+    <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="1 1 1"
+      babia-barsmap='from:Mamiferos; x_axis:motor; z_axis:model; height: doors; legend: true; axis: true; axis_name: true; 
+      palette: blues; animation: true' >
+    </a-entity>
+    
+    <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="0.2 0.2 0.2"
+      babia-bubbles='from:Mamiferos; x_axis:motor; z_axis:model; height:doors; radius:sales; legend:true; axis:true; axis_name: true;  
+       radiusMax: 4; heightMax: 20; palette: blues; animation: true' >
+    </a-entity>
+
+    <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="0.2 0.2 0.2"
+      babia-cyls='from:Mamiferos; x_axis:motor; height:doors; radius:sales; legend:true; axis:true; axis_name: true;  
+      chartHeight: 10; radiusMax: 4; palette: blues; animation: true' >
+    </a-entity>
+
+    <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="0.2 0.2 0.2"
+      babia-cylsmap='from:Mamiferos; x_axis:motor; z_axis:model; height:doors; radius:sales; legend:true; axis:true; axis_name: true;  
+      chartHeight: 10; radiusMax: 4; palette: blues; animation: true' >
+    </a-entity>
+        -->
+    <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="0.1 0.001 0.1" 
+      babia-city='width: 20; depth: 20; base_color:#4DA0DB; 
+      extra: 1.5; base_thick: 0.3; split: pivot; fmaxarea: area; fheight: height; 
+      from: treetest' >
+    </a-entity>
+
+  </a-scene>
+</body>
+
+</html>

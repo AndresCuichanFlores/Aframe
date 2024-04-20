@@ -28,6 +28,8 @@
     <script src="js/spawn-in-circle.component.js"></script>
 
 
+    <script src="./js/ui-querys.js"></script>
+
   <script>
 
 
@@ -210,12 +212,14 @@
 
         <!-- Prueba-->
 
-        <a-entity id="dataExample2" babia-queryjson="url: dataJSON/dataBD.json"  ></a-entity>
+        <a-entity id="Mamiferos" babia-queryjson="url: ./dataJSON/dataBD.json"></a-entity>
+        <a-entity id="Anfibios" babia-queryjson="url: ./dataJSON/dataBD2.json"></a-entity>
+        <a-entity id="Peces" babia-queryjson="url: ./dataJSON/dataBD3.json"></a-entity>
 
-        <a-entity id="datapie2" babia-pie='from:dataExample2; legend: true; palette: blues; key:model; size: doors; title:UI Component; titlePosition: 3.5 0 -1.5' 
-        rotation="90 0 0" scale="2 2 2" position="0 8 -15" timer-prueba="time:15000" networked="template:#babia-pie-template; networkId:piequerier; " ></a-entity>
+        <a-entity id="datapie2" babia-pie='from:Mamiferos; legend: true; palette: blues; key:model; size: doors; title:UI Component; titlePosition: 3.5 0 -1.5' 
+        rotation="90 0 0" scale="2 2 2" position="0 8 -15" networked="template:#babia-pie-template; networkId:piequerier; " ></a-entity>
 
-        <a-entity  babia-ui="target: datapie2" position="0 2 -5" rotation="0 0 0" scale="0.4 0.7 0.5" > </a-entity>
+        <a-entity ui-querys="target: datapie2" position="0 2 -5" rotation="0 0 0" scale="0.4 0.7 0.5" > </a-entity>
 
 
     </a-scene>
