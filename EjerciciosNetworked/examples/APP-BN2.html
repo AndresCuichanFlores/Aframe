@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <!-- Libreria de Aframe 1.5.0 -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- Libreria de Networked Aframe 0.12.0-->
+  <script src="https://unpkg.com/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+  <!-- Libreria de Socket 2.5.0 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+  <!-- Libreria de EasyRTC -->
+  <script src="/easyrtc/easyrtc.js"></script>
+  <!-- Babia -->
+  <script src="https://unpkg.com/aframe-babia-components/dist/aframe-babia-components.min.js"></script>
+  <!-- libreria extra -->
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.2.0/dist/aframe-extras.min.js"></script>
+  <!-- Enviorement -->
+  <script src="https://unpkg.com/aframe-environment-component@1.3.4/dist/aframe-environment-component.min.js"></script>
+  <!-- Image Favicon -->
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <!-- CSSs -->
+  <link rel="stylesheet" type="text/css" href="css/styleChat.css">
+
+
+  <!-- Scripts Componentes/Logica-->
+  <script src="js/spawn-in-circle.component.js"></script>
+  <script src="app-bn2-js/menu-disco.js"></script>
+  <script src="app-bn2-js/menu-object.js"></script>
+  <script src="app-bn2-js/configuration.js"></script>
+
+</head>
+
+<body>
+  <!-- TAG Elements //// -->
+  <input id="username-overlay" style="z-index: 100; bottom: 24px; left: 10px; position: fixed"
+    oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)" ■ />
+
+  <!-- SCENE -->
+  <a-scene environment networked-scene="room: basic-persistent; debug: true; adapter: easyrtc;">
+
+    <!-- ASSETS -->
+    <a-assets>
+
+      <!-- ### AVATAR TEMPLATES -->
+
+      <!-- rig-template -->
+      <template id="rig-template">
+        <a-entity></a-entity>
+      </template>
+
+      <!-- avatar-man-template -->
+      <template id="avatar-man-template">
+        <a-entity player-info>
+          <a-entity gltf-model="assets/pmariano-fullbody.glb" rotation="0 180 0"></a-entity>
+          <a-text class="nametag" value="?" rotation="0 180 0" position="0.3 -0.20 0" side="double" scale=".6 .6 .6"
+            color="black"></a-text>
+        </a-entity>
+      </template>
+
+      <!-- ### ICONS GLB TEMPLATES -->
+
+      <!-- icon conf template -->
+      <template id="iconConif-template">
+        <a-entity id="iconConif" scale="0.14 0.14 0.14" rotation="0 0 90" gltf-model="assets/iconConif.glb">
+      </template>
+
+      <!-- icon save template -->
+      <template id="iconSave-template">
+        <a-entity id="iconSave" scale="0.04 0.04 0" rotation="0 0 0" gltf-model="assets/save_icon.glb">
+      </template>
+
+    </a-assets>
+
+    <!-- ENTITIES-->
+
+    <!-- avatar entity -->
+    <a-entity id="rig-player" movement-controls="fly:true;" networked="template:#rig-template;">
+      <a-entity id="player" camera position="0 2 2" look-controls networked="template:#avatar-man-template;"
+        visible="false"></a-entity>
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+      <a-entity laser-controls="hand: right"></a-entity>
+    </a-entity>
+
+    <a-entity id="treeMenu" position="0 0 -6" menu-disco= "objectsStage: queryes, graphs, filters; modoNext: vertical" ></a-entity>
+
+  </a-scene>
+
+</body>
+</html>

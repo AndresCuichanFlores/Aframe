@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <!-- Libreria de Aframe 1.5.0 -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- Libreria de Networked Aframe 0.12.0-->
+  <script src="https://unpkg.com/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+  <!-- Libreria de Socket 2.5.0 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+  <!-- Libreria de EasyRTC -->
+  <script src="/easyrtc/easyrtc.js"></script>
+  <!-- Babia -->
+  <script src="https://unpkg.com/aframe-babia-components/dist/aframe-babia-components.min.js"></script>
+  <!-- libreria extra -->
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.2.0/dist/aframe-extras.min.js"></script>
+  <!-- Enviorement -->
+  <script src="https://unpkg.com/aframe-environment-component@1.3.4/dist/aframe-environment-component.min.js"></script>
+  <!-- Image Favicon -->
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <!-- CSSs -->
+  <link rel="stylesheet" type="text/css" href="css/styleChat.css">
+
+
+  <!--<script src="https://unpkg.com/aframe-rounded@^1.0.3/dist/aframe-rounded-component.min.js"></script>-->
+
+  <!-- Scripts Componentes/Logica-->
+
+  <script src="js/spawn-in-circle.component.js"></script>
+
+  <script src="app-bn-js/schemas.js"></script>
+  <script src="app-bn-js/player-info.js"></script>
+  <script src="app-bn-js/field-events.js"></script>
+  <script src="app-bn-js/pre-create.js"></script>
+  <script src="app-bn-js/create-ui.js"></script>
+  <script src="app-bn-js/property-events.js"></script>
+
+  <script src="app-bn-js/rounded.js"></script>
+  <script src="app-bn-js/configuration-ui.js"></script>
+
+   <!--<script src="app-bn-js/field-conf-events.js"   <script src="app-bn-js/menu-entity.js"></script> ></script>-->
+
+</head>
+
+<body>
+
+  <!-- TAG Elements //// -->
+  <input id="username-overlay" style="z-index: 100; bottom: 24px; left: 10px; position: fixed"
+    oninput="document.getElementById('player').setAttribute('player-info', 'name', this.value)" ■ />
+
+  <!-- SCENE -->
+  <a-scene environment networked-scene="room: basic-persistent2; debug: true; adapter: easyrtc;">
+
+    <!-- ASSETS -->
+    <a-assets>
+
+      <!-- rig-template -->
+      <template id="rig-template">
+        <a-entity></a-entity>
+      </template>
+
+      <!-- avatar-man-template -->
+      <template id="avatar-man-template">
+        <a-entity player-info>
+          <a-asset-item id="avatar-man" src="assets/pmariano-fullbody.glb"></a-asset-item>
+          <a-entity gltf-model="#avatar-man" rotation="0 180 0"></a-entity>
+          <a-text class="nametag" value="?" rotation="0 180 0" position="0.3 -0.20 0" side="double" scale=".6 .6 .6"
+            color="black"></a-text>
+        </a-entity>
+      </template>
+
+      <!-- box-template -->
+      <template id="box-template">
+        <a-entity geometry="primitive: box" material="color: red" color-changer></a-entity>
+      </template>
+
+      <!-- icon-create-template -->
+      <template id="icon-create-template">
+        <a-entity>
+          <a-asset-item id="icon-create" src="assets/whiteboard_graph.glb"></a-asset-item>
+          <a-entity gltf-model="#icon-create" rotation="0 0 0"></a-entity>
+          <a-entity
+            text="value:CREATE; side:double ;color:white; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json;"
+            scale="8 8 8" position="3.1 1 0"></a-entity>  
+        </a-entity>
+      </template>
+
+      <!-- ICON CONIF template -->
+      <template id="iconConif-template">
+        <a-entity id="iconConif" scale="0.14 0.14 0.14" rotation="0 0 90" gltf-model="assets/iconConif.glb" >
+      </template>
+
+      <!-- ICON SAVE template -->
+      <template id="iconSave-template">
+        <a-entity id="iconSave" scale="0.04 0.04 0" rotation="0 0 0" gltf-model="assets/save_icon.glb" >
+      </template>
+
+      <!-- QUERIES templateS -->
+      <template id="folder_json-template">
+        <a-entity id="folder_json" scale="0 0 0" gltf-model="assets/folder_json.glb">
+      </template>
+
+      <template id="folder_csv-template">
+        <a-entity id="folder_csv" scale="0 0 0" gltf-model="assets/folder_csv.glb">
+      </template>
+      
+      <template id="folder_search-template">
+        <a-entity id="folder_search" scale="0 0 0" gltf-model="assets/folder_search.glb">
+      </template>
+
+      <!-- GRAPHS templateS -->
+      <template id="graph1-template">
+        <a-entity scale="0.3 0.3 0.3" gltf-model="assets/graph1.glb" ></a-entity>
+      </template>
+
+      <template id="graph2-template">
+        <a-entity scale="0.3 0 0.3" gltf-model="assets/graph2.glb" ></a-entity>
+      </template>
+      
+      <template id="graph3-template">
+        <a-entity scale="0.3 0 0.3" gltf-model="assets/graph3.glb" ></a-entity>
+      </template>
+
+      <template id="graph4-template">
+        <a-entity scale="0.3 0 0.3" gltf-model="assets/graph4.glb"></a-entity>
+      </template>
+
+      <!-- IMG -->
+      <img id="karigurashiPoster1" src="img/27.png" />
+      <img id="karigurashiPoster2" src="img/26.png" />
+      <img id="karigurashiPoster3" src="img/25.png" />
+
+      <!-- create-ui-template -->
+      <template id="create-ui-template">
+        <a-entity>
+        </a-entity>
+      </template>
+
+      <!-- field-template -->
+      <template id="field-template">
+        <a-entity class="main-row" scale="0 0 0" animation="property: scale; to: 1 1 1; dur: 500" field-events>
+        </a-entity>
+      </template>
+
+      <!-- field-plane-template -->
+      <template id="field-plane-template">
+        <a-entity class="field-plane" geometry="primitive: plane; width: 3; height: 1.5"
+          material="color: white; shader: flat" visible="false">
+        </a-entity>
+      </template>
+
+      <!-- field-plane-image-template -->
+      <template id="field-plane-image-template">
+        <a-entity class="field-plane-image" geometry="primitive: plane; width: 2.86; height: 1.36"
+          material="shader: flat" position="0 0 0.005"></a-entity>
+        </a-entity>
+      </template>
+
+
+    </a-assets>
+
+
+
+    <!-- ENTITIES-->
+    <a-entity id="rig-player" movement-controls="fly:true;" networked="template:#rig-template;">
+      <a-entity id="player" camera position="0 2 0" look-controls networked="template:#avatar-man-template;"
+        visible="false"></a-entity>
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+      <a-entity laser-controls="hand: right"></a-entity>
+    </a-entity>
+
+    <!--<a-entity networked="template:#box-template;networkId:box01;" position="4 1 -4" animation="property: rotation; to: 0 360 0; dur: 4000; easing: linear; loop: true" ></a-entity>-->
+
+    <a-entity id="scenery">
+      <a-entity id="platform_bot" geometry="primitive: cylinder; radius: 4; height: 0.3" position="0 0 -6" rotation="0 0 0"
+        material="color: #092429" >
+      </a-entity>
+      <a-entity id="platform_top" geometry="primitive: cylinder ; radius: 3.5; height: 0.2" position="0 0.2 -6" rotation="0 0 0"
+        material="color: #24D1D3" animation="property: rotation; to: 0 360 0; dur: 20000; easing: linear; loop: true">
+      </a-entity>
+    </a-entity>
+
+
+    <a-entity id="createIcon" networked="template:#icon-create-template;networkId:iconcreate;" scale="1.3 1.3 1.3" position="0 0.5 -6" pre-create
+      animation="property: rotation; to: 0 360 0; dur: 5000; easing: linear; loop: true">
+    </a-entity>
+
+
+  </a-scene>
+</body>
+</html>
