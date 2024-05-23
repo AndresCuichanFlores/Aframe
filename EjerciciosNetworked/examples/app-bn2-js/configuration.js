@@ -161,6 +161,13 @@ let createConfIcon = (self) => {
         } else {
             createNewMenuDisco(self, Object.keys(self.dashboard[self.valuesSelectded['mainOpcion']][self.valuesSelectded.typeCreation]), 'property', '#fcb983');
         }
+
+        //enviamos al componente config los datos
+        self.el.setAttribute('configuration', {
+            typeObjectSelected: '',
+            valueObjectSelected: '',
+        });
+
     });
     return entityConfIcon;
 };

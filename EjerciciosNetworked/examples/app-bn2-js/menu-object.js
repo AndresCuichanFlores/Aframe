@@ -22,18 +22,23 @@ AFRAME.registerComponent('menu-object', {
         }
 
         if(this.data.titleObject){
-            let entityObjectChildren = document.createElement('a-entity');
-            entityObjectChildren.setAttribute('text', {
-                'value': this.data.titleObject,
-                'align': 'center',
-                'side': 'double',
-                'color': 'black',
-                'shader': 'msdf',
-                'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
-            });
-            entityObjectChildren.setAttribute('scale', '50 50 50');
-            entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y - 7.0, z: 0 });
-            this.el.appendChild(entityObjectChildren);
+            if(this.el.querySelector('.titleObject')){
+                this.el.querySelector('.titleObject').setAttribute('text', 'value' , this.data.titleObject);
+            }else{
+                let entityObjectChildren = document.createElement('a-entity');
+                entityObjectChildren.classList.add('titleObject');
+                entityObjectChildren.setAttribute('text', {
+                    'value': this.data.titleObject,
+                    'align': 'center',
+                    'side': 'double',
+                    'color': 'black',
+                    'shader': 'msdf',
+                    'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
+                });
+                entityObjectChildren.setAttribute('scale', '50 50 50');
+                entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y - 7.0, z: 0 });
+                this.el.appendChild(entityObjectChildren);
+            }
         }
     },
 
@@ -61,7 +66,6 @@ AFRAME.registerComponent('menu-object', {
         });
         entityObjectChildren.setAttribute('scale', '50 50 50');
         entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y + 1.5, z: 0 });
-
         this.el.appendChild(entityObjectChildren);
     },
 
