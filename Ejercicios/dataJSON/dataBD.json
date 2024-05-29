@@ -21,6 +21,13 @@
         "sales": 3
     },
     {
+        "model": "cordoba",
+        "motor": "diesel",
+        "color": "blue",
+        "doors": 18,
+        "sales": 8
+    },
+    {
         "model": "toledo",
         "motor": "diesel",
         "color": "white",

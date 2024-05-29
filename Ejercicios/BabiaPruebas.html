@@ -40,15 +40,23 @@
 
     <a-entity id="treetest" babia-treebuilder="field: id; split_by: /; from: dataCity"></a-entity>
 
-    <!--
-    <a-entity id="data-pie" position="0 6 -6" rotation="90 0 0" scale="2 2 2"
-      babia-pie='from:Mamiferos; key:model; size: sales; legend: true; palette: blues; title:UI Component; titlePosition: 3.5 0 -1.5; animation:true' >
+
+    <a-entity id="filterrrr" babia-filter="from: Mamiferos; filter: color=blue"> </a-entity>
+
+
+    <a-entity  position="0 5 0" rotation="90 0 0" scale="2 2 2"
+      babia-pie='from:filterrrr; key:model; size: sales; legend: true; palette: blues; title:UI Component; animation:true' >
     </a-entity>
-    
+
+
+
+
+       <!--
     <a-entity id="data-pie" position="0 6 -6" rotation="90 0 0" scale="2 2 2"
-      babia-doughnut='from:Mamiferos; key:model; size: sales; legend: true; palette: blues; title:UI Component; titlePosition: 3.5 0 -2.5; animation:true' >
+      babia-doughnut='from:Mamiferos; key:model; size: sales; legend: true; palette: blues; title:UI Component; titlePosition: 3.5 0 -2.5; animation:false' >
     </a-entity>
-    
+
+ 
     <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="2 2 2"
       babia-bars='from:Mamiferos; x_axis:motor; height: doors; legend: true; axis: true; axis_name: true; palette: blues; animation: true' >
     </a-entity>
@@ -72,12 +80,13 @@
       babia-cylsmap='from:Mamiferos; x_axis:motor; z_axis:model; height:doors; radius:sales; legend:true; axis:true; axis_name: true;  
       chartHeight: 10; radiusMax: 4; palette: blues; animation: true' >
     </a-entity>
-        -->
+  
     <a-entity id="data-pie" position="0 1 -6" rotation="0 0 0" scale="0.1 0.001 0.1" 
       babia-city='width: 20; depth: 20; base_color:#4DA0DB; 
       extra: 1.5; base_thick: 0.3; split: pivot; fmaxarea: area; fheight: height; 
       from: treetest' >
     </a-entity>
+      -->
 
   </a-scene>
 </body>

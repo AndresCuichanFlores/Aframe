@@ -1,0 +1,32 @@
+[
+    {
+        "brand": "Dell",
+        "model": "XPS 13",
+        "processor": "Intel i7",
+        "os": "Windows 10",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "screen_size_inch": 13.3,
+        "price_usd": 1200
+    },
+    {
+        "brand": "Apple",
+        "model": "MacBook Air",
+        "processor": "M1",
+        "os": "macOS",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "screen_size_inch": 13.3,
+        "price_usd": 999
+    },
+    {
+        "brand": "HP",
+        "model": "Spectre x360",
+        "processor": "Intel i5",
+        "os": "Windows 10",
+        "ram_gb": 8,
+        "storage_gb": 512,
+        "screen_size_inch": 15.6,
+        "price_usd": 1100
+    }
+]

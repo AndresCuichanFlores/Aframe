@@ -1,0 +1,32 @@
+[
+    {
+        "brand": "Apple",
+        "model": "Watch Series 7",
+        "os": "watchOS",
+        "color": "Midnight",
+        "screen_size_mm": 45,
+        "battery_life_hours": 18,
+        "weight_g": 38.8,
+        "price_usd": 399
+    },
+    {
+        "brand": "Samsung",
+        "model": "Galaxy Watch 4",
+        "os": "Wear OS",
+        "color": "Black",
+        "screen_size_mm": 44,
+        "battery_life_hours": 40,
+        "weight_g": 30.3,
+        "price_usd": 249
+    },
+    {
+        "brand": "Fitbit",
+        "model": "Versa 3",
+        "os": "Fitbit OS",
+        "color": "Pink Clay",
+        "screen_size_mm": 40,
+        "battery_life_hours": 144,
+        "weight_g": 28.5,
+        "price_usd": 229
+    }
+]
