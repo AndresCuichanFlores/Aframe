@@ -60,9 +60,8 @@ AFRAME.registerComponent('configuration', {
                 createNewMenuDisco(this, this.dashboard[this.valuesSelectded['mainOpcion']][this.valuesSelectded['typeCreation']][this.data.valueObjectSelected], 'valueProperty', '#9efc83');
             } else if (this.data.typeObjectSelected === 'valueProperty') {
                 this.updateComplementBabia()
+
             }
-
-
         } else if(this.valuesSelectded.mainOpcion === 'graphs'){
 
             if (this.data.typeObjectSelected === 'mainOpcion') {
@@ -110,7 +109,7 @@ AFRAME.registerComponent('configuration', {
                 }else{
                     
                     if(this.valuesSelectded.property === 'from'){
-                        createNewMenuDisco(this, Object.keys(this.dashboard[this.valuesSelectded['mainOpcion']][this.valuesSelectded['typeCreation']][this.valuesSelectded['property']][this.data.valueObjectSelected]), 'subProperty', '#85faf4');
+                        createNewMenuDisco(this, ['key', 'size'], 'subProperty', '#85faf4');
                     }
                 }
 
@@ -125,7 +124,14 @@ AFRAME.registerComponent('configuration', {
                     this.numeroDiscosCreados -= 1;
                 }
 
-                createNewMenuDisco(this,this.dashboard[this.valuesSelectded['mainOpcion']][this.valuesSelectded['typeCreation']][this.valuesSelectded['property']][this.valuesSelectded['valueProperty']][this.data.valueObjectSelected], 'subValueProperty', '#85faf4');
+                console.dir(this.documentsCreated)
+                if (this.data.valueObjectSelected === 'key' ) {
+                    createNewMenuDisco(this, Object.keys(this.documentsCreated[this.valuesSelectded.valueProperty].key), 'subValueProperty', '#85faf4');
+                } else if (this.data.valueObjectSelected === 'size' ){
+                    createNewMenuDisco(this, this.documentsCreated[this.valuesSelectded.valueProperty].size, 'subValueProperty', '#85faf4');
+                }
+
+
 
             } else if (this.data.typeObjectSelected === 'subValueProperty') {
 
@@ -153,6 +159,9 @@ AFRAME.registerComponent('configuration', {
 
         console.dir(this.valuesSelectded);
     },
+
+
+    documentsCreated: {},
 
     dashboard: {
         queryes: {
@@ -260,6 +269,7 @@ AFRAME.registerComponent('configuration', {
     updateComplementBabia: function () {
         // console.log("################## configuration createMenu   ##################");
         let objectConfiguration = this.el.querySelector('#Menu-typeCreation').querySelector('.selected');
+        let self = this;
 
 
 
@@ -271,6 +281,49 @@ AFRAME.registerComponent('configuration', {
             if (this.valuesSelectded['typeCreation'] === 'json') {
                 objectConfiguration.setAttribute('babia-queryjson', this.valuesSelectded['property'], this.valuesSelectded['valueProperty']);
                 objectConfiguration.setAttribute('menu-object', 'titleObject', idObjectConfiguration);
+
+
+                fetch(this.valuesSelectded.valueProperty)
+                .then(response => response.json())
+                .then(data => {
+                    const keys = Object.keys(data[0]);
+                    const stringKeys = [];
+                    const numberKeys = [];
+
+                    keys.forEach(key => {
+                        const value = data[0][key];
+                        if (typeof value === 'string') {
+                            stringKeys.push(key);
+                        } else if (typeof value === 'number') {
+                            numberKeys.push(key);
+                        }
+                    });
+
+                    console.log('Claves de tipo string:', stringKeys);
+                    console.log('Claves de tipo número:', numberKeys);
+
+                    const uniqueValues = {};
+                    stringKeys.forEach(key => {
+                        const uniqueSet = new Set();
+                        data.forEach(obj => {
+                            uniqueSet.add(obj[key]);
+                        });
+                        uniqueValues[key] = Array.from(uniqueSet);
+                    });
+
+                    console.log('Valores únicos de las claves de tipo string:', uniqueValues);
+
+
+                    const fields = {
+                        key: uniqueValues,
+                        size: numberKeys
+                    };
+                    self.documentsCreated[idObjectConfiguration] = fields;
+                    console.dir(self.documentsCreated);
+                    
+                })
+                .catch(error => console.error('Error al cargar el archivo:', error));
+                
 
             } else if (this.valuesSelectded['typeCreation'] === 'csv') {
                 objectConfiguration.setAttribute('babia-querycsv', this.valuesSelectded['property'], this.valuesSelectded['valueProperty']);
