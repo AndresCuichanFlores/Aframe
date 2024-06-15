@@ -16,7 +16,7 @@ AFRAME.registerComponent('menu-object', {
     },
 
     update: function () {
-        console.log("################## menu-object UPDATE ");
+        //console.log("################## menu-object UPDATE ");
         if(this.data.removeEventClick){
             this.el.removeEventListener('click', this.handleClick);
         }
@@ -70,8 +70,7 @@ AFRAME.registerComponent('menu-object', {
     },
 
     handleClick: function (evt) {
-        console.log("################## menu-object click");
-
+        //console.log("################## menu-object click");
 
         let self = this;
         let disco = self.el.parentNode;
@@ -92,12 +91,7 @@ AFRAME.registerComponent('menu-object', {
                 easing: 'linear',
             });
 
-            console.log(self.data.objectType);
-
-
-
             if( (self.data.objectType !== 'property') && (self.data.objectType !== 'subProperty')){
-                console.log('ENTRAAAAAAAAA')
                 object.setAttribute('menu-object', 'removeEventClick', 'true');
             }
 
