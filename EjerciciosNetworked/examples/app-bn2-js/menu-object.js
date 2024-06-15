@@ -91,8 +91,8 @@ AFRAME.registerComponent('menu-object', {
                 easing: 'linear',
             });
 
-            if( (self.data.objectType !== 'property') && (self.data.objectType !== 'subProperty')){
-                object.setAttribute('menu-object', 'removeEventClick', 'true');
+            if(self.data.objectType !== 'property'){
+                 object.setAttribute('menu-object', 'removeEventClick', 'true');
             }
 
             //Los objectos que no son selecionados cambiamos su apariencia
