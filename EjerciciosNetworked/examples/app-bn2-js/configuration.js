@@ -43,13 +43,13 @@ AFRAME.registerComponent('configuration', {
         },
 
         [CONSTANTS.GRAPHS]: {
-            pie: {
+            [CONSTANTS.BABIAPIE]: {
                 from: {},
                 legend: ['true', 'false'],
                 animation: ['true', 'false'],
                 palette: ['blues', 'bussiness', 'commerce', 'flat', 'foxy', 'icecream', 'pearl', 'sunset', 'ubuntu'],
             },
-            doughnut: {
+            [CONSTANTS.BABIADOUGHNUT]: {
                 from: {},
                 legend: ['true', 'false'],
                 animation: ['true', 'false'],
@@ -228,9 +228,9 @@ AFRAME.registerComponent('configuration', {
             console.log("valueObjectSelected: " + this.data.valueObjectSelected);
 
             if (this.valuesSelectded[CONSTANTS.TYPECREATION] === 'pie') {
-                objectConfiguration.setAttribute('babia-pie', this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
+                objectConfiguration.setAttribute(CONSTANTS.BABIAPIE, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
             } else if (this.valuesSelectded[CONSTANTS.TYPECREATION] === 'doughnut') {
-                objectConfiguration.setAttribute('babia-doughnut', this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
+                objectConfiguration.setAttribute(CONSTANTS.BABIADOUGHNUT, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
             } else if (this.valuesSelectded[CONSTANTS.TYPECREATION] === 'elastic') {
 
             }
@@ -291,6 +291,7 @@ let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
         'objectsStage': objects,
         'objectType': objectType,
         'colorDisco': colorDisco,
+        'eventComplement': 'menu-object'
     });
     self.el.appendChild(entityMenuDisco);
     self.numeroDiscosCreados += 1;

@@ -4,6 +4,7 @@ AFRAME.registerComponent('menu-disco', {
         colorDisco: { type: 'string', default: '' },
         objectsStage: { type: 'array', default: [] },
         objectType: { type: 'string', default: '' },
+        eventComplement: { type: 'string', default: '' },
     },
 
     init: function () {
@@ -64,7 +65,7 @@ let createObject = (self, object, nameObjectGLB, position) => {
     let entityObject = document.createElement('a-entity');
     entityObject.classList.add(self.el.className);
     entityObject.setAttribute('position', position);
-    entityObject.setAttribute('menu-object', {
+    entityObject.setAttribute(self.data.eventComplement, {
         'objectStage': object,
         'nameObjectGLB': nameObjectGLB,
         'objectType': self.data.objectType

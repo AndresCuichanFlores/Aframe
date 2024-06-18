@@ -23,13 +23,17 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
-
-
   <!-- Scripts Componentes/Logica-->
   <script src="js/spawn-in-circle.component.js"></script>
+
   <script src="app-bn2-js/menu-disco.js"></script>
-  <script src="app-bn2-js/menu-object.js"></script>
+
   <script type="module" src="app-bn2-js/configuration.js"></script>
+  <script src="app-bn2-js/menu-object.js"></script>
+
+
+  <script type="module" src="app-bn2-js/creation.js"></script>
+  <script src="app-bn2-js/events-object-creation.js"></script>
 
 
 </head>
@@ -85,13 +89,11 @@
       <a-entity laser-controls="hand: right"></a-entity>
     </a-entity>
 
-    <a-entity id="treeMenu1" position="0 0 -6" configuration ></a-entity>
+    <a-entity id="treeMenu1" position="0 0 6" configuration ></a-entity>
 
-    <a-entity id="treeMenu2" position="0 0 6" configuration ></a-entity>
+    <a-entity id="treeMenu2" position="0 0 -6" creation ></a-entity>
 
-    <a-entity id="treeMenu3" position="0 0 18" configuration ></a-entity>
-
-
+    <a-entity id="treeMenu3" position="10 0 10" creation ></a-entity>
 
   </a-scene>
 

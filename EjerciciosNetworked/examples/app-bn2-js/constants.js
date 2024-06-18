@@ -11,3 +11,6 @@ export const VALUEPROPERTY = "valueProperty";
 
 export const BABIAQUERYJSON = "babia-queryjson";
 export const BABIAQUERYCSV = "babia-querycsv";
+
+export const BABIAPIE = "babia-pie";
+export const BABIADOUGHNUT = "babia-doughnut";
