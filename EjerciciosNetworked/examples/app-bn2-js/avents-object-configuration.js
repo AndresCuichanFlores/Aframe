@@ -1,9 +1,9 @@
-AFRAME.registerComponent('events-object-creation', {
+
+AFRAME.registerComponent('avents-object-configuration', {
     schema: {
         objectStage: { type: 'string', default: '' },
         objectType: { type: 'string', default: '' },
         nameObjectGLB: { type: 'string', default: '' },
-        titleObject: { type: 'string', default: '' }, //se elimina
     },
 
     init: function () {
@@ -11,14 +11,16 @@ AFRAME.registerComponent('events-object-creation', {
         this.customizeObjectStage();
         this.handleClick = this.handleClick.bind(this);
         this.el.addEventListener('click', this.handleClick);
+        this.objectConfiguration = this.el.parentNode.parentNode.childNodes[0].querySelector('[configuration-prueba]');
     },
 
     update: function () {
-        //console.log("################## menu-object UPDATE ");
+        //console.log("################## avents-object-configuration UPDATE ");
     },
 
     customizeObjectStage: function () {
         //console.log("################## menu-object customizeObjectStage ##################");
+        this.el.setAttribute('id', this.data.objectStage);
         this.el.setAttribute('gltf-model', 'assets/real/' + this.data.nameObjectGLB + '.glb');
         this.el.setAttribute('scale', '0.2 0.2 0.2');
         this.el.setAttribute('animation', {
@@ -29,39 +31,11 @@ AFRAME.registerComponent('events-object-creation', {
             'loop': 'true'
         });
 
-        let topName = this.data.objectStage;
-        let botName;
-        if (this.data.objectStage.includes(":")) {
-            //console.log("El string contiene el símbolo ':'");
-            let parts = this.data.objectStage.split(":");
-            topName = parts[0];
-            botName = parts[1];
-
-            //texto abajo del objeto
-            let entityBotName = document.createElement('a-entity');
-            entityBotName.classList.add("botNameObject");
-            entityBotName.setAttribute('text', {
-                'value': botName,
-                'align': 'center',
-                'side': 'double',
-                'color': 'BLACK',
-                'shader': 'msdf',
-                'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
-            });
-            entityBotName.setAttribute('scale', '35 35 35');
-            //console.log('position.y: ' + this.el.getAttribute('position').y);
-            entityBotName.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y - 6, z: 0 });
-
-            this.data.objectStage = topName;
-            this.el.appendChild(entityBotName);
-        }
-        this.el.setAttribute('id', this.data.objectStage);
-
-        //texto arriba del objeto
+        //top name object
         let entityObjectChildren = document.createElement('a-entity');
         entityObjectChildren.classList.add("topNameObject");
         entityObjectChildren.setAttribute('text', {
-            'value': topName,
+            'value': this.data.objectStage,
             'align': 'center',
             'side': 'double',
             'color': 'WHITE',
@@ -69,7 +43,7 @@ AFRAME.registerComponent('events-object-creation', {
             'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
         });
         entityObjectChildren.setAttribute('scale', '50 50 50');
-        entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y + 1.3, z: 0 });
+        entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y + 1.5, z: 0 });
         this.el.appendChild(entityObjectChildren);
     },
 
@@ -78,18 +52,6 @@ AFRAME.registerComponent('events-object-creation', {
         let self = this;
         let disco = self.el.parentNode;
         let objectsDisco = disco.childNodes;
-
-        if (!(this.el.parentNode.parentNode.getAttribute('creation'))) {
-            //console.log('ENTROOOOOOOOOOOOOOOOOO')
-            this.el.removeEventListener("click", this.handleClick);
-            this.el.removeAttribute('animation');
-            this.el.removeAttribute('animation__1');
-            this.el.removeAttribute('events-object-creation');
-            return;
-        }
-
-        //Eliminamos animancaciones del disco
-        disco.removeAttribute('animation');
 
         //Recorremos los objectos del disco
         objectsDisco.forEach(function (object) {
@@ -107,7 +69,7 @@ AFRAME.registerComponent('events-object-creation', {
                     }
                 })
                 object.classList.remove("selected");
-            } else {
+            }else{
                 object.childNodes[0].setAttribute('text', 'opacity', '1');
                 object.object3D.traverse((value) => {
                     if (value.type === 'Mesh') {
@@ -120,8 +82,11 @@ AFRAME.registerComponent('events-object-creation', {
             }
         });
 
+        //Eliminamos animancaciones del disco
+        disco.removeAttribute('animation');
+
         //enviamos al componente config los datos
-        this.el.parentNode.parentNode.setAttribute('creation', {
+        this.objectConfiguration.setAttribute('configuration-prueba', {
             typeObjectSelected: this.data.objectType,
             valueObjectSelected: this.data.objectStage,
         });

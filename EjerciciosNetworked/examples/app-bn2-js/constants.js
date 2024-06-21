@@ -14,3 +14,5 @@ export const BABIAQUERYCSV = "babia-querycsv";
 
 export const BABIAPIE = "babia-pie";
 export const BABIADOUGHNUT = "babia-doughnut";
+
+export const BABIAFILTER = "babia-filter";

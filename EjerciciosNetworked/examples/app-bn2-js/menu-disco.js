@@ -63,7 +63,6 @@ let createObject = (self, object, nameObjectGLB, position) => {
     position.y = 1.3;
 
     let entityObject = document.createElement('a-entity');
-    entityObject.classList.add(self.el.className);
     entityObject.setAttribute('position', position);
     entityObject.setAttribute(self.data.eventComplement, {
         'objectStage': object,

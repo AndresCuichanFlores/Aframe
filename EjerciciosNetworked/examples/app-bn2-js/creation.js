@@ -25,7 +25,7 @@ AFRAME.registerComponent('creation', {
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
             this.executeMenuFilters();
         }
-        console.dir(this.valuesSelectded);
+        //console.dir(this.valuesSelectded);
     },
 
 
@@ -151,7 +151,6 @@ AFRAME.registerComponent('creation', {
             //Desaparezca los objetos no selecionas y centrar el selecionado del segundo disco
             self.el.childNodes[1].childNodes.forEach(element => {
                 if (element.classList.contains('selected')) {
-                    self.el.childNodes[1].removeAttribute('id');
                     element.setAttribute('animation', {
                         'property': 'position',
                         'from': { x: element.getAttribute('position').x, y: element.getAttribute('position').y, z: 0 },
@@ -176,9 +175,15 @@ AFRAME.registerComponent('creation', {
                             'easing': 'linear',
                         });
                         element.addEventListener('animationcomplete', function (event) {
-                            console.log('La animación de escala ha terminado.');
+                            //console.log('La animación de escala ha terminado2.');
+
+                            element.setAttribute("configuration-prueba", {
+                                typeObjectSelected: CONSTANTS.TYPECREATION,
+                                valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION]
+                            });
                             self.el.childNodes[0].removeAttribute('animation');
                             self.el.removeAttribute('creation');
+
                         });
                     }, 2200);
 
@@ -190,7 +195,7 @@ AFRAME.registerComponent('creation', {
                         'easing': 'linear',
                     });
                     element.addEventListener('animationcomplete', function (event) {
-                        console.log('La animación de escala ha terminado.');
+                        //console.log('La animación de escala ha terminado.');
                         self.el.childNodes[1].removeChild(element);
                     });
                 }
@@ -228,11 +233,10 @@ AFRAME.registerComponent('creation', {
 
 let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
     //console.log("################## menu-disco createNewMenuDisco  ##################");
-    console.log(self.numeroDiscosCreados)
+    //console.log(self.numeroDiscosCreados)
 
     let entityMenuDisco = document.createElement('a-entity');
     entityMenuDisco.setAttribute('id', 'Menu-' + objectType);
-    entityMenuDisco.classList.add(self.el.getAttribute('id'));
     entityMenuDisco.setAttribute('position', { x: 0, y: 3 * self.numeroDiscosCreados, z: 0 });
     entityMenuDisco.setAttribute('menu-disco', {
         'objectsStage': objects,
