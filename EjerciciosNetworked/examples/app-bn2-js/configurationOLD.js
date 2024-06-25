@@ -1,29 +1,23 @@
+
 import * as CONSTANTS from './constants.js';
 
-AFRAME.registerComponent('configuration-prueba', {
+AFRAME.registerComponent('configurationOLD', {
     schema: {
         typeObjectSelected: {type: 'string', oneOf: [CONSTANTS.MAINOPCION, CONSTANTS.TYPECREATION, CONSTANTS.PROPERTY, CONSTANTS.VALUEPROPERTY]},
         valueObjectSelected: {type: 'string', default: ''},
     },
 
     init: function () {
-        //console.log("################## configuration-prueba INIT ");
+        //console.log("################## configuration INIT ");
         this.initializeParameters();
-        this.createConfIcon();
-
-        if (Object.keys(this.dashboard[CONSTANTS.QUERYES]).includes(this.data.valueObjectSelected)) {
-            this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.QUERYES;
-        } else if (Object.keys(this.dashboard[CONSTANTS.GRAPHS]).includes(this.data.valueObjectSelected)) {
-            this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.GRAPHS;
-        }else if (Object.keys(this.dashboard[CONSTANTS.FILTERS]).includes(this.data.valueObjectSelected)) {
-            this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.FILTERS;
-        }
+        createNewMenuDisco(this, Object.keys(this.dashboard), CONSTANTS.MAINOPCION, '#C99E10');
     },
 
     update: function () {
         //console.log("################## configuration UPDATE ");
 
         this.valuesSelectded[this.data.typeObjectSelected] = this.data.valueObjectSelected;
+        console.dir(this.valuesSelectded);
 
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
             this.executeMenuQueryes();
@@ -32,7 +26,6 @@ AFRAME.registerComponent('configuration-prueba', {
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
             this.executeMenuFilters();
         }
-        console.dir(this.valuesSelectded);
     },
 
 
@@ -65,8 +58,6 @@ AFRAME.registerComponent('configuration-prueba', {
         },
 
         [CONSTANTS.FILTERS]: {
-            [CONSTANTS.BABIAFILTER]: [],
-            
         }
     },
 
@@ -82,9 +73,25 @@ AFRAME.registerComponent('configuration-prueba', {
     },
 
     executeMenuQueryes: function () {
-        if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
+        if (this.data.typeObjectSelected === CONSTANTS.MAINOPCION) {
+            createNewMenuDisco(this, Object.keys(this.dashboard[this.data.valueObjectSelected]), CONSTANTS.TYPECREATION, '#8080ff');
+        } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
+            let objectConfiguration = this.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION).querySelector('.selected');
+            let entityConfIcon = this.createConfIcon();
+            objectConfiguration.appendChild(entityConfIcon);
             createNewMenuDisco(this, Object.keys(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.data.valueObjectSelected]), CONSTANTS.PROPERTY, '#fcb983');
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
+            let entidadDiscoValueProperty = this.el.querySelector('#Menu-' + CONSTANTS.VALUEPROPERTY)
+            if (entidadDiscoValueProperty) {
+                while (this.el.childNodes.length > 0) {
+                    var child = this.el.childNodes[this.el.childNodes.length - 1];
+                    this.el.removeChild(child);
+                    this.numeroDiscosCreados -= 1;
+                    if (child === entidadDiscoValueProperty) {
+                        break;
+                    }
+                }
+            }
             createNewMenuDisco(this, this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.valuesSelectded[CONSTANTS.TYPECREATION]][this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#9efc83');
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
             this.updateComplementBabia()
@@ -92,7 +99,9 @@ AFRAME.registerComponent('configuration-prueba', {
     },
 
     executeMenuGraphs: function () {
-        if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
+        if (this.data.typeObjectSelected === CONSTANTS.MAINOPCION) {
+            createNewMenuDisco(this, Object.keys(this.dashboard[this.data.valueObjectSelected]), CONSTANTS.TYPECREATION, '#8080ff');
+        } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             let objectConfiguration = this.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION).querySelector('.selected');
             let entityConfIcon = this.createConfIcon();
             objectConfiguration.appendChild(entityConfIcon);
@@ -124,10 +133,10 @@ AFRAME.registerComponent('configuration-prueba', {
                     this.independentProperty = true;
 
                     if (nameQuerrySelect in this.documentsCreated) {
-                        //console.log("Esxite la query en documetnscreated");
+                        console.log("Esxite la query en documetnscreated");
                         createNewMenuDisco(this, Object.keys(this.documentsCreated[nameQuerrySelect].key), CONSTANTS.VALUEPROPERTY, '#85faf4');
                     } else {
-                        //console.log("Esxite la query en filterscreated");
+                        console.log("Esxite la query en filterscreated");
                         let filter = this.filtersCreated.find(value => value.nameFilter === nameQuerrySelect);
                         createNewMenuDisco(this, Object.keys(this.documentsCreated[filter.nameDocument].key), CONSTANTS.VALUEPROPERTY, '#85faf4');
                     }
@@ -138,10 +147,10 @@ AFRAME.registerComponent('configuration-prueba', {
                     this.independentProperty = true;
 
                     if (nameQuerrySelect in this.documentsCreated) {
-                        //console.log("Esxite la query en documetnscreated");
+                        console.log("Esxite la query en documetnscreated");
                         createNewMenuDisco(this, this.documentsCreated[nameQuerrySelect].size, CONSTANTS.VALUEPROPERTY, '#85faf4');
                     } else {
-                        //console.log("Exite la query en filterscreated");
+                        console.log("Exite la query en filterscreated");
                         let filter = this.filtersCreated.find(value => value.nameFilter === nameQuerrySelect);
                         createNewMenuDisco(this, this.documentsCreated[filter.nameDocument].size, CONSTANTS.VALUEPROPERTY, '#85faf4');
                     }
@@ -172,27 +181,22 @@ AFRAME.registerComponent('configuration-prueba', {
     },
 
     executeMenuFilters: function () {
-        let nameDocumentFilter = this.el.querySelector('.botNameObject').getAttribute('text').value;
-        if (nameDocumentFilter.includes(":")) {
-            nameDocumentFilter = nameDocumentFilter.split(":")[0];
-        }
-
-        if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-            createNewMenuDisco(this, Object.keys(this.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fcb983');
-        } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
-            let entityTreeBase = this.el.parentNode.parentNode;
-            if (entityTreeBase.childNodes[1]) {
-                while (entityTreeBase.childNodes.length > 0) {
-                    var child = entityTreeBase.childNodes[entityTreeBase.childNodes.length - 1];
-                    if (child === entityTreeBase.childNodes[1]) {
-                        break;
-                    }
-                    entityTreeBase.removeChild(child);
-                    this.numeroDiscosCreados -= 1;
+        if (this.data.typeObjectSelected === CONSTANTS.MAINOPCION) {
+            let elementsQuerys = document.querySelectorAll('[babia-queryjson], [babia-querycsv]');
+            let ids = [];
+            elementsQuerys.forEach(element => {
+                if (element.id) {
+                    ids.push(element.id);
                 }
-            }
-
-            createNewMenuDisco(this, this.documentsCreated[nameDocumentFilter].key[this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#9efc83');
+            });
+            createNewMenuDisco(this, ids, CONSTANTS.TYPECREATION, '#8080ff');
+        } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
+            let objectConfiguration = this.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION).querySelector('.selected');
+            let entityConfIcon = this.createConfIcon();
+            objectConfiguration.appendChild(entityConfIcon);
+            createNewMenuDisco(this, Object.keys(this.documentsCreated[this.data.valueObjectSelected].key), CONSTANTS.PROPERTY, '#fcb983');
+        } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
+            createNewMenuDisco(this, this.documentsCreated[this.valuesSelectded[CONSTANTS.TYPECREATION]].key[this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#9efc83');
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
             this.updateComplementBabia()
         }
@@ -200,11 +204,7 @@ AFRAME.registerComponent('configuration-prueba', {
 
     updateComplementBabia: function () {
         // console.log("################## configuration createMenu   ##################");
-        let objectConfiguration = this.el;
-
-        console.log("UPDATE BABIA ANTES");
-        console.dir(this.documentsCreated);
-        console.dir(this.filtersCreated);
+        let objectConfiguration = this.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION).querySelector('.selected');
 
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
 
@@ -213,20 +213,19 @@ AFRAME.registerComponent('configuration-prueba', {
 
             if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIAQUERYJSON) {
                 objectConfiguration.setAttribute(CONSTANTS.BABIAQUERYJSON, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
-                this.addBotNameObject(idObjectConfiguration);
+                objectConfiguration.setAttribute('menu-object', 'titleObject', idObjectConfiguration);
                 addDocumentCreatedJSON(this, idObjectConfiguration);
             } else if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIAQUERYCSV) {
                 objectConfiguration.setAttribute(CONSTANTS.BABIAQUERYCSV, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
-                this.addBotNameObject(idObjectConfiguration);
+                objectConfiguration.setAttribute('menu-object', 'titleObject', idObjectConfiguration);
                 addDocumentCreatedCSV(this, idObjectConfiguration);
             } else if (this.valuesSelectded[CONSTANTS.TYPECREATION] === 'elastic') {
 
             }
-
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS) {
 
-            //console.log("typeObjectSelected: " + this.data.typeObjectSelected);
-            //console.log("valueObjectSelected: " + this.data.valueObjectSelected);
+            console.log("typeObjectSelected: " + this.data.typeObjectSelected);
+            console.log("valueObjectSelected: " + this.data.valueObjectSelected);
 
             if (this.valuesSelectded[CONSTANTS.TYPECREATION] === 'pie') {
                 objectConfiguration.setAttribute(CONSTANTS.BABIAPIE, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
@@ -237,99 +236,64 @@ AFRAME.registerComponent('configuration-prueba', {
             }
 
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
-            let nameDocumentFilter = this.el.querySelector('.botNameObject').getAttribute('text').value;
-            if(nameDocumentFilter.includes(":")) {
-                nameDocumentFilter = nameDocumentFilter.split(":")[0];
-            }
-
             let nameFilter = this.valuesSelectded[CONSTANTS.PROPERTY] + '=' + this.valuesSelectded[CONSTANTS.VALUEPROPERTY]
-            objectConfiguration.setAttribute(CONSTANTS.BABIAFILTER, {
-                'from': nameDocumentFilter,
+            objectConfiguration.setAttribute('babia-filter', {
+                'from': this.valuesSelectded[CONSTANTS.TYPECREATION],
                 'filter': nameFilter
             });
-            objectConfiguration.setAttribute('id', nameDocumentFilter  + ':' + nameFilter);
-            this.addBotNameObject(nameDocumentFilter + ':' + nameFilter);
-            addFilterCreated(this, nameFilter, nameDocumentFilter);
-        }
+            objectConfiguration.setAttribute('id', nameFilter);
+            objectConfiguration.setAttribute('menu-object', 'titleObject', nameFilter);
 
-        console.log("UPDATE BABIA DESPUES");
-        console.dir(this.documentsCreated);
-        console.dir(this.filtersCreated);
-    },
-
-    addBotNameObject: function (botNameObject) {
-        if(this.el.querySelector('.botNameObject')){
-            this.el.removeChild(this.el.querySelector('.botNameObject'));
+            addFilterCreated(this, nameFilter, this.valuesSelectded[CONSTANTS.TYPECREATION]);
         }
-        let entityObjectChildren = document.createElement('a-entity');
-        entityObjectChildren.classList.add('botNameObject');
-        entityObjectChildren.setAttribute('text', {
-            'value': botNameObject,
-            'align': 'center',
-            'side': 'double',
-            'color': 'black',
-            'shader': 'msdf',
-            'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
-        });
-        entityObjectChildren.setAttribute('scale', '35 35 35');
-        //console.log('position.y: ' + this.el.getAttribute('position').y);
-        entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y - 7, z: 0 });
-        this.el.appendChild(entityObjectChildren);
     },
 
     createConfIcon: function () {
-        //console.log("################## configuration createConfIcon   ##################");
+        // console.log("################## configuration createMenu   ##################");
         let self = this;
-        let entityTreeBase = this.el.parentNode.parentNode;
         let entityConfIcon = document.createElement('a-entity');
         entityConfIcon.classList.add("iconConf");
         entityConfIcon.setAttribute('gltf-model', 'assets/real/iconConif.glb');
-        entityConfIcon.setAttribute('scale', '0.6 0.6 0.6');
-        entityConfIcon.setAttribute('position', '4.2 0.9 0');
+        entityConfIcon.setAttribute('scale', '1.04 1.04 1.04');
+        entityConfIcon.setAttribute('position', '6 3 0');
 
         entityConfIcon.addEventListener('click', function () {
-            //console.log('Icon conf clicked!');
-
-            if(entityTreeBase.childNodes[1]){
-                while (entityTreeBase.childNodes.length > 0) {
-                    var child = entityTreeBase.childNodes[entityTreeBase.childNodes.length - 1];
-                    if (child === entityTreeBase.childNodes[0]) {
-                        break;
-                    }
-                    entityTreeBase.removeChild(child);
-                    self.numeroDiscosCreados -= 1;
-                }
-            }else{
-                if(self.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS){
-                    let nameDocumentFilter = self.el.querySelector('.botNameObject').getAttribute('text').value;
-                    if (nameDocumentFilter.includes(":")) {
-                        nameDocumentFilter = nameDocumentFilter.split(":")[0];
-                    }
-                    createNewMenuDisco(self, Object.keys(self.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fcb983');
-                }else{
-                    createNewMenuDisco(self, Object.keys(self.dashboard[self.valuesSelectded[CONSTANTS.MAINOPCION]][self.valuesSelectded[CONSTANTS.TYPECREATION]]), CONSTANTS.PROPERTY, '#fcb983');
-                }
+            console.log('Icon conf clicked!');
+            if (self.el.querySelector('#Menu-' + CONSTANTS.VALUEPROPERTY)) {
+                self.el.removeChild(self.el.querySelector('#Menu-' + CONSTANTS.VALUEPROPERTY));
+                self.el.removeChild(self.el.querySelector('#Menu-' + CONSTANTS.PROPERTY));
+                self.numeroDiscosCreados -= 2;
+            } else if (self.el.querySelector('#Menu-' + CONSTANTS.PROPERTY)) {
+                self.el.removeChild(self.el.querySelector('#Menu-' + CONSTANTS.PROPERTY));
+                self.numeroDiscosCreados -= 1;
+            } else {
+                createNewMenuDisco(self, Object.keys(self.dashboard[self.valuesSelectded[CONSTANTS.MAINOPCION]][self.valuesSelectded[CONSTANTS.TYPECREATION]]), CONSTANTS.PROPERTY, '#fcb983');
             }
+
+            self.el.setAttribute('configuration', {
+                typeObjectSelected: '',
+                valueObjectSelected: '',
+            });
         });
-        
-        self.el.appendChild(entityConfIcon);
+        return entityConfIcon;
     },
 });
 
 let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
     //console.log("################## menu-disco createNewMenuDisco  ##################");
-    //console.log(self.numeroDiscosCreados)
+    console.log(self.numeroDiscosCreados)
 
     let entityMenuDisco = document.createElement('a-entity');
     entityMenuDisco.setAttribute('id', 'Menu-' + objectType);
-    entityMenuDisco.setAttribute('position', { x: 0, y: 5 + (3 * self.numeroDiscosCreados), z: 0 });
+    entityMenuDisco.classList.add(self.el.getAttribute('id'));
+    entityMenuDisco.setAttribute('position', { x: 0, y: 3 * self.numeroDiscosCreados, z: 0 });
     entityMenuDisco.setAttribute('menu-disco', {
         'objectsStage': objects,
         'objectType': objectType,
         'colorDisco': colorDisco,
-        'eventComplement': 'avents-object-configuration'
+        'eventComplement': 'menu-object'
     });
-    self.el.parentNode.parentNode.appendChild(entityMenuDisco);
+    self.el.appendChild(entityMenuDisco);
     self.numeroDiscosCreados += 1;
 };
 
@@ -340,7 +304,7 @@ let addFilterCreated = (self, nameFilter, nameDocument) => {
     };
 
     self.filtersCreated.push(fields);
-    //console.dir(self.filtersCreated);
+    console.dir(self.filtersCreated);
 };
 
 let addDocumentCreatedJSON = (self, idDocument) => {
@@ -376,10 +340,10 @@ let addDocumentCreatedJSON = (self, idDocument) => {
 
             self.documentsCreated[idDocument] = fields;
 
-            //console.log('Claves de tipo string:', stringKeys);
-            //console.log('Claves de tipo número:', numberKeys);
-            //console.log('Valores únicos de las claves de tipo string:', uniqueValues);
-            //console.dir(self.documentsCreated);
+            console.log('Claves de tipo string:', stringKeys);
+            console.log('Claves de tipo número:', numberKeys);
+            console.log('Valores únicos de las claves de tipo string:', uniqueValues);
+            console.dir(self.documentsCreated);
         })
         .catch(error => console.error('Error al cargar el archivo:', error));
 };
@@ -394,10 +358,10 @@ let addDocumentCreatedCSV = (self, idDocument) => {
             const numberKeys = [];
             const uniqueValues = {};
 
-            //console.log(data)
+            console.log(data)
             keys.forEach(key => {
                 const value = data[0][key];
-                //console.log('value ' + value);
+                console.log('value ' + value);
                 if (!isNaN(Number(value)) && value.trim() !== '') {
                     numberKeys.push(key);
                 } else {
@@ -419,10 +383,10 @@ let addDocumentCreatedCSV = (self, idDocument) => {
             };
             self.documentsCreated[idDocument] = fields;
 
-            //console.log('Claves de tipo string:', stringKeys);
-            //console.log('Claves de tipo número:', numberKeys);
-            //console.log('Valores únicos de las claves de tipo string:', uniqueValues);
-            //console.dir(self.documentsCreated);
+            console.log('Claves de tipo string:', stringKeys);
+            console.log('Claves de tipo número:', numberKeys);
+            console.log('Valores únicos de las claves de tipo string:', uniqueValues);
+            console.dir(self.documentsCreated);
         })
         .catch(error => console.error('Error al cargar el archivo:', error));
 };

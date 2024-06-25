@@ -1,5 +1,5 @@
 
-AFRAME.registerComponent('avents-object-configuration', {
+AFRAME.registerComponent('events-object-configuration', {
     schema: {
         objectStage: { type: 'string', default: '' },
         objectType: { type: 'string', default: '' },
@@ -11,16 +11,16 @@ AFRAME.registerComponent('avents-object-configuration', {
         this.customizeObjectStage();
         this.handleClick = this.handleClick.bind(this);
         this.el.addEventListener('click', this.handleClick);
-        this.objectConfiguration = this.el.parentNode.parentNode.childNodes[0].querySelector('[configuration-prueba]');
+        this.objectConfiguration = this.el.parentNode.parentNode.childNodes[0].querySelector('[configuration]');
     },
 
     update: function () {
-        //console.log("################## avents-object-configuration UPDATE ");
+        //console.log("################## events-object-configuration UPDATE ");
     },
 
     customizeObjectStage: function () {
         //console.log("################## menu-object customizeObjectStage ##################");
-        this.el.setAttribute('id', this.data.objectStage);
+        //this.el.setAttribute('id', this.data.objectStage);
         this.el.setAttribute('gltf-model', 'assets/real/' + this.data.nameObjectGLB + '.glb');
         this.el.setAttribute('scale', '0.2 0.2 0.2');
         this.el.setAttribute('animation', {
@@ -86,7 +86,7 @@ AFRAME.registerComponent('avents-object-configuration', {
         disco.removeAttribute('animation');
 
         //enviamos al componente config los datos
-        this.objectConfiguration.setAttribute('configuration-prueba', {
+        this.objectConfiguration.setAttribute('configuration', {
             typeObjectSelected: this.data.objectType,
             valueObjectSelected: this.data.objectStage,
         });

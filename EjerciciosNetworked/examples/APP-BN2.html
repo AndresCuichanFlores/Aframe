@@ -20,24 +20,16 @@
   <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
   <!-- CSSs -->
   <link rel="stylesheet" type="text/css" href="css/styleChat.css">
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
   <!-- Scripts Componentes/Logica-->
   <script src="js/spawn-in-circle.component.js"></script>
 
-  <script src="app-bn2-js/menu-disco.js"></script>
-
-  <script type="module" src="app-bn2-js/configuration.js"></script>
-  <script src="app-bn2-js/menu-object.js"></script>
-
-
+  <script type="module" src="app-bn2-js/menu-disco.js"></script>
   <script type="module" src="app-bn2-js/creation.js"></script>
-  <script src="app-bn2-js/events-object-creation.js"></script>
-
-  <script type="module" src="app-bn2-js/configuration-prueba.js"></script>
-  <script src="app-bn2-js/avents-object-configuration.js"></script>
-
+  <script type="module" src="app-bn2-js/events-object-creation.js"></script>
+  <script type="module" src="app-bn2-js/configuration.js"></script>
+  <script type="module" src="app-bn2-js/events-object-configuration.js"></script>
 
 </head>
 
@@ -53,7 +45,6 @@
     <a-assets>
 
       <!-- ### AVATAR TEMPLATES -->
-
       <!-- rig-template -->
       <template id="rig-template">
         <a-entity></a-entity>
@@ -69,7 +60,6 @@
       </template>
 
       <!-- ### ICONS GLB TEMPLATES -->
-
       <!-- icon conf template -->
       <template id="iconConif-template">
         <a-entity id="iconConif" scale="0.14 0.14 0.14" rotation="0 0 90" gltf-model="assets/iconConif.glb">
@@ -83,7 +73,6 @@
     </a-assets>
 
     <!-- ENTITIES-->
-
     <!-- avatar entity -->
     <a-entity id="rig-player" movement-controls="fly:true;" networked="template:#rig-template;">
       <a-entity id="player" camera position="0 2 2" look-controls networked="template:#avatar-man-template;"
@@ -92,21 +81,17 @@
       <a-entity laser-controls="hand: right"></a-entity>
     </a-entity>
 
+
+    <a-entity id="dataInicial" babia-queryjson="url: ./dataJSON/dataBD.json"></a-entity>
+    
+
     <a-entity id="treeMenu1" position="0 0 6" creation ></a-entity>
-
     <a-entity id="treeMenu2" position="0 0 -6" creation ></a-entity>
-
     <a-entity id="treeMenu3" position="0 0 -18" creation ></a-entity>
-
     <a-entity id="treeMenu4" position="0 0 -30" creation ></a-entity>
-
-
     <a-entity id="treeMenu5" position="12 0 6" creation ></a-entity>
-
     <a-entity id="treeMenu6" position="12 0 -6" creation ></a-entity>
-
     <a-entity id="treeMenu7" position="12 0 -18" creation ></a-entity>
-
     <a-entity id="treeMenu8" position="12 0 -30" creation ></a-entity>
 
   </a-scene>

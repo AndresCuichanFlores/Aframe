@@ -3,7 +3,6 @@ AFRAME.registerComponent('events-object-creation', {
         objectStage: { type: 'string', default: '' },
         objectType: { type: 'string', default: '' },
         nameObjectGLB: { type: 'string', default: '' },
-        titleObject: { type: 'string', default: '' }, //se elimina
     },
 
     init: function () {
@@ -32,7 +31,6 @@ AFRAME.registerComponent('events-object-creation', {
         let topName = this.data.objectStage;
         let botName;
         if (this.data.objectStage.includes(":")) {
-            //console.log("El string contiene el símbolo ':'");
             let parts = this.data.objectStage.split(":");
             topName = parts[0];
             botName = parts[1];
@@ -49,13 +47,11 @@ AFRAME.registerComponent('events-object-creation', {
                 'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
             });
             entityBotName.setAttribute('scale', '35 35 35');
-            //console.log('position.y: ' + this.el.getAttribute('position').y);
             entityBotName.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y - 6, z: 0 });
 
             this.data.objectStage = topName;
             this.el.appendChild(entityBotName);
         }
-        this.el.setAttribute('id', this.data.objectStage);
 
         //texto arriba del objeto
         let entityObjectChildren = document.createElement('a-entity');
@@ -80,7 +76,6 @@ AFRAME.registerComponent('events-object-creation', {
         let objectsDisco = disco.childNodes;
 
         if (!(this.el.parentNode.parentNode.getAttribute('creation'))) {
-            //console.log('ENTROOOOOOOOOOOOOOOOOO')
             this.el.removeEventListener("click", this.handleClick);
             this.el.removeAttribute('animation');
             this.el.removeAttribute('animation__1');

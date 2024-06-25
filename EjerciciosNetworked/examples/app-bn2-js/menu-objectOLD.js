@@ -1,5 +1,5 @@
 
-AFRAME.registerComponent('menu-object', {
+AFRAME.registerComponent('menu-objectOLD', {
     schema: {
         objectStage: { type: 'string', default: '' },
         objectType: { type: 'string', default: '' },

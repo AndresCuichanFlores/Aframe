@@ -72,13 +72,14 @@ AFRAME.registerComponent('creation', {
         if (this.data.typeObjectSelected === CONSTANTS.MAINOPCION) {
             this.deleteDiscoTypeCreation();
             let elementsQuerys = document.querySelectorAll('[babia-queryjson], [babia-querycsv]');
-            let ids = [];
+            let idsQuery = [];
             elementsQuerys.forEach(element => {
-                if (element.id) {
-                    ids.push('babia-filter:' + element.id);
+                if (element.id !== 'dataInicial'){
+                    idsQuery.push('babia-filter:' + element.id);
                 }
             });
-            createNewMenuDisco(this, ids, CONSTANTS.TYPECREATION, '#8080ff');
+
+            createNewMenuDisco(this, idsQuery, CONSTANTS.TYPECREATION, '#8080ff');
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             this.deleteIconCreate();
             this.createIconCreate();
@@ -151,6 +152,7 @@ AFRAME.registerComponent('creation', {
             //Desaparezca los objetos no selecionas y centrar el selecionado del segundo disco
             self.el.childNodes[1].childNodes.forEach(element => {
                 if (element.classList.contains('selected')) {
+                    //Objeto Seleccionado de la plataforma
                     element.setAttribute('animation', {
                         'property': 'position',
                         'from': { x: element.getAttribute('position').x, y: element.getAttribute('position').y, z: 0 },
@@ -161,33 +163,25 @@ AFRAME.registerComponent('creation', {
 
                     setTimeout(() => {
                         self.el.removeChild(self.el.childNodes[0]);
-                        element.removeAttribute('id');
                         element.setAttribute('animation', {
                             'property': 'position',
                             'to': { x: element.getAttribute('position').x, y: element.getAttribute('position').y + 1, z: element.getAttribute('position').z },
                             'dur': '1000',
                             'easing': 'linear',
                         });
-                        element.setAttribute('animation__1', {
-                            'property': 'scale',
-                            'to': '0.4 0.4 0.4',
-                            'dur': '1000',
-                            'easing': 'linear',
-                        });
-                        element.addEventListener('animationcomplete', function (event) {
-                            //console.log('La animación de escala ha terminado2.');
 
-                            element.setAttribute("configuration-prueba", {
+                        element.addEventListener('animationcomplete', function (event) {
+                            element.setAttribute("configuration", {
                                 typeObjectSelected: CONSTANTS.TYPECREATION,
                                 valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION]
                             });
                             self.el.childNodes[0].removeAttribute('animation');
                             self.el.removeAttribute('creation');
-
                         });
                     }, 2200);
 
                 } else {
+                    //Objetos no seleccionados de la platafoma
                     element.setAttribute('animation', {
                         'property': 'scale',
                         'to': '0 0 0',
@@ -195,7 +189,6 @@ AFRAME.registerComponent('creation', {
                         'easing': 'linear',
                     });
                     element.addEventListener('animationcomplete', function (event) {
-                        //console.log('La animación de escala ha terminado.');
                         self.el.childNodes[1].removeChild(element);
                     });
                 }
@@ -234,7 +227,6 @@ AFRAME.registerComponent('creation', {
 let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
     //console.log("################## menu-disco createNewMenuDisco  ##################");
     //console.log(self.numeroDiscosCreados)
-
     let entityMenuDisco = document.createElement('a-entity');
     entityMenuDisco.setAttribute('id', 'Menu-' + objectType);
     entityMenuDisco.setAttribute('position', { x: 0, y: 3 * self.numeroDiscosCreados, z: 0 });
