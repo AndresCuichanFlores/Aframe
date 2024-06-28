@@ -1,3 +1,5 @@
+import * as CONSTANTS from './constants.js';
+
 AFRAME.registerComponent('events-object-creation', {
     schema: {
         objectStage: { type: 'string', default: '' },
@@ -52,7 +54,6 @@ AFRAME.registerComponent('events-object-creation', {
             this.data.objectStage = topName;
             this.el.appendChild(entityBotName);
         }
-
         //texto arriba del objeto
         let entityObjectChildren = document.createElement('a-entity');
         entityObjectChildren.classList.add("topNameObject");
@@ -70,18 +71,11 @@ AFRAME.registerComponent('events-object-creation', {
     },
 
     handleClick: function (evt) {
-        //console.log("################## menu-object click");
+        console.log("################## menu-object click");
         let self = this;
         let disco = self.el.parentNode;
+        let baseParent = disco.parentNode;
         let objectsDisco = disco.childNodes;
-
-        if (!(this.el.parentNode.parentNode.getAttribute('creation'))) {
-            this.el.removeEventListener("click", this.handleClick);
-            this.el.removeAttribute('animation');
-            this.el.removeAttribute('animation__1');
-            this.el.removeAttribute('events-object-creation');
-            return;
-        }
 
         //Eliminamos animancaciones del disco
         disco.removeAttribute('animation');
@@ -102,7 +96,25 @@ AFRAME.registerComponent('events-object-creation', {
                     }
                 })
                 object.classList.remove("selected");
+
+                //si es de typecreation pues que desaparezca
+                if (disco.getAttribute('id') === ('Menu-' + CONSTANTS.TYPECREATION)) {
+                    object.setAttribute('animation', {
+                        'property': 'scale',
+                        'to': '0 0 0',
+                        'dur': '1000',
+                        'easing': 'linear',
+                    });
+
+                    object.addEventListener('animationcomplete', function (event) {
+                        self.el.removeEventListener('click', self.handleClick);
+                        self.el.removeAttribute('events-object-creation');
+                        disco.removeChild(object)
+                    })
+                };
+
             } else {
+                //El objeto selecionado
                 object.childNodes[0].setAttribute('text', 'opacity', '1');
                 object.object3D.traverse((value) => {
                     if (value.type === 'Mesh') {
@@ -115,7 +127,7 @@ AFRAME.registerComponent('events-object-creation', {
             }
         });
 
-        //enviamos al componente config los datos
+        //enviamos al componente creation los datos
         this.el.parentNode.parentNode.setAttribute('creation', {
             typeObjectSelected: this.data.objectType,
             valueObjectSelected: this.data.objectStage,

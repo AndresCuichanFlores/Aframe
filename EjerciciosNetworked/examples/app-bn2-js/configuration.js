@@ -7,9 +7,9 @@ AFRAME.registerComponent('configuration', {
     },
 
     init: function () {
-        //console.log("################## configuration INIT ");
+        console.log("################## configuration INIT ");
         this.initializeParameters();
-        this.createConfIcon();
+        //this.createConfIcon();
 
         if (Object.keys(this.dashboard[CONSTANTS.QUERYES]).includes(this.data.valueObjectSelected)) {
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.QUERYES;
@@ -21,7 +21,7 @@ AFRAME.registerComponent('configuration', {
     },
 
     update: function () {
-        //console.log("################## configuration UPDATE ");
+        console.log("################## configuration UPDATE ");
         this.valuesSelectded[this.data.typeObjectSelected] = this.data.valueObjectSelected;
 
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
@@ -308,14 +308,14 @@ let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
     //console.log(self.numeroDiscosCreados)
     let entityMenuDisco = document.createElement('a-entity');
     entityMenuDisco.setAttribute('id', 'Menu-' + objectType);
-    entityMenuDisco.setAttribute('position', { x: 0, y: 5 + (3 * self.numeroDiscosCreados), z: 0 });
+    entityMenuDisco.setAttribute('position', { x: 0, y: 4 + (3 * self.numeroDiscosCreados), z: 0 });
     entityMenuDisco.setAttribute('menu-disco', {
         'objectsStage': objects,
         'objectType': objectType,
         'colorDisco': colorDisco,
         'eventComplement': 'events-object-configuration'
     });
-    self.el.parentNode.parentNode.appendChild(entityMenuDisco);
+    self.el.appendChild(entityMenuDisco);
     self.numeroDiscosCreados += 1;
 };
 

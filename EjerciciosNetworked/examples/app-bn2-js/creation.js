@@ -15,9 +15,8 @@ AFRAME.registerComponent('creation', {
 
     update: function () {
         //console.log("################## configuration UPDATE ");
-
         this.valuesSelectded[this.data.typeObjectSelected] = this.data.valueObjectSelected;
-        
+
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
             this.executeMenuQueryes();
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS) {
@@ -46,6 +45,7 @@ AFRAME.registerComponent('creation', {
             [CONSTANTS.TYPECREATION]: undefined,
         };
         this.numeroDiscosCreados = 0;
+        this.baseParent = this.el;
     },
 
     executeMenuQueryes: function () {
@@ -53,8 +53,7 @@ AFRAME.registerComponent('creation', {
             this.deleteDiscoTypeCreation();
             createNewMenuDisco(this, this.dashboard[this.data.valueObjectSelected], CONSTANTS.TYPECREATION, '#8080ff');
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-            this.deleteIconCreate();
-            this.createIconCreate();
+            this.executeProcesoCreacion();
         }
     },
 
@@ -63,8 +62,7 @@ AFRAME.registerComponent('creation', {
             this.deleteDiscoTypeCreation();
             createNewMenuDisco(this, this.dashboard[this.data.valueObjectSelected], CONSTANTS.TYPECREATION, '#8080ff');
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-            this.deleteIconCreate();
-            this.createIconCreate();
+
         }
     },
 
@@ -74,16 +72,199 @@ AFRAME.registerComponent('creation', {
             let elementsQuerys = document.querySelectorAll('[babia-queryjson], [babia-querycsv]');
             let idsQuery = [];
             elementsQuerys.forEach(element => {
-                if (element.id !== 'dataInicial'){
+                if (element.id !== 'dataInicial') {
                     idsQuery.push('babia-filter:' + element.id);
                 }
             });
 
             createNewMenuDisco(this, idsQuery, CONSTANTS.TYPECREATION, '#8080ff');
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-            this.deleteIconCreate();
-            this.createIconCreate();
+
         }
+    },
+
+    executeProcesoCreacion: function () {
+        let self = this;
+        let discoMainOpcion = this.baseParent.querySelector('#Menu-' + CONSTANTS.MAINOPCION);
+        let discoTypeCreation = this.baseParent.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+        let objectSelected = this.baseParent.querySelector('#Menu-' + CONSTANTS.TYPECREATION).querySelector('.selected');
+
+        //el disco MAINOPCION que desaparezca
+        addAnimationEntity(discoMainOpcion, 'animation','scale', '', '0 0 0', '1000', false);
+
+        //objeto al centro
+        addAnimationEntity(objectSelected, 'animation','position', 
+            {x:objectSelected.getAttribute('position').x, y:objectSelected.getAttribute('position').y, z:0}, 
+            {x:0, y:objectSelected.getAttribute('position').y, z:0}, '2000', false);
+
+        //Movimiento hacia abajo del disco
+        addAnimationEntity(discoTypeCreation, 'animation','position', '', '0 0 0', '2000', false);   
+
+        setTimeout(() => {
+            //eliminamos disco mainopction
+            this.baseParent.removeChild(discoMainOpcion);
+
+            //objeto mas grande y añadimos el click
+            addAnimationEntity(objectSelected, 'animation','scale', '', '0.5 0.5 0.5', '2000', false);
+            objectSelected.addEventListener('click', function () {
+                //console.log('CLICK EN ENTIDAD CREADA');
+                if(self.baseParent.childNodes.length > 1){
+                    let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+                    while (self.baseParent.childNodes.length > 0) {
+                        var child = self.baseParent.childNodes[self.baseParent.childNodes.length - 1];
+                        if (child === discoTypeCreation) {
+                            break;
+                        }
+                        self.baseParent.removeChild(child);
+                        self.numeroDiscosCreados -= 1;
+                    }
+                }else{
+                    self.addNuevosMenus();
+                }
+            });
+            objectSelected.addEventListener('animationcomplete', function (event) {
+                self.addNuevosMenus();
+            });
+        }, 2200);
+    },
+
+    addNuevosMenus: function () {
+        const radius = 10;
+        const angles = [120, 240, 360];
+
+        angles.forEach(angle => {
+            const rad = angle * (Math.PI / 180);
+            const posX = radius * Math.cos(rad);
+            const posZ = radius * Math.sin(rad);
+
+            if (angle === 120) {
+                this.crearMenuConfiguration(posX, posZ);
+            } else if (angle === 240) {
+                this.crearMenuDelete(posX, posZ);
+            } else if (angle === 360) {
+                this.crearMenuInformation(posX, posZ);
+            }
+        });
+    },
+
+    crearMenuInformation: function (posX, posZ) {
+        let entityMenuInfo = this.crearEntityMenu("Information", posX, posZ);
+        let entityInfoIcon = this.createInfoIcon();
+
+        entityMenuInfo.appendChild(entityInfoIcon);
+        this.baseParent.appendChild(entityMenuInfo);
+    },
+
+    createInfoIcon: function () {
+        let self = this;
+        let entityIconInfo = this.crearEntityObject('iconInfo', 'Information');
+        entityIconInfo.addEventListener('click', function () {
+            //console.log('Icon conf clicked!');
+        });
+
+        return entityIconInfo;
+    },
+
+    crearMenuDelete: function (posX, posZ) {
+        let entityMenuDelete = this.crearEntityMenu("Delete", posX, posZ);
+        let entityDeleteIcon = this.createDeleteIcon();
+
+        entityMenuDelete.appendChild(entityDeleteIcon);
+        this.baseParent.appendChild(entityMenuDelete);
+    },
+
+    createDeleteIcon: function () {
+        let self = this;
+        let entityIconDelte = this.crearEntityObject('iconDelete', 'Delete');
+        entityIconDelte.addEventListener('click', function () {
+            //console.log('Icon conf clicked!');
+        });
+
+        return entityIconDelte;
+    },
+
+    crearMenuConfiguration: function (posX, posZ) {
+        let entityMenuConfiguration = this.crearEntityMenu("Configuration", posX, posZ);
+        let entityConfIcon = this.createConfIcon();
+
+        entityMenuConfiguration.appendChild(entityConfIcon);
+        this.baseParent.appendChild(entityMenuConfiguration);
+    },
+
+    createConfIcon: function () {
+        let self = this;
+        let entityIconConf = this.crearEntityObject('iconConf', 'Configuration');
+
+        entityIconConf.addEventListener('click', function () {
+            console.log('Icon conf clicked!');
+            let discoMenuConfiguration = entityIconConf.parentNode;
+            let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+
+            //Eliminar los demas menus   
+            for (let i = self.baseParent.childNodes.length -1; i >= 0; i--) {
+                var menu = self.baseParent.childNodes[i];
+                console.log(menu);
+                if (menu !== discoMenuConfiguration && menu !== discoTypeCreation) {
+                    self.baseParent.removeChild(menu);
+                }
+            }
+
+            //Eliminar animaciones y agregar el atributo configuration
+            discoMenuConfiguration.removeAttribute('animation');
+            discoMenuConfiguration.removeAttribute('animation__1');
+            discoMenuConfiguration.setAttribute('configuration', {
+                typeObjectSelected: CONSTANTS.TYPECREATION,
+                valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION],
+            });
+
+
+        });
+
+        return entityIconConf;
+    },
+
+    crearEntityMenu: function (nameMenu, posX, posZ) {
+        let entityMenu = document.createElement('a-entity');
+        entityMenu.setAttribute('id', 'Menu-' + nameMenu);
+        entityMenu.setAttribute('scale', '0 0 0');
+        entityMenu.setAttribute('material', 'color', '#9A16F7');
+        entityMenu.setAttribute('position', { x: posX, y: 0, z: posZ });
+        entityMenu.setAttribute('geometry', {
+            'primitive': 'cylinder',
+            'radius': '4',
+            'height': '0.3',
+        });
+
+        addAnimationEntity(entityMenu, 'animation','rotation', '', '0 360 0', '30000', true);
+        addAnimationEntity(entityMenu, 'animation__1','scale', '', '1 1 1', '2000', false);
+
+        return entityMenu;
+    },
+
+    crearEntityObject: function (nameObject, title) {
+
+        let entityObjectIcon = document.createElement('a-entity');
+        entityObjectIcon.classList.add(nameObject);
+        entityObjectIcon.setAttribute('gltf-model', 'assets/real/' + nameObject + '.glb');
+        entityObjectIcon.setAttribute('scale', '0.3 0.3 0.3');
+        entityObjectIcon.setAttribute('position', { x: 0, y: 1.5, z: 0 });
+
+        //texto arriba del objeto
+        let entityObjectChildren = document.createElement('a-entity');
+        entityObjectChildren.classList.add("topNameObject");
+        entityObjectChildren.setAttribute('text', {
+            'value': title,
+            'align': 'center',
+            'side': 'double',
+            'color': 'WHITE',
+            'shader': 'msdf',
+            'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
+        });
+        entityObjectChildren.setAttribute('scale', '30 30 30');
+        entityObjectChildren.setAttribute('position', { x: 0, y: 3, z: 0 });
+
+        entityObjectIcon.appendChild(entityObjectChildren);
+        return entityObjectIcon;
     },
 
     deleteDiscoTypeCreation: function () {
@@ -94,134 +275,6 @@ AFRAME.registerComponent('creation', {
         }
     },
 
-    deleteIconCreate: function () {
-        let discoTypeCreation = this.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
-        let iconCreate = discoTypeCreation.querySelector('.iconCreate');
-        if (iconCreate) {
-            discoTypeCreation.removeChild(iconCreate);
-        }
-    },
-
-    createIconCreate: function () {
-        // console.log("################## configuration createMenu   ##################");
-        let self = this;
-        let positionEntity = this.el.getAttribute('position');
-        let discoTypeCreation = this.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
-        let entityCreateIcon = document.createElement('a-entity');
-        //console.log('positionEntityCreated: ' + positionEntity.x + ', ' + positionEntity.y + ', ' + positionEntity.z);
-
-        //Icono create
-        entityCreateIcon.classList.add("iconCreate");
-        entityCreateIcon.setAttribute('gltf-model', 'assets/real/iconCreate.glb');
-        entityCreateIcon.setAttribute('scale', '0 0 0.4');
-        entityCreateIcon.setAttribute('rotation', '0 -180 0');
-        entityCreateIcon.setAttribute('position', '0 3 0');
-        entityCreateIcon.setAttribute('animation', {
-            'property': 'rotation',
-            'to': '0 180 0',
-            'dur': '10000',
-            'easing': 'linear',
-            'loop': 'true'
-        });
-        entityCreateIcon.setAttribute('animation__1', {
-            'property': 'scale',
-            'to': '0.4 0.4 0.4',
-            'dur': '1000',
-        });
-
-        entityCreateIcon.addEventListener('click', function () {
-            //Desaparezca el icono de create
-            this.removeAttribute('animation');
-            this.removeAttribute('animation__1');
-            this.setAttribute('animation', {
-                'property': 'scale',
-                'to': '0 0 0',
-                'dur': '10',
-                'easing': 'linear',
-            });
-
-            //Desaparezca el primer disco
-            self.el.childNodes[0].removeAttribute('animation');
-            self.el.childNodes[0].setAttribute('animation', {
-                'property': 'scale',
-                'to': '0 0 0',
-                'dur': '2000',
-                'easing': 'linear',
-            });
-
-            //Desaparezca los objetos no selecionas y centrar el selecionado del segundo disco
-            self.el.childNodes[1].childNodes.forEach(element => {
-                if (element.classList.contains('selected')) {
-                    //Objeto Seleccionado de la plataforma
-                    element.setAttribute('animation', {
-                        'property': 'position',
-                        'from': { x: element.getAttribute('position').x, y: element.getAttribute('position').y, z: 0 },
-                        'to': { x: 0, y: element.getAttribute('position').y, z: 0 },
-                        'dur': '2000',
-                        'easing': 'linear',
-                    });
-
-                    setTimeout(() => {
-                        self.el.removeChild(self.el.childNodes[0]);
-                        element.setAttribute('animation', {
-                            'property': 'position',
-                            'to': { x: element.getAttribute('position').x, y: element.getAttribute('position').y + 1, z: element.getAttribute('position').z },
-                            'dur': '1000',
-                            'easing': 'linear',
-                        });
-
-                        element.addEventListener('animationcomplete', function (event) {
-                            element.setAttribute("configuration", {
-                                typeObjectSelected: CONSTANTS.TYPECREATION,
-                                valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION]
-                            });
-                            self.el.childNodes[0].removeAttribute('animation');
-                            self.el.removeAttribute('creation');
-                        });
-                    }, 2200);
-
-                } else {
-                    //Objetos no seleccionados de la platafoma
-                    element.setAttribute('animation', {
-                        'property': 'scale',
-                        'to': '0 0 0',
-                        'dur': '1000',
-                        'easing': 'linear',
-                    });
-                    element.addEventListener('animationcomplete', function (event) {
-                        self.el.childNodes[1].removeChild(element);
-                    });
-                }
-            });
-
-            //Movimiento hacia abajo del segundo disco
-            self.el.childNodes[1].removeAttribute('animation');
-            self.el.childNodes[1].removeAttribute('animation__1');
-            self.el.childNodes[1].setAttribute('animation', {
-                'property': 'position',
-                'to': { x: 0, y: 0, z: 0 },
-                'dur': '2000',
-                'easing': 'linear',
-            });
-        });
-
-        //Texto Create
-        let entityObjectChildren = document.createElement('a-entity');
-        entityObjectChildren.setAttribute('text', {
-            'value': "CREATE",
-            'align': 'center',
-            'side': 'double',
-            'color': 'BLACK',
-            'shader': 'msdf',
-            'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
-        });
-        entityObjectChildren.setAttribute('scale', '22 22 22');
-        entityObjectChildren.setAttribute('rotation', '0 180 0');
-        entityObjectChildren.setAttribute('position', '0 3.2 0');
-
-        entityCreateIcon.appendChild(entityObjectChildren);
-        discoTypeCreation.appendChild(entityCreateIcon);
-    },
 });
 
 let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
@@ -238,4 +291,16 @@ let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
     });
     self.el.appendChild(entityMenuDisco);
     self.numeroDiscosCreados += 1;
+};
+
+let addAnimationEntity = (entityObject, typeAnimation, property, from, to, dur, loop) => {
+    entityObject.removeAttribute(typeAnimation);
+    entityObject.setAttribute(typeAnimation, {
+        'property': property,
+        'from': from,
+        'to': to,
+        'dur': dur,
+        'easing': 'linear',
+        'loop': loop
+    });
 };

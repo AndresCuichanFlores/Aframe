@@ -38,6 +38,7 @@ AFRAME.registerComponent('menu-disco', {
             'property': 'scale',
             'to': '1 1 1',
             'dur': '1000',
+            'easing': 'linear',
         });
     },
 
