@@ -99,6 +99,19 @@ let createObjectGraph = (object, position) => {
                         entity.setAttribute('material', 'opacity', 0.3);
                     });
                     complementGraph.classList.remove("selected");
+
+
+                    //si n es seleccionado es eliminado
+                    complementGraph.setAttribute('animation', {
+                        'property': 'scale',
+                        'to': '0 0 0',
+                        'dur': '1000',
+                        'easing': 'linear',
+                    });
+
+                    complementGraph.addEventListener('animationcomplete', function (event) {
+                        complementGraph.parentNode.removeChild(complementGraph)
+                    })
                 }
             }
         });

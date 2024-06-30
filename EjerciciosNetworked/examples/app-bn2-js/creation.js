@@ -62,7 +62,7 @@ AFRAME.registerComponent('creation', {
             this.deleteDiscoTypeCreation();
             createNewMenuDisco(this, this.dashboard[this.data.valueObjectSelected], CONSTANTS.TYPECREATION, '#8080ff');
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-
+            this.executeProcesoCreacion();
         }
     },
 
@@ -79,7 +79,7 @@ AFRAME.registerComponent('creation', {
 
             createNewMenuDisco(this, idsQuery, CONSTANTS.TYPECREATION, '#8080ff');
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-
+            this.executeProcesoCreacion();
         }
     },
 
@@ -104,27 +104,42 @@ AFRAME.registerComponent('creation', {
             //eliminamos disco mainopction
             this.baseParent.removeChild(discoMainOpcion);
 
-            //objeto mas grande y añadimos el click
-            addAnimationEntity(objectSelected, 'animation','scale', '', '0.5 0.5 0.5', '2000', false);
-            objectSelected.addEventListener('click', function () {
-                //console.log('CLICK EN ENTIDAD CREADA');
-                if(self.baseParent.childNodes.length > 1){
-                    let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
-                    while (self.baseParent.childNodes.length > 0) {
-                        var child = self.baseParent.childNodes[self.baseParent.childNodes.length - 1];
-                        if (child === discoTypeCreation) {
-                            break;
-                        }
-                        self.baseParent.removeChild(child);
-                        self.numeroDiscosCreados -= 1;
-                    }
-                }else{
-                    self.addNuevosMenus();
-                }
-            });
-            objectSelected.addEventListener('animationcomplete', function (event) {
+            //objeto mas grande, click, subimos de posicion y reducimos el titulo segun que creamos
+            let titleObject = objectSelected.querySelector('.topNameObject');
+            if(this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS){
+                let entityGrah = objectSelected.childNodes[0];
+                addAnimationEntity(entityGrah, 'animation','scale', '', '2 2 2', '2000', false);
+                addAnimationEntity(objectSelected, 'animation__1','position', '', '0 2.5 0', '2000', false);
+                addAnimationEntity(titleObject, 'animation','scale', '', '20 20 20', '2000', false);
+                addAnimationEntity(titleObject, 'animation__1','position', '', '0 2 0', '2000', false);
+            }else {
+                addAnimationEntity(objectSelected, 'animation','scale', '', '0.5 0.5 0.5', '2000', false);
+                addAnimationEntity(objectSelected, 'animation__1','position', '', '0 2.5 0', '2000', false);
+                addAnimationEntity(titleObject, 'animation','scale', '', '40 40 40', '2000', false);
+            }
+
+            setTimeout(() => {
+                console.log("TERMINADO LA ANIMACION DE CREACION")
                 self.addNuevosMenus();
-            });
+
+                objectSelected.addEventListener('click', function () {
+                    console.log('CLICK EN ENTIDAD CREADA');
+                    if(self.baseParent.childNodes.length > 1){
+                        let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+                        while (self.baseParent.childNodes.length > 0) {
+                            var child = self.baseParent.childNodes[self.baseParent.childNodes.length - 1];
+                            if (child === discoTypeCreation) {
+                                break;
+                            }
+                            self.baseParent.removeChild(child);
+                            self.numeroDiscosCreados -= 1;
+                        }
+                    }else{
+                        console.log('VOLVEMOS A CREAR LOS NUEVO MENUS');
+                        self.addNuevosMenus();
+                    }
+                });
+            }, 2000);    
         }, 2200);
     },
 
@@ -200,24 +215,23 @@ AFRAME.registerComponent('creation', {
             let discoMenuConfiguration = entityIconConf.parentNode;
             let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
 
-            //Eliminar los demas menus   
-            for (let i = self.baseParent.childNodes.length -1; i >= 0; i--) {
-                var menu = self.baseParent.childNodes[i];
-                console.log(menu);
-                if (menu !== discoMenuConfiguration && menu !== discoTypeCreation) {
-                    self.baseParent.removeChild(menu);
+            if (discoMenuConfiguration.childNodes.length === 1) {
+                //Eliminar los demas menus   
+                for (let i = self.baseParent.childNodes.length - 1; i >= 0; i--) {
+                    var menu = self.baseParent.childNodes[i];
+                    if (menu !== discoMenuConfiguration && menu !== discoTypeCreation) {
+                        self.baseParent.removeChild(menu);
+                    }
                 }
+
+                //Eliminar animaciones del disco y agregar el atributo configuration
+                discoMenuConfiguration.removeAttribute('animation');
+                discoMenuConfiguration.removeAttribute('animation__1');
+                discoMenuConfiguration.setAttribute('configuration', {
+                    typeObjectSelected: CONSTANTS.TYPECREATION,
+                    valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION],
+                });
             }
-
-            //Eliminar animaciones y agregar el atributo configuration
-            discoMenuConfiguration.removeAttribute('animation');
-            discoMenuConfiguration.removeAttribute('animation__1');
-            discoMenuConfiguration.setAttribute('configuration', {
-                typeObjectSelected: CONSTANTS.TYPECREATION,
-                valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION],
-            });
-
-
         });
 
         return entityIconConf;
@@ -236,7 +250,7 @@ AFRAME.registerComponent('creation', {
         });
 
         addAnimationEntity(entityMenu, 'animation','rotation', '', '0 360 0', '30000', true);
-        addAnimationEntity(entityMenu, 'animation__1','scale', '', '1 1 1', '2000', false);
+        addAnimationEntity(entityMenu, 'animation__1','scale', '', '1 1 1', '1500', false);
 
         return entityMenu;
     },

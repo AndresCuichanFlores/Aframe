@@ -11,7 +11,7 @@ AFRAME.registerComponent('events-object-configuration', {
         this.customizeObjectStage();
         this.handleClick = this.handleClick.bind(this);
         this.el.addEventListener('click', this.handleClick);
-        this.objectConfiguration = this.el.parentNode.parentNode.childNodes[0].querySelector('[configuration]');
+        this.menuConfiguration = this.el.parentNode.parentNode;
     },
 
     update: function () {
@@ -86,7 +86,7 @@ AFRAME.registerComponent('events-object-configuration', {
         disco.removeAttribute('animation');
 
         //enviamos al componente config los datos
-        this.objectConfiguration.setAttribute('configuration', {
+        this.menuConfiguration.setAttribute('configuration', {
             typeObjectSelected: this.data.objectType,
             valueObjectSelected: this.data.objectStage,
         });

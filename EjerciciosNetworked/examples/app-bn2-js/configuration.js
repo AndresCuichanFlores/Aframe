@@ -81,7 +81,8 @@ AFRAME.registerComponent('configuration', {
             [CONSTANTS.SUBVALUEPROPERTY]: undefined,
         };
         this.numeroDiscosCreados = 0;
-        this.baseParent = this.el.parentNode.parentNode;
+        this.baseParent = this.el.parentNode;
+        this.objectBabiaCreated = this.baseParent.querySelector('#Menu-' + CONSTANTS.TYPECREATION).childNodes[0];
         this.subProperties = {};
     },
 
@@ -99,11 +100,11 @@ AFRAME.registerComponent('configuration', {
         if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             createNewMenuDisco(this, Object.keys(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.data.valueObjectSelected]), CONSTANTS.PROPERTY, '#fcb983');
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
-            let discoValueProperty = this.baseParent.querySelector('#Menu-' + CONSTANTS.VALUEPROPERTY);
+            let discoValueProperty = this.el.querySelector('#Menu-' + CONSTANTS.VALUEPROPERTY);
             if (discoValueProperty) {
-                while (this.baseParent.childNodes.length > 0) {
-                    var child = this.baseParent.childNodes[this.baseParent.childNodes.length - 1];
-                    this.baseParent.removeChild(child);
+                while (this.el.childNodes.length > 0) {
+                    var child = this.el.childNodes[this.el.childNodes.length - 1];
+                    this.el.removeChild(child);
                     this.numeroDiscosCreados -= 1;
                     if (child === discoValueProperty) {
                         break;
@@ -119,11 +120,11 @@ AFRAME.registerComponent('configuration', {
             }
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
             if (this.valuesSelectded[CONSTANTS.PROPERTY] === CONSTANTS.FROM) {
-                let discoSubProperty = this.baseParent.querySelector('#Menu-' + CONSTANTS.SUBPROPERTY);
+                let discoSubProperty = this.el.querySelector('#Menu-' + CONSTANTS.SUBPROPERTY);
                 if (discoSubProperty) {
-                    while (this.baseParent.childNodes.length > 0) {
-                        var child = this.baseParent.childNodes[this.baseParent.childNodes.length - 1];
-                        this.baseParent.removeChild(child);
+                    while (this.el.childNodes.length > 0) {
+                        var child = this.el.childNodes[this.el.childNodes.length - 1];
+                        this.el.removeChild(child);
                         this.numeroDiscosCreados -= 1;
                         if (child === discoSubProperty) {
                             break;
@@ -136,9 +137,9 @@ AFRAME.registerComponent('configuration', {
                 this.updateComplementBabia();
             }
         } else if (this.data.typeObjectSelected === CONSTANTS.SUBPROPERTY) {
-            let discoSubValueProperty = this.baseParent.querySelector('#Menu-' + CONSTANTS.SUBVALUEPROPERTY);
+            let discoSubValueProperty = this.el.querySelector('#Menu-' + CONSTANTS.SUBVALUEPROPERTY);
             if (discoSubValueProperty) {
-                this.baseParent.removeChild(discoSubValueProperty);
+                this.el.removeChild(discoSubValueProperty);
                 this.numeroDiscosCreados -= 1;
             }
             if (this.valuesSelectded[CONSTANTS.VALUEPROPERTY].includes(":")) {
@@ -156,7 +157,7 @@ AFRAME.registerComponent('configuration', {
     },
 
     executeMenuFilters: function () {
-        let nameDocumentFilter = this.el.querySelector('.botNameObject').getAttribute('text').value;
+        let nameDocumentFilter = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;
         if (nameDocumentFilter.includes(":")) {
             nameDocumentFilter = nameDocumentFilter.split(":")[0];
         }
@@ -164,13 +165,13 @@ AFRAME.registerComponent('configuration', {
         if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             createNewMenuDisco(this, Object.keys(this.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fcb983');
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
-            if (this.baseParent.childNodes[1]) {
-                while (this.baseParent.childNodes.length > 0) {
-                    var child = this.baseParent.childNodes[this.baseParent.childNodes.length - 1];
-                    if (child === this.baseParent.childNodes[1]) {
+            if (this.el.childNodes[1]) {
+                while (this.el.childNodes.length > 0) {
+                    var child = this.el.childNodes[this.el.childNodes.length - 1];
+                    if (child === this.el.childNodes[1]) {
                         break;
                     }
-                    this.baseParent.removeChild(child);
+                    this.el.removeChild(child);
                     this.numeroDiscosCreados -= 1;
                 }
             }
@@ -183,51 +184,50 @@ AFRAME.registerComponent('configuration', {
 
     updateComplementBabia: function () {
         // console.log("################## configuration createMenu   ##################");
-        let objectConfiguration = this.el;
         let self = this;
 
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
 
             let idObjectConfiguration = this.valuesSelectded[CONSTANTS.VALUEPROPERTY].substring(this.valuesSelectded[CONSTANTS.VALUEPROPERTY].lastIndexOf('/') + 1, this.valuesSelectded[CONSTANTS.VALUEPROPERTY].lastIndexOf('.'));
-            objectConfiguration.setAttribute('id', idObjectConfiguration);
+            this.objectBabiaCreated.setAttribute('id', idObjectConfiguration);
 
             if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIAQUERYJSON) {
-                objectConfiguration.setAttribute(CONSTANTS.BABIAQUERYJSON, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
+                this.objectBabiaCreated.setAttribute(CONSTANTS.BABIAQUERYJSON, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
                 this.addBotNameObject(idObjectConfiguration);
                 addDocumentCreatedJSON(this, idObjectConfiguration);
             } else if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIAQUERYCSV) {
-                objectConfiguration.setAttribute(CONSTANTS.BABIAQUERYCSV, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
+                this.objectBabiaCreated.setAttribute(CONSTANTS.BABIAQUERYCSV, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
                 this.addBotNameObject(idObjectConfiguration);
                 addDocumentCreatedCSV(this, idObjectConfiguration);
             }
 
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS) {
 
-            objectConfiguration.childNodes[0].setAttribute(this.valuesSelectded[CONSTANTS.TYPECREATION], {
+            this.objectBabiaCreated.childNodes[0].setAttribute(this.valuesSelectded[CONSTANTS.TYPECREATION], {
                 [this.valuesSelectded[CONSTANTS.PROPERTY]]: this.valuesSelectded[CONSTANTS.VALUEPROPERTY],
                 [CONSTANTS.KEY]: this.subProperties[CONSTANTS.KEY],
                 [CONSTANTS.SIZE]: this.subProperties[CONSTANTS.SIZE],
             });
 
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
-            let nameDocumentFilter = this.el.querySelector('.botNameObject').getAttribute('text').value;
+            let nameDocumentFilter = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;
             if (nameDocumentFilter.includes(":")) {
                 nameDocumentFilter = nameDocumentFilter.split(":")[0];
             }
 
             let nameFilter = this.valuesSelectded[CONSTANTS.PROPERTY] + '=' + this.valuesSelectded[CONSTANTS.VALUEPROPERTY]
-            objectConfiguration.setAttribute(CONSTANTS.BABIAFILTER, {
+            this.objectBabiaCreated.setAttribute(CONSTANTS.BABIAFILTER, {
                 'from': nameDocumentFilter,
                 'filter': nameFilter
             });
-            objectConfiguration.setAttribute('id', nameDocumentFilter + ':' + nameFilter);
+            this.objectBabiaCreated.setAttribute('id', nameDocumentFilter + ':' + nameFilter);
             this.addBotNameObject(nameDocumentFilter + ':' + nameFilter);
         }
     },
 
     addBotNameObject: function (botNameObject) {
-        if (this.el.querySelector('.botNameObject')) {
-            this.el.removeChild(this.el.querySelector('.botNameObject'));
+        if (this.objectBabiaCreated.querySelector('.botNameObject')) {
+            this.objectBabiaCreated.removeChild(this.objectBabiaCreated.querySelector('.botNameObject'));
         }
         let entityObjectChildren = document.createElement('a-entity');
         entityObjectChildren.classList.add('botNameObject');
@@ -239,65 +239,10 @@ AFRAME.registerComponent('configuration', {
             'shader': 'msdf',
             'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
         });
-        entityObjectChildren.setAttribute('scale', '35 35 35');
+        entityObjectChildren.setAttribute('scale', '30 30 30');
         //console.log('position.y: ' + this.el.getAttribute('position').y);
-        entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y - 7, z: 0 });
-        this.el.appendChild(entityObjectChildren);
-    },
-
-    createConfIcon: function () {
-        //console.log("################## configuration createConfIcon   ##################");
-        let self = this;
-        let entityConfIcon = document.createElement('a-entity');
-        entityConfIcon.classList.add("iconConf");
-        entityConfIcon.setAttribute('gltf-model', 'assets/real/iconConif.glb');
-
-        if (Object.keys(self.dashboard[CONSTANTS.GRAPHS]).includes(this.el.getAttribute('id'))) {
-            entityConfIcon.setAttribute('scale', '0.1 0.1 0.1');
-            entityConfIcon.setAttribute('position', '1.2 0.5 0');
-            self.el.setAttribute('animation__1', {
-                'property': 'scale',
-                'to': '2.5 2.5 2.5',
-                'dur': '1000',
-                'easing': 'linear',
-            });
-        } else {
-            entityConfIcon.setAttribute('scale', '0.6 0.6 0.6');
-            entityConfIcon.setAttribute('position', '4.2 0.9 0');
-            self.el.setAttribute('animation__1', {
-                'property': 'scale',
-                'to': '0.4 0.4 0.4',
-                'dur': '1000',
-                'easing': 'linear',
-            });
-        }
-
-        entityConfIcon.addEventListener('click', function () {
-            //console.log('Icon conf clicked!');
-
-            if (self.baseParent.childNodes[1]) {
-                while (self.baseParent.childNodes.length > 0) {
-                    var child = self.baseParent.childNodes[self.baseParent.childNodes.length - 1];
-                    if (child === self.baseParent.childNodes[0]) {
-                        break;
-                    }
-                    self.baseParent.removeChild(child);
-                    self.numeroDiscosCreados -= 1;
-                }
-            } else {
-                if (self.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
-                    let nameDocumentFilter = self.el.querySelector('.botNameObject').getAttribute('text').value;
-                    if (nameDocumentFilter.includes(":")) {
-                        nameDocumentFilter = nameDocumentFilter.split(":")[0];
-                    }
-                    createNewMenuDisco(self, Object.keys(self.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fcb983');
-                } else {
-                    createNewMenuDisco(self, Object.keys(self.dashboard[self.valuesSelectded[CONSTANTS.MAINOPCION]][self.valuesSelectded[CONSTANTS.TYPECREATION]]), CONSTANTS.PROPERTY, '#fcb983');
-                }
-            }
-        });
-
-        self.el.appendChild(entityConfIcon);
+        entityObjectChildren.setAttribute('position', { x: 0, y: this.objectBabiaCreated.getAttribute('position').y - 6.9, z: 0 });
+        this.objectBabiaCreated.appendChild(entityObjectChildren);
     },
 });
 
