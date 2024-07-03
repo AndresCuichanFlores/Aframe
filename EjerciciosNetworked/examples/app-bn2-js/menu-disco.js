@@ -45,15 +45,19 @@ AFRAME.registerComponent('menu-disco', {
     createObjectsStage: function (nameObjectGLB) {
         //console.log("################## menu-disco createObjectsStage  ##################");
         let self = this;
-        let radius = 3;
+        let radius = 3.2;
         let posicionNueva = { x: 0, y: 0, z: 0 };
         let complementsGraph = [CONSTANTS.BABIAPIE, CONSTANTS.BABIADOUGHNUT];
 
         this.data.objectsStage.forEach(function (object, index) {
-            if (self.data.objectsStage.length != 1) {
+            /*
+                if (self.data.objectsStage.length != 1) {
                 let angle = (Math.PI * 2 / self.data.objectsStage.length) * index;
                 posicionNueva = { x: radius * Math.cos(angle), y: 0, z: radius * Math.sin(angle) };
             }
+            */
+            let angle = (Math.PI * 2 / self.data.objectsStage.length) * index;
+            posicionNueva = { x: radius * Math.cos(angle), y: 0, z: radius * Math.sin(angle) };
 
             let entityObject;
             if (complementsGraph.includes(object)) {
@@ -86,33 +90,44 @@ let createObjectGraph = (object, position) => {
         let self = this;
 
         this.parentNode.parentNode.childNodes.forEach(function (complementGraph) {
-            if (!complementGraph.classList.contains("iconCreate")) {
-                if (complementGraph == self.parentNode) {
-                    complementGraph.childNodes[1].setAttribute('text', 'opacity', '1');
-                    complementGraph.childNodes[0].childNodes[0].childNodes.forEach(function (entity) {
-                        entity.setAttribute('material', 'opacity', 1);
-                    });
-                    complementGraph.classList.add("selected");
-                } else {
-                    complementGraph.childNodes[1].setAttribute('text', 'opacity', '0.3');
+            if (complementGraph == self.parentNode) {
+                complementGraph.childNodes[1].setAttribute('text', 'opacity', '1');
+                complementGraph.childNodes[0].childNodes[0].childNodes.forEach(function (entity) {
+                    entity.setAttribute('material', 'opacity', 1);
+                });
+                complementGraph.classList.add("selected");
+            } else {
+
+                if (complementGraph.classList.contains("miniDisco")) {
+                    complementGraph.removeAttribute('animation');
+                    let objectMiniDisco = complementGraph.childNodes[1];
+                    objectMiniDisco.object3D.traverse((value) => {
+                        if (value.type === 'Mesh') {
+                            const material = value.material;
+                            material.transparent = true;
+                            material.opacity = 0.3;
+                        }
+                    })
+                }else{
                     complementGraph.childNodes[0].childNodes[0].childNodes.forEach(function (entity) {
                         entity.setAttribute('material', 'opacity', 0.3);
                     });
-                    complementGraph.classList.remove("selected");
-
-
-                    //si n es seleccionado es eliminado
-                    complementGraph.setAttribute('animation', {
-                        'property': 'scale',
-                        'to': '0 0 0',
-                        'dur': '1000',
-                        'easing': 'linear',
-                    });
-
-                    complementGraph.addEventListener('animationcomplete', function (event) {
-                        complementGraph.parentNode.removeChild(complementGraph)
-                    })
                 }
+
+                complementGraph.querySelector('.topNameObject').setAttribute('text', 'opacity', '0.3');
+                complementGraph.classList.remove("selected");
+
+                //si n es seleccionado es eliminado
+                complementGraph.setAttribute('animation', {
+                    'property': 'scale',
+                    'to': '0 0 0',
+                    'dur': '1000',
+                    'easing': 'linear',
+                });
+
+                complementGraph.addEventListener('animationcomplete', function (event) {
+                    complementGraph.parentNode.removeChild(complementGraph)
+                })
             }
         });
 
@@ -136,7 +151,6 @@ let createObjectGraph = (object, position) => {
     entityTextObject.setAttribute('position', { x: 0, y: 0.9, z: 0 });
 
     let entityBase = document.createElement('a-entity');
-    entityBase.setAttribute('id', object);
     entityBase.setAttribute('position', position);
 
     entityBase.appendChild(entityObjectGraph);

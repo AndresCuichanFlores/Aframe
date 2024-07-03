@@ -60,12 +60,12 @@ AFRAME.registerComponent('events-object-configuration', {
 
             //Los objectos que no son selecionados cambiamos su apariencia
             if (object !== self.el) {
-                object.childNodes[0].setAttribute('text', 'opacity', '0.2');
+                object.childNodes[0].setAttribute('text', 'opacity', '0.3');
                 object.object3D.traverse((value) => {
                     if (value.type === 'Mesh') {
                         const material = value.material;
                         material.transparent = true;
-                        material.opacity = 0.2;
+                        material.opacity = 0.3;
                     }
                 })
                 object.classList.remove("selected");

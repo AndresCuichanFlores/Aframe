@@ -10,7 +10,7 @@ AFRAME.registerComponent('creation', {
     init: function () {
         //console.log("################## configuration INIT ");
         this.initializeParameters();
-        createNewMenuDisco(this, Object.keys(this.dashboard), CONSTANTS.MAINOPCION, '#659DBD');
+        createNewMenuDisco(this, Object.keys(this.dashboard), CONSTANTS.MAINOPCION, '#0061FF', false);
     },
 
     update: function () {
@@ -29,7 +29,6 @@ AFRAME.registerComponent('creation', {
 
 
     documentsCreated: {},
-    filtersCreated: [],
 
     dashboard: {
         [CONSTANTS.QUERYES]: [CONSTANTS.BABIAQUERYJSON, CONSTANTS.BABIAQUERYCSV],
@@ -51,7 +50,7 @@ AFRAME.registerComponent('creation', {
     executeMenuQueryes: function () {
         if (this.data.typeObjectSelected === CONSTANTS.MAINOPCION) {
             this.deleteDiscoTypeCreation();
-            createNewMenuDisco(this, this.dashboard[this.data.valueObjectSelected], CONSTANTS.TYPECREATION, '#8080ff');
+            createNewMenuDisco(this, this.dashboard[this.data.valueObjectSelected], CONSTANTS.TYPECREATION, '#5D00FF', true);
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             this.executeProcesoCreacion();
         }
@@ -60,7 +59,7 @@ AFRAME.registerComponent('creation', {
     executeMenuGraphs: function () {
         if (this.data.typeObjectSelected === CONSTANTS.MAINOPCION) {
             this.deleteDiscoTypeCreation();
-            createNewMenuDisco(this, this.dashboard[this.data.valueObjectSelected], CONSTANTS.TYPECREATION, '#8080ff');
+            createNewMenuDisco(this, this.dashboard[this.data.valueObjectSelected], CONSTANTS.TYPECREATION, '#5D00FF', true);
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             this.executeProcesoCreacion();
         }
@@ -77,7 +76,7 @@ AFRAME.registerComponent('creation', {
                 }
             });
 
-            createNewMenuDisco(this, idsQuery, CONSTANTS.TYPECREATION, '#8080ff');
+            createNewMenuDisco(this, idsQuery, CONSTANTS.TYPECREATION, '#5D00FF', true);
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             this.executeProcesoCreacion();
         }
@@ -90,41 +89,61 @@ AFRAME.registerComponent('creation', {
         let objectSelected = this.baseParent.querySelector('#Menu-' + CONSTANTS.TYPECREATION).querySelector('.selected');
 
         //el disco MAINOPCION que desaparezca
-        addAnimationEntity(discoMainOpcion, 'animation','scale', '', '0 0 0', '1000', false);
+        addAnimationEntity(discoMainOpcion, 'animation', 'scale', '', '0 0 0', '1000', false);
 
         //objeto al centro
-        addAnimationEntity(objectSelected, 'animation','position', 
-            {x:objectSelected.getAttribute('position').x, y:objectSelected.getAttribute('position').y, z:0}, 
-            {x:0, y:objectSelected.getAttribute('position').y, z:0}, '2000', false);
+        addAnimationEntity(objectSelected, 'animation', 'position',
+            { x: objectSelected.getAttribute('position').x, y: objectSelected.getAttribute('position').y, z: 0 },
+            { x: 0, y: objectSelected.getAttribute('position').y, z: 0 }, '2000', false);
 
         //Movimiento hacia abajo del disco
-        addAnimationEntity(discoTypeCreation, 'animation','position', '', '0 0 0', '2000', false);   
+        addAnimationEntity(discoTypeCreation, 'animation', 'position', '', '0 0 0', '2000', false);
 
         setTimeout(() => {
             //eliminamos disco mainopction
+            let entityGrah;
             this.baseParent.removeChild(discoMainOpcion);
+
+            //disco en invisivle
+            addAnimationEntity(discoTypeCreation, 'animation__1', 'material.opacity', '', '0', '2000', false);
 
             //objeto mas grande, click, subimos de posicion y reducimos el titulo segun que creamos
             let titleObject = objectSelected.querySelector('.topNameObject');
-            if(this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS){
-                let entityGrah = objectSelected.childNodes[0];
-                addAnimationEntity(entityGrah, 'animation','scale', '', '2 2 2', '2000', false);
-                addAnimationEntity(objectSelected, 'animation__1','position', '', '0 2.5 0', '2000', false);
-                addAnimationEntity(titleObject, 'animation','scale', '', '20 20 20', '2000', false);
-                addAnimationEntity(titleObject, 'animation__1','position', '', '0 2 0', '2000', false);
-            }else {
-                addAnimationEntity(objectSelected, 'animation','scale', '', '0.5 0.5 0.5', '2000', false);
-                addAnimationEntity(objectSelected, 'animation__1','position', '', '0 2.5 0', '2000', false);
-                addAnimationEntity(titleObject, 'animation','scale', '', '40 40 40', '2000', false);
+            if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS) {
+                entityGrah = objectSelected.childNodes[0];
+                addAnimationEntity(entityGrah, 'animation', 'scale', '', '2 2 2', '2000', false);
+                addAnimationEntity(titleObject, 'animation', 'scale', '', '20 20 20', '2000', false);
+
+                if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIADOUGHNUT) {
+                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 3.5 0', '2000', false);
+                    addAnimationEntity(titleObject, 'animation__1', 'position', '', '0 3 0', '2000', false);
+                } else {
+                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 3 0', '2000', false);
+                    addAnimationEntity(titleObject, 'animation__1', 'position', '', '0 2 0', '2000', false);
+                }
+            } else {
+                addAnimationEntity(objectSelected, 'animation', 'scale', '', '0.5 0.5 0.5', '2000', false);
+                addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 2.5 0', '2000', false);
+                addAnimationEntity(titleObject, 'animation', 'scale', '', '40 40 40', '2000', false);
             }
 
             setTimeout(() => {
-                console.log("TERMINADO LA ANIMACION DE CREACION")
+                //eliminamos todas las animaciones del disco typecrreation
+                objectSelected.removeAttribute("animation");
+                objectSelected.removeAttribute("animation__1");
+                discoTypeCreation.removeAttribute("geometry");
+                discoTypeCreation.removeAttribute("material");
+                discoTypeCreation.removeAttribute("animation");
+                discoTypeCreation.removeAttribute("animation__1");
+
+                if (entityGrah) {
+                    entityGrah.removeAttribute("animation");
+                }
+                //añadimos nuevos menus de creacion
                 self.addNuevosMenus();
 
                 objectSelected.addEventListener('click', function () {
-                    console.log('CLICK EN ENTIDAD CREADA');
-                    if(self.baseParent.childNodes.length > 1){
+                    if (self.baseParent.childNodes.length > 1) {
                         let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
                         while (self.baseParent.childNodes.length > 0) {
                             var child = self.baseParent.childNodes[self.baseParent.childNodes.length - 1];
@@ -134,17 +153,16 @@ AFRAME.registerComponent('creation', {
                             self.baseParent.removeChild(child);
                             self.numeroDiscosCreados -= 1;
                         }
-                    }else{
-                        console.log('VOLVEMOS A CREAR LOS NUEVO MENUS');
+                    } else {
                         self.addNuevosMenus();
                     }
                 });
-            }, 2000);    
+            }, 2000);
         }, 2200);
     },
 
     addNuevosMenus: function () {
-        const radius = 10;
+        const radius = 9.5;
         const angles = [120, 240, 360];
 
         angles.forEach(angle => {
@@ -192,7 +210,10 @@ AFRAME.registerComponent('creation', {
         let self = this;
         let entityIconDelte = this.crearEntityObject('iconDelete', 'Delete');
         entityIconDelte.addEventListener('click', function () {
-            //console.log('Icon conf clicked!');
+            addAnimationEntity(this.parentNode.parentNode, 'animation', 'scale', '', '0 0 0', '2000', false);
+            setTimeout(() => {
+                this.sceneEl.removeChild(this.parentNode.parentNode);
+            }, 2000);
         });
 
         return entityIconDelte;
@@ -211,7 +232,6 @@ AFRAME.registerComponent('creation', {
         let entityIconConf = this.crearEntityObject('iconConf', 'Configuration');
 
         entityIconConf.addEventListener('click', function () {
-            console.log('Icon conf clicked!');
             let discoMenuConfiguration = entityIconConf.parentNode;
             let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
 
@@ -241,7 +261,7 @@ AFRAME.registerComponent('creation', {
         let entityMenu = document.createElement('a-entity');
         entityMenu.setAttribute('id', 'Menu-' + nameMenu);
         entityMenu.setAttribute('scale', '0 0 0');
-        entityMenu.setAttribute('material', 'color', '#9A16F7');
+        entityMenu.setAttribute('material', 'color', '#FFC500');
         entityMenu.setAttribute('position', { x: posX, y: 0, z: posZ });
         entityMenu.setAttribute('geometry', {
             'primitive': 'cylinder',
@@ -249,8 +269,8 @@ AFRAME.registerComponent('creation', {
             'height': '0.3',
         });
 
-        addAnimationEntity(entityMenu, 'animation','rotation', '', '0 360 0', '30000', true);
-        addAnimationEntity(entityMenu, 'animation__1','scale', '', '1 1 1', '1500', false);
+        addAnimationEntity(entityMenu, 'animation', 'rotation', '', '0 360 0', '30000', true);
+        addAnimationEntity(entityMenu, 'animation__1', 'scale', '', '1 1 1', '1500', false);
 
         return entityMenu;
     },
@@ -291,7 +311,7 @@ AFRAME.registerComponent('creation', {
 
 });
 
-let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
+let createNewMenuDisco = (self, objects, objectType, colorDisco, miniDisco) => {
     //console.log("################## menu-disco createNewMenuDisco  ##################");
     //console.log(self.numeroDiscosCreados)
     let entityMenuDisco = document.createElement('a-entity');
@@ -303,8 +323,60 @@ let createNewMenuDisco = (self, objects, objectType, colorDisco) => {
         'colorDisco': colorDisco,
         'eventComplement': 'events-object-creation'
     });
+
+    if (miniDisco) {
+        let entityMiniDisco = createMiniDisco(self.valuesSelectded[CONSTANTS.MAINOPCION]);
+        entityMenuDisco.appendChild(entityMiniDisco);
+    }
+
     self.el.appendChild(entityMenuDisco);
     self.numeroDiscosCreados += 1;
+};
+
+let createMiniDisco = (titleObject) => {
+    //Mini disco
+    let entityMiniDisco = document.createElement('a-entity');
+    entityMiniDisco.classList.add("miniDisco");
+    entityMiniDisco.setAttribute('scale', '1 1 1');
+    entityMiniDisco.setAttribute('material', 'color', '#FB6542');
+    entityMiniDisco.setAttribute('position', { x: 0, y: 0.3, z: 0 });
+    entityMiniDisco.setAttribute('geometry', {
+        'primitive': 'cylinder',
+        'radius': '1',
+        'height': '0.3',
+    });
+    entityMiniDisco.setAttribute('animation', {
+        property: 'rotation',
+        to: '0 -360 0',
+        dur: 30000,
+        easing: 'linear',
+        loop: true
+    });
+
+    //en gltf del objecto
+    let entityObject = document.createElement('a-entity');
+    entityObject.setAttribute('gltf-model', 'assets/real/folder3.glb');
+    entityObject.setAttribute('position', { x: 0, y: 0.6, z: 0 });
+    entityObject.setAttribute('scale', '0.15 0.15 0.15');
+
+    //texto arriba del objeto
+    let entityTitle = document.createElement('a-entity');
+    entityTitle.classList.add("topNameObject");
+    entityTitle.setAttribute('text', {
+        'value': titleObject,
+        'align': 'center',
+        'side': 'double',
+        'color': 'black',
+        'shader': 'msdf',
+        'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
+    });
+    entityTitle.setAttribute('scale', '8 8 8');
+    entityTitle.setAttribute('position', { x: 0, y: 1, z: 0 });
+
+    entityMiniDisco.appendChild(entityTitle);
+    entityMiniDisco.appendChild(entityObject);
+
+    return entityMiniDisco;
 };
 
 let addAnimationEntity = (entityObject, typeAnimation, property, from, to, dur, loop) => {
