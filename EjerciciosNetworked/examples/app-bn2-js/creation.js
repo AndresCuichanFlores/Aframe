@@ -162,7 +162,7 @@ AFRAME.registerComponent('creation', {
     },
 
     addNuevosMenus: function () {
-        const radius = 9.5;
+        const radius = 8.5;
         const angles = [120, 240, 360];
 
         angles.forEach(angle => {
