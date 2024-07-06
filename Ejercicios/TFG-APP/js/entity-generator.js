@@ -29,8 +29,3 @@ AFRAME.registerComponent('entity-generator', {
   },
 
 });
-
-
- 
-
-
