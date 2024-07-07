@@ -83,10 +83,10 @@
         visible="false"></a-entity>
       <a-entity cursor="rayOrigin:mouse"></a-entity>
     
-      <a-entity oculus-touch-controls="hand: right" raycaster="showLine: true; objects: .objectRayCaster" super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els;
+      <a-entity oculus-touch-controls="hand: right" raycaster="showLine: true; objects: .objectRayCaster, .babiaxraycasterclass, .babiaxrChart" super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els;
                        colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls"></a-entity>
     
-      <a-entity oculus-touch-controls="hand: left" raycaster="showLine: true; objects: .objectRayCaster"
+      <a-entity oculus-touch-controls="hand: left" raycaster="showLine: true; objects: .objectRayCaster, .babiaxraycasterclass, .babiaxrChart"
         super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els;
                                   colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls"></a-entity>
     

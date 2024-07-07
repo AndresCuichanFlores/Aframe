@@ -77,7 +77,7 @@ let createObjectGraph = (object, position) => {
     position.y = 1.5;
 
     let entityObjectGraph = document.createElement('a-entity');
-    entityObjectGraph.classList.add("objectRayCaster");
+    //entityObjectGraph.classList.add("objectRayCaster");
     entityObjectGraph.setAttribute('rotation', '90 0 0');
     entityObjectGraph.setAttribute('scale', '0.6 0.6 0.6');
     entityObjectGraph.setAttribute(object, {
