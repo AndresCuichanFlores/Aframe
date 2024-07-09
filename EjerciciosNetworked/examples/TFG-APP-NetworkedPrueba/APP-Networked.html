@@ -29,6 +29,8 @@
   <!-- Scripts Componentes/Logica
   <script src="js/spawn-in-circle.component.js"></script>-->
 
+  <script src="js/load-schemas.js"></script>
+
   <script type="module" src="js/entity-generator.js"></script>
   <script type="module" src="js/menu-disco.js"></script>
   <script type="module" src="js/creation.js"></script>
@@ -63,16 +65,33 @@
         </a-entity>
       </template>
 
-      <!-- ### ICONS GLB TEMPLATES -->
+      <!-- ### EMPLATES -->
       <!-- icon conf template -->
       <template id="iconConif-template">
         <a-entity id="iconConif" scale="0.14 0.14 0.14" rotation="0 0 90" gltf-model="3Dmodels/iconConif.glb">
       </template>
 
-      <!-- icon save template -->
-      <template id="iconSave-template">
-        <a-entity id="iconSave" scale="0.04 0.04 0" rotation="0 0 0" gltf-model="3Dmodels/save_icon.glb">
+      <template id="platoInit-template">
+        <a-entity>
+        </a-entity>
       </template>
+
+      <template id="objectInit-template">
+        <a-entity>
+        </a-entity>
+      </template>
+
+      <template id="textInit-template">
+        <a-entity>
+        </a-entity>
+      </template>
+
+      <template id="plato-template">
+        <a-entity geometry="primitive: cylinder; radius: 4; height: 0.3" 
+             material="color: BLUE" >
+        </a-entity>
+      </template>
+
 
     </a-assets>
 
@@ -92,8 +111,17 @@
       -->
     </a-entity>
     
+    <!-- old     
     <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
+    -->
     <a-entity entity-generator ></a-entity>
+    <!-- NUEVOOO     -->
+
+    <a-entity prueba></a-entity>
+
+    <!-- 
+    <a-entity networked="template:#plato-template;networkId:planes001;" position="0 0 -2"></a-entity>
+    -->
 
     <!-- 
     <a-entity position="0 0 -36" creation></a-entity>
