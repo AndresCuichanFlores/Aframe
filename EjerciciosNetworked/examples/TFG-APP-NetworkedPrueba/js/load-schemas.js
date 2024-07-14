@@ -10,9 +10,14 @@ NAF.schemas.getComponents = (template) => {
         'geometry',
         'scale',
         'animation',
+        'remove-component',
         {
           component: 'material',
           property: 'color'
+        },
+        {
+          component: 'material',
+          property: 'opacity'
         }
       ]
     });
@@ -26,6 +31,11 @@ NAF.schemas.getComponents = (template) => {
         'gltf-model',
         'scale',
         'animation',
+        'object3d-material',
+        'remove-component',
+        'babia-queryjson',
+        'babia-querycsv',
+        'babia-filter'
       ]
     });
   }
@@ -37,6 +47,16 @@ NAF.schemas.getComponents = (template) => {
         'position',
         'text',
         'scale',
+      ]
+    });
+  }
+
+  if (!NAF.schemas.hasTemplate('#creationInit-template')) {
+    NAF.schemas.add({
+      template: '#creationInit-template',
+      components: [
+        'position',
+        'animation',
       ]
     });
   }

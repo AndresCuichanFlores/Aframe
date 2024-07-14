@@ -164,6 +164,7 @@ let createObject = (self, object, nameObjectGLB, position) => {
     position.y = 1.3;
 
     let entityObject = document.createElement('a-entity');
+    entityObject.setAttribute('networked', 'template', '#objectInit-template');
     entityObject.classList.add("objectRayCaster");
     entityObject.setAttribute('position', position);
     entityObject.setAttribute(self.data.eventComplement, {

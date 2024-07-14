@@ -14,14 +14,14 @@ AFRAME.registerComponent('entity-generator', {
         let positionPlayer = document.querySelector("#rig-player").getAttribute('position');
 
         let entidadCreation = document.createElement('a-entity');
+        entidadCreation.setAttribute('id', 'InitCreation');
+        entidadCreation.setAttribute('networked', 'template:#creationInit-template');
         entidadCreation.setAttribute('position', { x: positionPlayer.x, y: 0, z: positionPlayer.z});
         entidadCreation.setAttribute('creation', '');
 
         scene.appendChild(entidadCreation);
-
       }
     });
-
   },
 
   update: function () {

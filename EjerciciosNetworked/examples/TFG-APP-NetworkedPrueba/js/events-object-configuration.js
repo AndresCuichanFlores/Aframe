@@ -33,6 +33,7 @@ AFRAME.registerComponent('events-object-configuration', {
 
         //top name object
         let entityObjectChildren = document.createElement('a-entity');
+        entityObjectChildren.setAttribute('networked', 'template:#textInit-template');
         entityObjectChildren.classList.add("topNameObject");
         entityObjectChildren.setAttribute('text', {
             'value': this.data.objectStage,
@@ -53,37 +54,24 @@ AFRAME.registerComponent('events-object-configuration', {
         let disco = self.el.parentNode;
         let objectsDisco = disco.childNodes;
 
+        //Eliminamos animancaciones del disco
+        disco.setAttribute('remove-component', 'component', 'animation');
+
         //Recorremos los objectos del disco
         objectsDisco.forEach(function (object) {
-            //Eliminamos animaciones y eventos del objecto
-            object.removeAttribute('animation');
-
-            //Los objectos que no son selecionados cambiamos su apariencia
-            if (object !== self.el) {
-                object.childNodes[0].setAttribute('text', 'opacity', '0.3');
-                object.object3D.traverse((value) => {
-                    if (value.type === 'Mesh') {
-                        const material = value.material;
-                        material.transparent = true;
-                        material.opacity = 0.3;
-                    }
-                })
-                object.classList.remove("selected");
-            }else{
-                object.childNodes[0].setAttribute('text', 'opacity', '1');
-                object.object3D.traverse((value) => {
-                    if (value.type === 'Mesh') {
-                        const material = value.material;
-                        material.transparent = true;
-                        material.opacity = 1;
-                    }
-                })
-                object.classList.add("selected");
+            if (!object.classList.contains('miniDisco')) {
+                //Los objectos que no son selecionados cambiamos su apariencia
+                if (object !== self.el) {
+                    object.childNodes[0].setAttribute('text', 'opacity', '0.3');
+                    object.setAttribute('object3d-material', 'opacity', '0.3');
+                    object.classList.remove("selected");
+                } else {
+                    object.childNodes[0].setAttribute('text', 'opacity', '1');
+                    object.setAttribute('object3d-material', 'opacity', '1');
+                    object.classList.add("selected");
+                }
             }
         });
-
-        //Eliminamos animancaciones del disco
-        disco.removeAttribute('animation');
 
         //enviamos al componente config los datos
         this.menuConfiguration.setAttribute('configuration', {

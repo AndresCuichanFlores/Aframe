@@ -17,12 +17,18 @@ AFRAME.registerComponent('prueba', {
         entidadCreation.setAttribute('networked', 'template:#plato-template');
         */
 
+        let positionPlayer = document.querySelector("#rig-player").getAttribute('position');
+        console.log("##### positionPlayer");
+        console.log(positionPlayer);
+
+
+
         //PLATO NETWORKED
         let entidadPlato = document.createElement('a-entity');
         entidadPlato.setAttribute('networked', 'template:#platoInit-template');
         entidadPlato.setAttribute('scale', '0 0 1');
         entidadPlato .setAttribute('material', 'color', "purple");
-        entidadPlato.setAttribute('position', { x: 0, y: 0, z: -2});
+        entidadPlato.setAttribute('position', positionPlayer);
         entidadPlato.setAttribute('geometry', {
           'primitive': 'cylinder',
           'radius': '4',
@@ -77,7 +83,7 @@ AFRAME.registerComponent('prueba', {
 
         entidadObject.appendChild(entidadText);
         entidadPlato.appendChild(entidadObject);
-        scene.appendChild(entidadPlato);
+        self.el.appendChild(entidadPlato);
 
       }
     });

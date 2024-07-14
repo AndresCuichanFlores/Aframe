@@ -8,14 +8,14 @@ AFRAME.registerComponent('events-object-creation', {
     },
 
     init: function () {
-        //console.log("################## menu-object INIT ");
+        //console.log("################## events-object-creation INIT ");
         this.customizeObjectStage();
         this.handleClick = this.handleClick.bind(this);
         this.el.addEventListener('click', this.handleClick);
     },
 
     update: function () {
-        //console.log("################## menu-object UPDATE ");
+        //console.log("################## events-object-creation UPDATE ");
     },
 
     customizeObjectStage: function () {
@@ -39,6 +39,7 @@ AFRAME.registerComponent('events-object-creation', {
 
             //texto abajo del objeto
             let entityBotName = document.createElement('a-entity');
+            entityBotName.setAttribute('networked', 'template:#textInit-template');
             entityBotName.classList.add("botNameObject");
             entityBotName.setAttribute('text', {
                 'value': botName,
@@ -56,6 +57,7 @@ AFRAME.registerComponent('events-object-creation', {
         }
         //texto arriba del objeto
         let entityObjectChildren = document.createElement('a-entity');
+        entityObjectChildren.setAttribute('networked', 'template:#textInit-template');
         entityObjectChildren.classList.add("topNameObject");
         entityObjectChildren.setAttribute('text', {
             'value': topName,
@@ -71,59 +73,61 @@ AFRAME.registerComponent('events-object-creation', {
     },
 
     handleClick: function (evt) {
-        //console.log("################## menu-object click");
+        console.log("################## events-object-creation click");
+
         let self = this;
         let disco = self.el.parentNode;
         let baseParent = disco.parentNode;
         let objectsDisco = disco.childNodes;
 
-        //Eliminamos animancaciones del disco
-        disco.removeAttribute('animation');
+        //Eliminamos animancaciones del disco 
+        disco.setAttribute('remove-component', 'component', 'animation');
 
         //Recorremos los objectos del disco
         objectsDisco.forEach(function (object) {
-            //Eliminamos animaciones y eventos del objecto
-            object.removeAttribute('animation');
-
-            //Los objectos que no son selecionados cambiamos su apariencia
-            if (object !== self.el) {
-                object.childNodes[0].setAttribute('text', 'opacity', '0.3');
-                object.object3D.traverse((value) => {
-                    if (value.type === 'Mesh') {
-                        const material = value.material;
-                        material.transparent = true;
-                        material.opacity = 0.3;
-                    }
+            if (object.classList.contains('miniDisco')) {
+                object.setAttribute('remove-component', 'component', 'animation');
+                object.setAttribute('animation', {
+                    'property': 'scale',
+                    'to': '0 0 0',
+                    'dur': '1000',
+                    'easing': 'linear',
+                });
+                object.addEventListener('animationcomplete', function (event) {
+                    disco.removeChild(object)
                 })
-                object.classList.remove("selected");
-
-                //si es de typecreation pues que desaparezca
-                if (disco.getAttribute('id') === ('Menu-' + CONSTANTS.TYPECREATION)) {
-                    object.setAttribute('animation', {
-                        'property': 'scale',
-                        'to': '0 0 0',
-                        'dur': '1000',
-                        'easing': 'linear',
-                    });
-
-                    object.addEventListener('animationcomplete', function (event) {
-                        self.el.removeEventListener('click', self.handleClick);
-                        self.el.removeAttribute('events-object-creation');
-                        disco.removeChild(object)
-                    })
-                };
-
             } else {
-                //El objeto selecionado
-                object.childNodes[0].setAttribute('text', 'opacity', '1');
-                object.object3D.traverse((value) => {
-                    if (value.type === 'Mesh') {
-                        const material = value.material;
-                        material.transparent = true;
-                        material.opacity = 1;
+                //Los objectos que no son selecionados cambiamos su apariencia
+                if (object !== self.el) {
+                    object.childNodes[0].setAttribute('text', 'opacity', '0.3');
+                    object.setAttribute('object3d-material', 'opacity', '0.3');
+                    object.classList.remove("selected");
+
+                    //si es de typecreation pues que desaparezca
+                    if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {
+                        object.setAttribute('remove-component', 'component', 'animation');
+                        object.setAttribute('animation', {
+                            'property': 'scale',
+                            'to': '0 0 0',
+                            'dur': '1000',
+                            'easing': 'linear',
+                        });
+                        object.addEventListener('animationcomplete', function (event) {
+                            disco.removeChild(object)
+                        })
+                    };
+
+                } else {
+                    //El objeto selecionado
+                    object.childNodes[0].setAttribute('text', 'opacity', '1');
+                    object.setAttribute('object3d-material', 'opacity', '1');
+                    object.classList.add("selected");
+
+                    if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {
+                        self.el.removeEventListener('click', self.handleClick);
+                        self.el.removeAttribute('events-object-creation'); //se elimna solo el creador porque no se ha trasmitido el componente(en el otro no existe)
                     }
-                })
-                object.classList.add("selected");
+                }
             }
         });
 

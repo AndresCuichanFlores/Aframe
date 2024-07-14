@@ -241,6 +241,7 @@ AFRAME.registerComponent('configuration', {
             this.objectBabiaCreated.removeChild(this.objectBabiaCreated.querySelector('.botNameObject'));
         }
         let entityObjectChildren = document.createElement('a-entity');
+        entityObjectChildren.setAttribute('networked', 'template:#textInit-template');
         entityObjectChildren.classList.add('botNameObject');
         entityObjectChildren.setAttribute('text', {
             'value': botNameObject,
@@ -259,6 +260,7 @@ AFRAME.registerComponent('configuration', {
         //console.log("################## menu-disco createNewMenuDisco  ##################");
         //console.log(this.numeroDiscosCreados)
         let entityMenuDisco = document.createElement('a-entity');
+        entityMenuDisco.setAttribute('networked', 'template:#platoInit-template');
         entityMenuDisco.setAttribute('id', 'Menu-' + objectType);
         entityMenuDisco.setAttribute('position', { x: 0, y: 4 + (3 * this.numeroDiscosCreados), z: 0 });
         entityMenuDisco.setAttribute('menu-disco', {
@@ -284,6 +286,7 @@ AFRAME.registerComponent('configuration', {
     createMiniDisco: function (titleObject) {
         //Mini disco
         let entityMiniDisco = document.createElement('a-entity');
+        entityMiniDisco.setAttribute('networked', 'template:#platoInit-template');
         entityMiniDisco.classList.add("miniDisco");
         entityMiniDisco.setAttribute('scale', '1 1 1');
         entityMiniDisco.setAttribute('material', 'color', '#FB6542');
@@ -303,12 +306,14 @@ AFRAME.registerComponent('configuration', {
 
         //en gltf del objecto
         let entityObject = document.createElement('a-entity');
+        entityObject.setAttribute('networked', 'template', '#objectInit-template');
         entityObject.setAttribute('gltf-model', '3Dmodels/folder3.glb');
         entityObject.setAttribute('position', { x: 0, y: 0.6, z: 0 });
         entityObject.setAttribute('scale', '0.15 0.15 0.15');
 
         //texto arriba del objeto
         let entityTitle = document.createElement('a-entity');
+        entityTitle.setAttribute('networked', 'template:#textInit-template');
         entityTitle.classList.add("topNameObject");
         entityTitle.setAttribute('text', {
             'value': titleObject,

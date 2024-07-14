@@ -8,15 +8,16 @@ AFRAME.registerComponent('creation', {
     },
 
     init: function () {
-        //console.log("################## configuration INIT ");
+        console.log("################## creation INIT ");
         this.initializeParameters();
         createNewMenuDisco(this, Object.keys(this.dashboard), CONSTANTS.MAINOPCION, '#0061FF', false);
     },
 
     update: function () {
-        //console.log("################## configuration UPDATE ");
+        console.log("################## creation UPDATE ");
         this.valuesSelectded[this.data.typeObjectSelected] = this.data.valueObjectSelected;
 
+        
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
             this.executeMenuQueryes();
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS) {
@@ -24,11 +25,9 @@ AFRAME.registerComponent('creation', {
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
             this.executeMenuFilters();
         }
+        
         //console.dir(this.valuesSelectded);
     },
-
-
-    documentsCreated: {},
 
     dashboard: {
         [CONSTANTS.QUERYES]: [CONSTANTS.BABIAQUERYJSON, CONSTANTS.BABIAQUERYCSV],
@@ -129,12 +128,12 @@ AFRAME.registerComponent('creation', {
 
             setTimeout(() => {
                 //eliminamos todas las animaciones del disco typecrreation
-                objectSelected.removeAttribute("animation");
-                objectSelected.removeAttribute("animation__1");
-                discoTypeCreation.removeAttribute("geometry");
-                discoTypeCreation.removeAttribute("material");
-                discoTypeCreation.removeAttribute("animation");
-                discoTypeCreation.removeAttribute("animation__1");
+                objectSelected.setAttribute('remove-component', 'component', 'animation');
+                objectSelected.setAttribute('remove-component', 'component', 'animation__1');
+                discoTypeCreation.setAttribute('remove-component', 'component', 'geometry');
+                discoTypeCreation.setAttribute('remove-component', 'component', 'material');
+                discoTypeCreation.setAttribute('remove-component', 'component', 'animation');
+                discoTypeCreation.setAttribute('remove-component', 'component', 'animation__1');
 
                 if (entityGrah) {
                     entityGrah.removeAttribute("animation");
@@ -232,10 +231,15 @@ AFRAME.registerComponent('creation', {
         let entityIconConf = this.crearEntityObject('iconConf', 'Configuration');
 
         entityIconConf.addEventListener('click', function () {
+            console.log("CLICK ICON CONF")
             let discoMenuConfiguration = entityIconConf.parentNode;
             let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
 
+
+            console.log(discoMenuConfiguration.childNodes)
+
             if (discoMenuConfiguration.childNodes.length === 1) {
+                console.log("ENTRAMOOOOO");
                 //Eliminar los demas menus   
                 for (let i = self.baseParent.childNodes.length - 1; i >= 0; i--) {
                     var menu = self.baseParent.childNodes[i];
@@ -245,8 +249,8 @@ AFRAME.registerComponent('creation', {
                 }
 
                 //Eliminar animaciones del disco y agregar el atributo configuration
-                discoMenuConfiguration.removeAttribute('animation');
-                discoMenuConfiguration.removeAttribute('animation__1');
+                discoMenuConfiguration.setAttribute('remove-component', 'component', 'animation');
+                
                 discoMenuConfiguration.setAttribute('configuration', {
                     typeObjectSelected: CONSTANTS.TYPECREATION,
                     valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION],
@@ -259,6 +263,7 @@ AFRAME.registerComponent('creation', {
 
     crearEntityMenu: function (nameMenu, posX, posZ) {
         let entityMenu = document.createElement('a-entity');
+        entityMenu.setAttribute('networked', 'template:#platoInit-template');
         entityMenu.setAttribute('id', 'Menu-' + nameMenu);
         entityMenu.setAttribute('scale', '0 0 0');
         entityMenu.setAttribute('material', 'color', '#FFC500');
@@ -276,8 +281,8 @@ AFRAME.registerComponent('creation', {
     },
 
     crearEntityObject: function (nameObject, title) {
-
         let entityObjectIcon = document.createElement('a-entity');
+        entityObjectIcon.setAttribute('networked', 'template', '#objectInit-template');
         entityObjectIcon.classList.add(nameObject);
         entityObjectIcon.classList.add("objectRayCaster");
         entityObjectIcon.setAttribute('gltf-model', '3Dmodels/' + nameObject + '.glb');
@@ -286,6 +291,7 @@ AFRAME.registerComponent('creation', {
 
         //texto arriba del objeto
         let entityObjectChildren = document.createElement('a-entity');
+        entityObjectChildren.setAttribute('networked', 'template:#textInit-template');
         entityObjectChildren.classList.add("topNameObject");
         entityObjectChildren.setAttribute('text', {
             'value': title,
@@ -316,6 +322,7 @@ let createNewMenuDisco = (self, objects, objectType, colorDisco, miniDisco) => {
     //console.log("################## menu-disco createNewMenuDisco  ##################");
     //console.log(self.numeroDiscosCreados)
     let entityMenuDisco = document.createElement('a-entity');
+    entityMenuDisco.setAttribute('networked', 'template:#platoInit-template');
     entityMenuDisco.setAttribute('id', 'Menu-' + objectType);
     entityMenuDisco.setAttribute('position', { x: 0, y: 3 * self.numeroDiscosCreados, z: 0 });
     entityMenuDisco.setAttribute('menu-disco', {
@@ -337,6 +344,7 @@ let createNewMenuDisco = (self, objects, objectType, colorDisco, miniDisco) => {
 let createMiniDisco = (titleObject) => {
     //Mini disco
     let entityMiniDisco = document.createElement('a-entity');
+    entityMiniDisco.setAttribute('networked', 'template:#platoInit-template');
     entityMiniDisco.classList.add("miniDisco");
     entityMiniDisco.setAttribute('scale', '1 1 1');
     entityMiniDisco.setAttribute('material', 'color', '#FB6542');
@@ -356,12 +364,14 @@ let createMiniDisco = (titleObject) => {
 
     //en gltf del objecto
     let entityObject = document.createElement('a-entity');
+    entityObject.setAttribute('networked', 'template:#objectInit-template');
     entityObject.setAttribute('gltf-model', '3Dmodels/folder3.glb');
     entityObject.setAttribute('position', { x: 0, y: 0.6, z: 0 });
     entityObject.setAttribute('scale', '0.15 0.15 0.15');
 
     //texto arriba del objeto
     let entityTitle = document.createElement('a-entity');
+    entityTitle.setAttribute('networked', 'template:#textInit-template');
     entityTitle.classList.add("topNameObject");
     entityTitle.setAttribute('text', {
         'value': titleObject,
@@ -381,7 +391,7 @@ let createMiniDisco = (titleObject) => {
 };
 
 let addAnimationEntity = (entityObject, typeAnimation, property, from, to, dur, loop) => {
-    entityObject.removeAttribute(typeAnimation);
+    entityObject.setAttribute('remove-component', 'component', 'typeAnimation');
     entityObject.setAttribute(typeAnimation, {
         'property': property,
         'from': from,
