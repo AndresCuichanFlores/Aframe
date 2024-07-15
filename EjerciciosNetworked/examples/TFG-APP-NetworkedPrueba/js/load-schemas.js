@@ -1,5 +1,4 @@
 
-
 NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
 NAF.schemas.getComponents = (template) => {
   if (!NAF.schemas.hasTemplate('#platoInit-template')) {
@@ -35,7 +34,8 @@ NAF.schemas.getComponents = (template) => {
         'remove-component',
         'babia-queryjson',
         'babia-querycsv',
-        'babia-filter'
+        'babia-filter',
+        'id'
       ]
     });
   }

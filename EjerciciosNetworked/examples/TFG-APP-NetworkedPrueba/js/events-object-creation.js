@@ -41,6 +41,7 @@ AFRAME.registerComponent('events-object-creation', {
             let entityBotName = document.createElement('a-entity');
             entityBotName.setAttribute('networked', 'template:#textInit-template');
             entityBotName.classList.add("botNameObject");
+            entityBotName.classList.add(parts[2]);
             entityBotName.setAttribute('text', {
                 'value': botName,
                 'align': 'center',
@@ -73,8 +74,7 @@ AFRAME.registerComponent('events-object-creation', {
     },
 
     handleClick: function (evt) {
-        console.log("################## events-object-creation click");
-
+        //console.log("################## events-object-creation click");
         let self = this;
         let disco = self.el.parentNode;
         let baseParent = disco.parentNode;

@@ -8,15 +8,14 @@ AFRAME.registerComponent('creation', {
     },
 
     init: function () {
-        console.log("################## creation INIT ");
+        //console.log("################## creation INIT ");
         this.initializeParameters();
         createNewMenuDisco(this, Object.keys(this.dashboard), CONSTANTS.MAINOPCION, '#0061FF', false);
     },
 
     update: function () {
-        console.log("################## creation UPDATE ");
+        //console.log("################## creation UPDATE ");
         this.valuesSelectded[this.data.typeObjectSelected] = this.data.valueObjectSelected;
-
         
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
             this.executeMenuQueryes();
@@ -25,8 +24,6 @@ AFRAME.registerComponent('creation', {
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
             this.executeMenuFilters();
         }
-        
-        //console.dir(this.valuesSelectded);
     },
 
     dashboard: {
@@ -67,15 +64,22 @@ AFRAME.registerComponent('creation', {
     executeMenuFilters: function () {
         if (this.data.typeObjectSelected === CONSTANTS.MAINOPCION) {
             this.deleteDiscoTypeCreation();
-            let elementsQuerys = document.querySelectorAll('[babia-queryjson], [babia-querycsv]');
-            let idsQuery = [];
-            elementsQuerys.forEach(element => {
+
+            let namesFiles = [];
+            let elementsQueryJSON = document.querySelectorAll('[babia-queryjson]');
+            let elementsQueryCSV = document.querySelectorAll('[babia-querycsv]');
+            elementsQueryJSON.forEach(element => {
                 if (element.id !== 'dataInicial') {
-                    idsQuery.push('babia-filter:' + element.id);
+                    namesFiles.push('babia-filter:' + element.id + ':json');
+                }
+            });
+            elementsQueryCSV.forEach(element => {
+                if (element.id !== 'dataInicial') {
+                    namesFiles.push('babia-filter:' + element.id + ':csv');
                 }
             });
 
-            createNewMenuDisco(this, idsQuery, CONSTANTS.TYPECREATION, '#5D00FF', true);
+            createNewMenuDisco(this, namesFiles, CONSTANTS.TYPECREATION, '#5D00FF', true);
         } else if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             this.executeProcesoCreacion();
         }
@@ -193,7 +197,6 @@ AFRAME.registerComponent('creation', {
         entityIconInfo.addEventListener('click', function () {
             //console.log('Icon conf clicked!');
         });
-
         return entityIconInfo;
     },
 
@@ -214,7 +217,6 @@ AFRAME.registerComponent('creation', {
                 this.sceneEl.removeChild(this.parentNode.parentNode);
             }, 2000);
         });
-
         return entityIconDelte;
     },
 
@@ -231,15 +233,11 @@ AFRAME.registerComponent('creation', {
         let entityIconConf = this.crearEntityObject('iconConf', 'Configuration');
 
         entityIconConf.addEventListener('click', function () {
-            console.log("CLICK ICON CONF")
+            //console.log("CLICK ICON CONF")
             let discoMenuConfiguration = entityIconConf.parentNode;
             let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
 
-
-            console.log(discoMenuConfiguration.childNodes)
-
             if (discoMenuConfiguration.childNodes.length === 1) {
-                console.log("ENTRAMOOOOO");
                 //Eliminar los demas menus   
                 for (let i = self.baseParent.childNodes.length - 1; i >= 0; i--) {
                     var menu = self.baseParent.childNodes[i];
@@ -315,7 +313,6 @@ AFRAME.registerComponent('creation', {
             this.numeroDiscosCreados -= 1;
         }
     },
-
 });
 
 let createNewMenuDisco = (self, objects, objectType, colorDisco, miniDisco) => {

@@ -69,10 +69,6 @@
 
       <!-- ### EMPLATES -->
       <!-- icon conf template -->
-      <template id="iconConif-template">
-        <a-entity id="iconConif" scale="0.14 0.14 0.14" rotation="0 0 90" gltf-model="3Dmodels/iconConif.glb">
-      </template>
-
       <template id="creationInit-template">
         <a-entity>
         </a-entity>
@@ -92,13 +88,6 @@
         <a-entity>
         </a-entity>
       </template>
-
-      <template id="plato-template">
-        <a-entity geometry="primitive: cylinder; radius: 4; height: 0.3" 
-             material="color: BLUE" >
-        </a-entity>
-      </template>
-
 
     </a-assets>
 
@@ -121,29 +110,9 @@
     <!-- old     
     <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
     -->
+
     <a-entity entity-generator ></a-entity>
-    <!-- NUEVOOO     -->
 
-    <a-entity prueba></a-entity>
-
-    <!-- 
-    <a-entity networked="template:#plato-template;networkId:planes001;" position="0 0 -2"></a-entity>
-    -->
-
-    <!-- 
-    <a-entity position="0 0 -36" creation></a-entity>
-    <a-entity position="18 0 -36" creation></a-entity>
-    <a-entity position="-18 0 -36" creation></a-entity>
-    <a-entity position="0 0 0" creation></a-entity>
-    <a-entity position="0 0 -18" creation></a-entity>
-    <a-entity position="18 0 -18" creation></a-entity>
-    <a-entity position="-18 0 -18" creation></a-entity>
-    <a-entity position="18 0 18" creation></a-entity>
-    <a-entity position="-18 0 18" creation></a-entity>
-    <a-entity position="0 0 18" creation></a-entity>
-    <a-entity position="18 0 0" creation></a-entity>
-    <a-entity position="-18 0 0" creation></a-entity>
-    -->
     </a-scene>
     
     </body>

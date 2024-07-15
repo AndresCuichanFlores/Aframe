@@ -15,13 +15,13 @@ AFRAME.registerComponent('configuration', {
         } else if (Object.keys(this.dashboard[CONSTANTS.GRAPHS]).includes(this.data.valueObjectSelected)) {
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.GRAPHS;
         } else if (Object.keys(this.dashboard[CONSTANTS.FILTERS]).includes(this.data.valueObjectSelected)) {
+            this.extractDataFile();
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.FILTERS;
         }
     },
 
     update: function () {
         //console.log("################## configuration UPDATE ");
-        console.log('ENTRADA UPDATE');
         this.valuesSelectded[this.data.typeObjectSelected] = this.data.valueObjectSelected;
 
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
@@ -84,6 +84,16 @@ AFRAME.registerComponent('configuration', {
         this.baseParent = this.el.parentNode;
         this.objectBabiaCreated = this.baseParent.querySelector('#Menu-' + CONSTANTS.TYPECREATION).childNodes[0];
         this.subProperties = {};
+    },
+
+    extractDataFile: function () {
+        //Sacar las keys y values del archivo escogido para filtrar
+        let nameFile = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;
+        if (this.objectBabiaCreated.querySelector('.json')) {
+            addDocumentCreatedJSON(this, nameFile);
+        } else if (this.objectBabiaCreated.querySelector('.csv')) {
+            addDocumentCreatedCSV(this, nameFile);
+        }
     },
 
     executeMenuQueryes: function () {
@@ -163,7 +173,10 @@ AFRAME.registerComponent('configuration', {
         }
 
         if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-            this.createNewMenuDisco(Object.keys(this.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fcb983', nameDocumentFilter);
+            setTimeout(() => {
+                console.log('Han pasado 0.3 segundos');
+                this.createNewMenuDisco(Object.keys(this.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fcb983', nameDocumentFilter);
+            }, 300); 
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
             if (this.el.childNodes[1]) {
                 while (this.el.childNodes.length > 0) {
@@ -194,20 +207,14 @@ AFRAME.registerComponent('configuration', {
             if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIAQUERYJSON) {
                 this.objectBabiaCreated.setAttribute(CONSTANTS.BABIAQUERYJSON, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
                 this.addBotNameObject(idObjectConfiguration);
-                addDocumentCreatedJSON(this, idObjectConfiguration);
             } else if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIAQUERYCSV) {
                 this.objectBabiaCreated.setAttribute(CONSTANTS.BABIAQUERYCSV, this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
                 this.addBotNameObject(idObjectConfiguration);
-                addDocumentCreatedCSV(this, idObjectConfiguration);
             }
 
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS) {
 
-            console.log("this.subProperties")
-            console.log(this.subProperties)
-
             if(Object.keys(this.subProperties).length === 0){
-                console.log("VACIOOO")
                 this.objectBabiaCreated.childNodes[0].setAttribute(this.valuesSelectded[CONSTANTS.TYPECREATION],
                     this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
             }else{
@@ -217,9 +224,6 @@ AFRAME.registerComponent('configuration', {
                     [CONSTANTS.SIZE]: this.subProperties[CONSTANTS.SIZE],
                 });
             }
-
-            console.log("FINNNNN")
-
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
             let nameDocumentFilter = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;
             if (nameDocumentFilter.includes(":")) {
@@ -278,7 +282,6 @@ AFRAME.registerComponent('configuration', {
         }
 
         entityMenuDisco.appendChild(entityMiniDisco);
-
         this.el.appendChild(entityMenuDisco);
         this.numeroDiscosCreados += 1;
     },
@@ -347,7 +350,8 @@ let searchQuerysCreated = (babiaTypeDocument1, babiaTypeDocument2 , babiaTypeDoc
 };
 
 let addDocumentCreatedJSON = (self, idDocument) => {
-    fetch(self.valuesSelectded[CONSTANTS.VALUEPROPERTY])
+    console.time('Tiempo de ejecución'); // Inicia el temporizador
+    fetch('./data/' + idDocument + '.json')
         .then(response => response.json())
         .then(data => {
             const keys = Object.keys(data[0]);
@@ -378,12 +382,16 @@ let addDocumentCreatedJSON = (self, idDocument) => {
             };
 
             self.documentsCreated[idDocument] = fields;
+
+            console.log('documentsCreated');
+            console.log(self.documentsCreated);
+            console.timeEnd('Tiempo de ejecución');
         })
         .catch(error => console.error('Error al cargar el archivo:', error));
 };
 
 let addDocumentCreatedCSV = (self, idDocument) => {
-    fetch(self.valuesSelectded[CONSTANTS.VALUEPROPERTY])
+    fetch('./data/' + idDocument + '.csv')
         .then(response => response.text())
         .then(csvText => {
             const data = Papa.parse(csvText, { header: true }).data;
@@ -414,6 +422,9 @@ let addDocumentCreatedCSV = (self, idDocument) => {
                 size: numberKeys
             };
             self.documentsCreated[idDocument] = fields;
+
+            console.log('documentsCreated');
+            console.log(self.documentsCreated);
         })
         .catch(error => console.error('Error al cargar el archivo:', error));
 };

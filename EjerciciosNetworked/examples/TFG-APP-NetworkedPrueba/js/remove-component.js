@@ -5,12 +5,11 @@ AFRAME.registerComponent('remove-component', {
   },
 
   init: function () {
-    console.log("################## remove-component INIT ");
+    //console.log("################## remove-component INIT ");
   },
 
   update: function () {
-    console.log("################## remove-component UPDATE ");
-
+    //console.log("################## remove-component UPDATE ");
     this.el.removeAttribute(this.data.component);
   },
 
