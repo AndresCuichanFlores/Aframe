@@ -52,24 +52,17 @@
     <!-- ASSETS -->
     <a-assets>
 
-      <!-- ### AVATAR TEMPLATES -->
-      <!-- rig-template -->
-      <template id="rig-template">
-        <a-entity></a-entity>
-      </template>
-
-      <!-- avatar-man-template -->
       <template id="avatar-man-template">
-        <a-entity player-info>
-          <a-entity gltf-model="3Dmodels/pmariano-fullbody.glb" rotation="0 180 0"></a-entity>
-          <a-text class="nametag" value="?" rotation="0 180 0" position="0.3 -0.20 0" side="double" scale=".6 .6 .6"
-            color="black"></a-text>
+        <a-entity>
         </a-entity>
       </template>
 
-      <!-- ### EMPLATES -->
-      <!-- icon conf template -->
-      <template id="creationInit-template">
+      <template id="auxInit-template">
+        <a-entity>
+        </a-entity>
+      </template>
+
+      <template id="graphInit-template">
         <a-entity>
         </a-entity>
       </template>
@@ -92,26 +85,29 @@
     </a-assets>
 
     <!-- ENTITIES-->
-    <!-- avatar entity -->
-    <a-entity id="rig-player" movement-controls="fly:true;" networked="template:#rig-template;">
-      <a-entity id="player" camera position="0 2 2" look-controls networked="template:#avatar-man-template;"
-        visible="false"></a-entity>
+
+  <!-- 
+    <a-entity id="rig-player" movement-controls="fly:true" networked="template:#rig-template;">
+      <a-entity id="player" camera position="0 2 2" look-controls visible="false" networked="template:#avatar-man-template;" ></a-entity>
       <a-entity cursor="rayOrigin:mouse"></a-entity>
-      <!-- 
+
       <a-entity oculus-touch-controls="hand: right" raycaster="showLine: true; objects: .objectRayCaster, .babiaxraycasterclass, .babiaxrChart" super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els;
                        colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls"></a-entity>
     
       <a-entity oculus-touch-controls="hand: left" raycaster="showLine: true; objects: .objectRayCaster, .babiaxraycasterclass, .babiaxrChart"
         super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els;
                                   colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls"></a-entity>
-      -->
+     
     </a-entity>
-    
-    <!-- old     
-    <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
-    -->
+  -->
 
+<!-- 
+    <a-entity gltf-model="3Dmodels/ditto.glb" animation-mixer position="0 3 -5" scale="0.8 0.8 0.8"></a-entity>
+-->
+
+    <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
     <a-entity entity-generator ></a-entity>
+    <a-entity prueba ></a-entity>
 
     </a-scene>
     

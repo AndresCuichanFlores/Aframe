@@ -15,7 +15,8 @@ AFRAME.registerComponent('configuration', {
         } else if (Object.keys(this.dashboard[CONSTANTS.GRAPHS]).includes(this.data.valueObjectSelected)) {
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.GRAPHS;
         } else if (Object.keys(this.dashboard[CONSTANTS.FILTERS]).includes(this.data.valueObjectSelected)) {
-            this.extractDataFile();
+            let nameFile = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;
+            this.extractDataFile(nameFile);
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.FILTERS;
         }
     },
@@ -86,13 +87,22 @@ AFRAME.registerComponent('configuration', {
         this.subProperties = {};
     },
 
-    extractDataFile: function () {
+    extractDataFile: function (nameFile) {
         //Sacar las keys y values del archivo escogido para filtrar
-        let nameFile = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;
-        if (this.objectBabiaCreated.querySelector('.json')) {
-            addDocumentCreatedJSON(this, nameFile);
-        } else if (this.objectBabiaCreated.querySelector('.csv')) {
-            addDocumentCreatedCSV(this, nameFile);
+        const urlsJSON = this.dashboard[CONSTANTS.QUERYES][CONSTANTS.BABIAQUERYJSON].url;
+        const urlsCSV = this.dashboard[CONSTANTS.QUERYES][CONSTANTS.BABIAQUERYCSV].url;
+        const combinedUrls = [...urlsJSON, ...urlsCSV];
+
+        for (let i = 0; i < combinedUrls.length; i++) {
+            if (combinedUrls[i].includes(nameFile)) {
+                const fileExtension = combinedUrls[i].split('.').pop();
+                if(fileExtension === 'json'){
+                    addDocumentCreatedJSON(this, nameFile);
+                }else if(fileExtension === 'csv'){
+                    addDocumentCreatedCSV(this, nameFile);
+                }
+                break;
+            }
         }
     },
 
@@ -130,6 +140,14 @@ AFRAME.registerComponent('configuration', {
             }
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
             if (this.valuesSelectded[CONSTANTS.PROPERTY] === CONSTANTS.FROM) {
+
+                if (this.valuesSelectded[CONSTANTS.VALUEPROPERTY].includes(":")) {
+                    let nameDocument = this.valuesSelectded[CONSTANTS.VALUEPROPERTY].split(":")[0];
+                    this.extractDataFile(nameDocument);
+                }else{
+                    this.extractDataFile(this.data.valueObjectSelected);
+                }
+
                 let discoSubProperty = this.el.querySelector('#Menu-' + CONSTANTS.SUBPROPERTY);
                 if (discoSubProperty) {
                     while (this.el.childNodes.length > 0) {

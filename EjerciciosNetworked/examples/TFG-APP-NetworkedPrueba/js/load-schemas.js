@@ -51,12 +51,28 @@ NAF.schemas.getComponents = (template) => {
     });
   }
 
-  if (!NAF.schemas.hasTemplate('#creationInit-template')) {
+  if (!NAF.schemas.hasTemplate('#graphInit-template')) {
     NAF.schemas.add({
-      template: '#creationInit-template',
+      template: '#graphInit-template',
       components: [
         'position',
-        'animation',
+        'rotation',
+        'scale',
+        'babia-pie',
+        'babia-doughnut',
+      ]
+    });
+  }
+
+  if (!NAF.schemas.hasTemplate('#avatar-man-template')) {
+    NAF.schemas.add({
+      template: '#avatar-man-template',
+      components: [
+        'position',
+        'gltf-model',
+        'scale',
+        'animation-mixer',
+        'rotation',
       ]
     });
   }

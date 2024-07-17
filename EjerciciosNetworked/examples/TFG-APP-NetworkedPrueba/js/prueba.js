@@ -2,92 +2,36 @@
 AFRAME.registerComponent('prueba', {
   init: function () {
     console.log("################## PRUEBA INIT ");
-
     let self = this;
     let scene = self.el.sceneEl;
 
-    document.addEventListener('keydown', function (event) {
-      if (event.code === 'KeyM') {
-        //console.log('¡Se presionó la barra espaciadora!');
-        //console.log(document.querySelector("#rig-player").getAttribute('position'));
-        //let positionPlayer = document.querySelector("#rig-player").getAttribute('position');
-        /*
-        let entidadCreation = document.createElement('a-entity');
-        entidadCreation.setAttribute('position', { x: 0, y: 0, z: -2});
-        entidadCreation.setAttribute('networked', 'template:#plato-template');
-        */
+    let entityRig = document.createElement('a-entity');
+    entityRig.setAttribute('networked', 'template', '#auxInit-template');
+    entityRig.setAttribute('id', 'rig-player');
+    entityRig.setAttribute('movement-controls', 'fly', 'true');
 
-        let positionPlayer = document.querySelector("#rig-player").getAttribute('position');
-        console.log("##### positionPlayer");
-        console.log(positionPlayer);
+    let entityAvatar = document.createElement('a-entity');
+    entityAvatar.setAttribute('networked', 'template', '#auxInit-template');
+    entityAvatar.setAttribute('id', 'player');
+    entityAvatar.setAttribute('camera', '');
+    entityAvatar.setAttribute('position', '0 2 2');
+    entityAvatar.setAttribute('look-controls', '');
+    entityAvatar.setAttribute('visible', 'false');
 
+    let entityAvatarGLB = document.createElement('a-entity');
+    entityAvatarGLB.setAttribute('networked', 'template', '#avatar-man-template');
+    entityAvatarGLB.setAttribute('gltf-model', '3Dmodels/ditto.glb');
+    entityAvatarGLB.setAttribute('animation-mixer', '',);
+    entityAvatarGLB.setAttribute('rotation', '0 180 0');
+    entityAvatarGLB.setAttribute('scale', '1 1 1');
 
+    let entityCursor = document.createElement('a-entity');
+    entityCursor.setAttribute('cursor', 'rayOrigin', 'mouse');
 
-        //PLATO NETWORKED
-        let entidadPlato = document.createElement('a-entity');
-        entidadPlato.setAttribute('networked', 'template:#platoInit-template');
-        entidadPlato.setAttribute('scale', '0 0 1');
-        entidadPlato .setAttribute('material', 'color', "purple");
-        entidadPlato.setAttribute('position', positionPlayer);
-        entidadPlato.setAttribute('geometry', {
-          'primitive': 'cylinder',
-          'radius': '4',
-          'height': '0.3',
-        });
-        entidadPlato.setAttribute('animation', {
-          'property': 'rotation',
-          'to': '0 360 0',
-          'dur': '30000',
-          'easing': 'linear',
-          'loop': 'true'
-        });
-        entidadPlato.setAttribute('animation__1', {
-          'property': 'scale',
-          'to': '1 1 1',
-          'dur': '1000',
-          'easing': 'linear',
-        });
-
-        //OJECTS DENTRO DEL PLATO
-        let entidadObject = document.createElement('a-entity');
-        entidadObject.setAttribute('networked', {
-          'template': '#objectInit-template',
-          'networkId': 'objecto1'
-        });
-        entidadObject.setAttribute('position', { x: 0, y: 2, z: 0});
-        entidadObject.setAttribute('gltf-model', '3Dmodels/folder1.glb');
-        entidadObject.setAttribute('scale', '0.2 0.2 0.2');
-        entidadObject.setAttribute('animation', {
-            'property': 'rotation',
-            'to': '0 360 0',
-            'dur': '15000',
-            'easing': 'linear',
-            'loop': 'true'
-        });
-
-        //OJECTS DENTRO DEL PLATO
-        let entidadText = document.createElement('a-entity');
-        entidadText.setAttribute('networked', 'template:#textInit-template');
-        entidadText.classList.add("topNameObject");
-        entidadText.setAttribute('text', {
-          'value': 'Babia-QueryJson',
-          'align': 'center',
-          'side': 'double',
-          'color': 'WHITE',
-          'shader': 'msdf',
-          'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
-        });
-
-        entidadText.setAttribute('scale', '50 50 50');
-        entidadText.setAttribute('position', { x: 0, y: 2.3, z: 0 });
-
-        entidadObject.appendChild(entidadText);
-        entidadPlato.appendChild(entidadObject);
-        self.el.appendChild(entidadPlato);
-
-      }
-    });
-
+    entityAvatar.appendChild(entityCursor);
+    entityAvatar.appendChild(entityAvatarGLB);
+    entityRig.appendChild(entityAvatar);
+    scene.appendChild(entityRig);
   },
 
   update: function () {

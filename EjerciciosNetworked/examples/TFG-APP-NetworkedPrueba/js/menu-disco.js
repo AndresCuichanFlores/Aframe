@@ -78,6 +78,7 @@ let createObjectGraph = (object, position) => {
 
     let entityObjectGraph = document.createElement('a-entity');
     //entityObjectGraph.classList.add("objectRayCaster");
+    entityObjectGraph.setAttribute('networked', 'template', '#graphInit-template');
     entityObjectGraph.setAttribute('rotation', '90 0 0');
     entityObjectGraph.setAttribute('scale', '0.6 0.6 0.6');
     entityObjectGraph.setAttribute(object, {
@@ -89,43 +90,18 @@ let createObjectGraph = (object, position) => {
 
     entityObjectGraph.addEventListener('click', function () {
         let self = this;
-
         this.parentNode.parentNode.childNodes.forEach(function (complementGraph) {
             if (complementGraph == self.parentNode) {
-                complementGraph.childNodes[1].setAttribute('text', 'opacity', '1');
-                complementGraph.childNodes[0].childNodes[0].childNodes.forEach(function (entity) {
-                    entity.setAttribute('material', 'opacity', 1);
-                });
                 complementGraph.classList.add("selected");
             } else {
-
-                if (complementGraph.classList.contains("miniDisco")) {
-                    complementGraph.removeAttribute('animation');
-                    let objectMiniDisco = complementGraph.childNodes[1];
-                    objectMiniDisco.object3D.traverse((value) => {
-                        if (value.type === 'Mesh') {
-                            const material = value.material;
-                            material.transparent = true;
-                            material.opacity = 0.3;
-                        }
-                    })
-                }else{
-                    complementGraph.childNodes[0].childNodes[0].childNodes.forEach(function (entity) {
-                        entity.setAttribute('material', 'opacity', 0.3);
-                    });
-                }
-
-                complementGraph.querySelector('.topNameObject').setAttribute('text', 'opacity', '0.3');
                 complementGraph.classList.remove("selected");
-
-                //si n es seleccionado es eliminado
+                complementGraph.setAttribute('remove-component', 'component', 'animation');
                 complementGraph.setAttribute('animation', {
                     'property': 'scale',
                     'to': '0 0 0',
                     'dur': '1000',
                     'easing': 'linear',
                 });
-
                 complementGraph.addEventListener('animationcomplete', function (event) {
                     complementGraph.parentNode.removeChild(complementGraph)
                 })
@@ -139,6 +115,7 @@ let createObjectGraph = (object, position) => {
     });
 
     let entityTextObject = document.createElement('a-entity');
+    entityTextObject.setAttribute('networked', 'template:#textInit-template');
     entityTextObject.classList.add("topNameObject");
     entityTextObject.setAttribute('text', {
         'value': object,
@@ -152,6 +129,7 @@ let createObjectGraph = (object, position) => {
     entityTextObject.setAttribute('position', { x: 0, y: 0.9, z: 0 });
 
     let entityBase = document.createElement('a-entity');
+    entityBase.setAttribute('networked', 'template:#auxInit-template');
     entityBase.setAttribute('position', position);
 
     entityBase.appendChild(entityObjectGraph);
