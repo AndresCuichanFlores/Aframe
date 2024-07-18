@@ -47,6 +47,7 @@ NAF.schemas.getComponents = (template) => {
         'position',
         'text',
         'scale',
+        'rotation'
       ]
     });
   }
@@ -64,9 +65,9 @@ NAF.schemas.getComponents = (template) => {
     });
   }
 
-  if (!NAF.schemas.hasTemplate('#avatar-man-template')) {
+  if (!NAF.schemas.hasTemplate('#avatar-user-template')) {
     NAF.schemas.add({
-      template: '#avatar-man-template',
+      template: '#avatar-user-template',
       components: [
         'position',
         'gltf-model',

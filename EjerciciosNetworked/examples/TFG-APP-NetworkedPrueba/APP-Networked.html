@@ -25,20 +25,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <!-- Libreria SUPERHANDS -->
   <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
-
-  <!-- Scripts Componentes/Logica
-  <script src="js/spawn-in-circle.component.js"></script>-->
-
+  <!-- SCRIPTS LOGICA -->
   <script src="js/load-schemas.js"></script>
-
+  <script src="js/spawn-in-circle.component.js"></script>
   <script type="module" src="js/entity-generator.js"></script>
   <script type="module" src="js/menu-disco.js"></script>
   <script type="module" src="js/creation.js"></script>
   <script type="module" src="js/events-object-creation.js"></script>
   <script type="module" src="js/configuration.js"></script>
   <script type="module" src="js/events-object-configuration.js"></script>
-
-  <script type="module" src="js/prueba.js"></script>
+  <script type="module" src="js/create-avatar.js"></script>
   <script type="module" src="js/object3d-material.js"></script>
   <script type="module" src="js/remove-component.js"></script> 
 
@@ -46,13 +42,12 @@
 
 <body>
 
-  <!-- SCENE -->
   <a-scene environment="preset: default; playArea: 3" networked-scene="room: basic-persistent; debug: true; adapter: easyrtc;">
 
     <!-- ASSETS -->
     <a-assets>
 
-      <template id="avatar-man-template">
+      <template id="avatar-user-template">
         <a-entity>
         </a-entity>
       </template>
@@ -85,31 +80,11 @@
     </a-assets>
 
     <!-- ENTITIES-->
-
-  <!-- 
-    <a-entity id="rig-player" movement-controls="fly:true" networked="template:#rig-template;">
-      <a-entity id="player" camera position="0 2 2" look-controls visible="false" networked="template:#avatar-man-template;" ></a-entity>
-      <a-entity cursor="rayOrigin:mouse"></a-entity>
-
-      <a-entity oculus-touch-controls="hand: right" raycaster="showLine: true; objects: .objectRayCaster, .babiaxraycasterclass, .babiaxrChart" super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els;
-                       colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls"></a-entity>
-    
-      <a-entity oculus-touch-controls="hand: left" raycaster="showLine: true; objects: .objectRayCaster, .babiaxraycasterclass, .babiaxrChart"
-        super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els;
-                                  colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls"></a-entity>
-     
-    </a-entity>
-  -->
-
-<!-- 
-    <a-entity gltf-model="3Dmodels/ditto.glb" animation-mixer position="0 3 -5" scale="0.8 0.8 0.8"></a-entity>
--->
-
     <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
     <a-entity entity-generator ></a-entity>
-    <a-entity prueba ></a-entity>
+    <a-entity create-avatar></a-entity>
 
     </a-scene>
-    
+
     </body>
     </html>
