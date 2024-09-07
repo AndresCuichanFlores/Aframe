@@ -3,7 +3,7 @@ import * as CONSTANTS from './constants.js';
 AFRAME.registerComponent('create-avatar', {
   init: function () {
     console.log("################## create-avatar INIT ");
-    const models = ['groot.glb', 'unicornio.glb', 'ditto.glb', 'dragon.glb', 'playerVR.glb', 'plane.glb'];
+    const models = ['groot.glb', 'ditto.glb', 'playerVR.glb', 'plane.glb'];
     const randomIndex = Math.floor(Math.random() * models.length);
     const randomModel = models[randomIndex];
     let scene = this.el.sceneEl;
@@ -40,7 +40,7 @@ AFRAME.registerComponent('create-avatar', {
   addModelGLB: function (randomModel) {
     let entityAvatarGLB = document.createElement('a-entity');
     entityAvatarGLB.setAttribute('networked', 'template', '#avatar-user-template');
-    entityAvatarGLB.setAttribute('animation-mixer', '',);
+    //entityAvatarGLB.setAttribute('animation-mixer', '',);
     entityAvatarGLB.setAttribute('visible', 'false');
     entityAvatarGLB.setAttribute('gltf-model', '3Dmodels/' + randomModel);
 
@@ -75,6 +75,7 @@ AFRAME.registerComponent('create-avatar', {
   addTitleModelGLB: function (randomModel) {
     let nameUser = 'user-' + Math.round(Math.random() * 10000);
     let entityTtile = document.createElement('a-entity');
+    entityTtile.setAttribute('id', 'nameAvatar');
     entityTtile.setAttribute('networked', 'template:#textInit-template');
     entityTtile.setAttribute('scale', '20 20 20');
     entityTtile.setAttribute('rotation', '0 180 0');

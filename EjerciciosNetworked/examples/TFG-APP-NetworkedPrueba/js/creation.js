@@ -195,7 +195,93 @@ AFRAME.registerComponent('creation', {
         let self = this;
         let entityIconInfo = this.crearEntityObject('iconInfo', 'Information');
         entityIconInfo.addEventListener('click', function () {
-            //console.log('Icon conf clicked!');
+            console.log('Icon conf clicked!');
+            let discoMenuInformation = entityIconInfo.parentNode;
+            let nameAvatar = document.querySelector('#nameAvatar').getAttribute('text').value;
+
+            let entityPanelInformation = document.createElement('a-entity');
+            //entityMiniDisco.setAttribute('networked', 'template:#platoInit-template');
+            entityPanelInformation.setAttribute('id', 'panelInformation');
+            entityPanelInformation.setAttribute('position', { x: 0, y: 6, z: 0 });
+            entityPanelInformation.setAttribute('rotation', "");
+
+            let entityBoxExt = document.createElement('a-entity');
+            entityBoxExt.setAttribute('geometry', {
+                'primitive': 'box',
+                'height': '4',
+                'width': '7',
+                'depth': '0.1',
+            });
+            entityBoxExt.setAttribute('material', {
+                'shader': 'flat',
+                'side': 'double',
+                'color': 'orange',
+                'src': '#floor'
+            });
+
+            let entityBoxInt = document.createElement('a-entity');
+            entityBoxInt.setAttribute('position', { x: 0, y: 0, z: 0.05 });
+            entityBoxInt.setAttribute('geometry', {
+                'primitive': 'box',
+                'height': '3.6',
+                'width': '6.6',
+                'depth': '0.05',
+            });
+            entityBoxInt.setAttribute('material', {
+                'shader': 'flat',
+                'side': 'double',
+                'color': '#fff700',
+                'src': '#floor'
+            });
+
+            let entityBodyText = document.createElement('a-entity');
+            entityBodyText.setAttribute('htmlembed', '');
+            entityBodyText.setAttribute('position', { x: 0, y: 0, z: 0.1 });
+            entityBodyText.classList.add("stylePanel");
+
+            let header = document.createElement('h1');
+            header.textContent = 'BABIA-QUERYJSON COMPONENT';
+
+            let textInf = document.createElement('p');
+            textInf.textContent = 'Component that will retrieve data from a JSON input that can be defined as an url or directly embedded';
+
+            let paragraph = document.createElement('p');
+            let boldSpan = document.createElement('span');
+            boldSpan.className = 'bold';
+            boldSpan.textContent = 'URL FILE:';
+            let textNode = document.createTextNode(' ./data/laptops.json');
+            paragraph.appendChild(boldSpan);
+            paragraph.appendChild(textNode);
+
+            let paragraphCreator = document.createElement('p');
+            let boldSpanCreator = document.createElement('span');
+            boldSpanCreator.className = 'bold';
+            boldSpanCreator.textContent = 'CREATOR: ';
+            let textNodeCreator = document.createTextNode(nameAvatar);
+            paragraphCreator.appendChild(boldSpanCreator);
+            paragraphCreator.appendChild(textNodeCreator);
+
+            let paragraphOwner = document.createElement('p');
+            let boldSpanOwner = document.createElement('span');
+            boldSpanOwner.className = 'bold';
+            boldSpanOwner.textContent = 'OWNER: ';
+            let textNodeOwner = document.createTextNode(nameAvatar);
+            paragraphOwner.appendChild(boldSpanOwner);
+            paragraphOwner.appendChild(textNodeOwner);
+
+
+
+            entityBodyText.appendChild(header);
+            entityBodyText.appendChild(textInf);
+            entityBodyText.appendChild(paragraph);
+            entityBodyText.appendChild(paragraphCreator);
+            entityBodyText.appendChild(paragraphOwner);
+
+            entityPanelInformation.appendChild(entityBodyText);
+            entityPanelInformation.appendChild(entityBoxInt);
+            entityPanelInformation.appendChild(entityBoxExt);
+            discoMenuInformation.appendChild(entityPanelInformation);
+
         });
         return entityIconInfo;
     },
