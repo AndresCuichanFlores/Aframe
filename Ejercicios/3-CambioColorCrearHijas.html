@@ -7,7 +7,7 @@
     AFRAME.registerComponent('changecolortime', {
         init: function () {
             var lastIndex = -1;
-            var COLORS = ['red', 'green', 'yellow'];
+            var COLORS = ['red', 'green', 'yellow', 'blue'];
             this.setcolortime = function () {
                 var self = this;
                 setTimeout(function () {
@@ -28,40 +28,40 @@
             var entityEl = document.createElement('a-entity');
             entityEl.setAttribute('geometry', {
                 primitive: 'box',
-                height: 1.5,
-                width: 0.33,
-                depth: 1.5
+                height: 1,
+                width: 1,
+                depth: 1
             });
             entityEl.setAttribute('material', {
                 color: '#53B2ED'
             });
             entityEl.setAttribute('changecolortime', '');
+            entityEl.object3D.position.set(0, 2.5, 0);
 
             var entityE2 = document.createElement('a-entity');
             entityE2.setAttribute('geometry', {
                 primitive: 'box',
-                height: 1.5,
-                width: 0.33,
-                depth: 1.5
+                height: 1,
+                width: 1,
+
             });
             entityE2.setAttribute('material', {
                 color: '#5553ED'
             });
             entityE2.setAttribute('changecolortime', '');
-            entityE2.object3D.position.set(-0.33, 0, 0);
+            entityE2.object3D.position.set(2, 2.5, 0);
 
             var entityE3 = document.createElement('a-entity');
             entityE3.setAttribute('geometry', {
                 primitive: 'box',
-                height: 1.5,
-                width: 0.33,
-                depth: 1.5
+                height: 1,
+                width: 1,
             });
             entityE3.setAttribute('material', {
                 color: '#5381ED'
             });
             entityE3.setAttribute('changecolortime', '');
-            entityE3.object3D.position.set(0.33, 0, 0);
+            entityE3.object3D.position.set(-2, 2.5, 0);
 
             this.add3box = function (){
                 this.appendChild(entityEl);
@@ -81,9 +81,9 @@
 <body>
 
   <a-scene >
-    <a-box position="-1 1.5 -1" rotation="0 0 0" color="#53EDC4" create3box></a-box>
-    <a-sphere position="0 1.25 -5" radius="1.25" color="orange" changecolortime></a-sphere>  
-    <a-plane position="0 0 -4" rotation="-90 0 0" width="8" height="8" color="#f94984" ></a-plane>
+    <a-box position="-2 2 -1" rotation="0 0 0" color="#53EDC4" height="2.5" width="2.5" create3box></a-box>
+    <a-sphere position="4 2 -8" radius="2" color="orange" changecolortime></a-sphere>  
+    <a-plane position="0 -1 -4" rotation="-90 0 0" width="8" height="8" color="#f94984" ></a-plane>
     <a-sky color="#abaff4" ></a-sky>
     <a-entity cursor="fuse: false; rayOrigin: mouse"></a-entity>
   </a-scene>

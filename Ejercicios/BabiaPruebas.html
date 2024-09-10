@@ -40,12 +40,23 @@
 
     <a-entity id="treetest" babia-treebuilder="field: id; split_by: /; from: dataCity"></a-entity>
 
-
     <a-entity id="filterrrr" babia-filter="from: Mamiferos; filter: color=blue"> </a-entity>
 
 
-    <a-entity  position="0 5 0" rotation="90 0 0" scale="1 1 1"
-      babia-pie='from:Mamiferos; key:model; size: sales; animation:true' >
+    <a-entity position="0 5 -8" rotation="90 0 0" scale="3 3 3"
+      babia-pie='from:Mamiferos; key:model; size: sales; animation:true; palette:foxy; legend: true; '>
+    </a-entity>
+    
+    <a-entity id="data-pie" position="9 6 -8" rotation="90 0 0" scale="2 2 2"
+      babia-doughnut='from:Mamiferos; key:model; size: sales; legend: true; palette: blues;  animation:false'>
+    </a-entity>
+    
+    <a-entity id="data-pie" position="-17 1 -8" rotation="0 0 0" scale="1 1 1"
+      babia-bars='from:Mamiferos; x_axis:motor; height: doors; legend: true; axis: true; axis_name: true; palette: icecream; animation: true'>
+    </a-entity>
+    
+    <a-entity id="data-pie" position="15 1 -8" rotation="0 0 0" scale="0.8 0.8 0.8" babia-cyls='from:Mamiferos; x_axis:motor; height:doors; radius:sales; legend:true; axis:true; axis_name: true;  
+    chartHeight: 10; radiusMax: 4; palette: flat; animation: true'>
     </a-entity>
 
 

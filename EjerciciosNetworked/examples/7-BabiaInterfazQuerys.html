@@ -207,7 +207,7 @@
             <a-entity laser-controls="hand: right"></a-entity>
         </a-entity>
 
-        <a-entity networked="template:#sphere-template;networkId:sphere121;" position="-6 3.5 -7"></a-entity>
+        <!--<a-entity networked="template:#sphere-template;networkId:sphere121;" position="-6 3.5 -7"></a-entity>-->
 
 
         <!-- Prueba-->
@@ -216,8 +216,8 @@
         <a-entity id="Anfibios" babia-queryjson="url: ./dataJSON/dataBD2.json"></a-entity>
         <a-entity id="Peces" babia-queryjson="url: ./dataJSON/dataBD3.json"></a-entity>
 
-        <a-entity id="datapie2" babia-pie='from:Mamiferos; legend: true; palette: blues; key:model; size: doors; title:UI Component; titlePosition: 3.5 0 -1.5' 
-        rotation="90 0 0" scale="2 2 2" position="0 8 -15" networked="template:#babia-pie-template; networkId:piequerier; " ></a-entity>
+        <a-entity id="datapie2" babia-pie='from:Mamiferos; legend: true; palette: pearl; key:model; size: doors; title:Interfaz queryJSON; titlePosition: 3.1 0 -1.7' 
+        rotation="90 0 0" scale="2 2 2" position="-0.5 8 -7" networked="template:#babia-pie-template; networkId:piequerier; " ></a-entity>
 
         <a-entity ui-querys="target: datapie2" position="0 2 -5" rotation="0 0 0" scale="0.4 0.7 0.5" > </a-entity>
 
