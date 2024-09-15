@@ -78,6 +78,19 @@ NAF.schemas.getComponents = (template) => {
     });
   }
 
+  if (!NAF.schemas.hasTemplate('#panelInformation-template')) {
+    NAF.schemas.add({
+      template: '#panelInformation-template',
+      components: [
+        'position',
+        'geometry',
+        'material',
+        'text',
+        'look-at'
+      ]
+    });
+  }
+
   const components = NAF.schemas.getComponentsOriginal(template);
   return components;
 };

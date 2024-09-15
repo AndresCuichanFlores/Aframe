@@ -25,8 +25,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <!-- Libreria SUPERHANDS -->
   <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
-  <!-- Libreria Aframe html -->
-  <script src="https://supereggbert.github.io/aframe-htmlembed-component/dist/build.js"></script>
+  <!-- Libreria Look At -->
+  <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
 
 
   <!-- SCRIPTS LOGICA -->
@@ -41,35 +41,6 @@
   <script type="module" src="js/create-avatar.js"></script>
   <script type="module" src="js/object3d-material.js"></script>
   <script type="module" src="js/remove-component.js"></script> 
-  <style>
-    body {
-      color: black;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      margin: 0;
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
-
-    h1 {
-      font-size: 90px;
-    }
-
-    p {
-      font-size: 70px;
-    }
-
-    .bold {
-      font-weight: 700;
-    }
-    .stylePanel {
-      width: 1700px; 
-      height: 900px;
-    }
-  </style>
 </head>
 
 <body>
@@ -109,30 +80,18 @@
         </a-entity>
       </template>
 
+      <template id="panelInformation-template">
+        <a-entity>
+        </a-entity>
+      </template>
+
     </a-assets>
 
 
-    <img id="floor" src="assets/TCom_Paint_MachinePaint_header.jpg">
-    <img id="metalic" src="assets/TCom_Marble_SlabGreen_header.jpg">
-
-<!-- 
-    <a-entity id="panelInformation" position="0 4 0" rotation="0 0 0">
-      <a-box src="#floor" material="shader: flat; side:double; color:orange" height="4" width="7" depth="0.1" position="0 0 0"></a-box>
-      <a-box src="#floor"material="shader: flat; side:double; color:#fff700"  height="3.6" width="6.6" depth="0.05" position="0 0 0.05"></a-box>
-      <a-entity htmlembed position="0 0 0.1" style="width: 1700px; height: 900px;">
-        <h1>BABIA-QUERYJSON COMPONENT</h1>
-        <p>Component that will retrieve data from a JSON input that can be defined as an url or directly embedded.</p>
-        <p><span class="bold">URL FILE:</span> ./data/laptops.json</p>
-        <p><span class="bold">CREATOR:</span> USER-0867</p>
-        <p><span class="bold">OWNER:</span> USER-0867</p>
-      </a-entity>
-    </a-entity>
--->
     <!-- ENTITIES-->
     <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
     <a-entity entity-generator ></a-entity>
     <a-entity create-avatar></a-entity>
-
 
     </a-scene>
 
