@@ -81,37 +81,13 @@ let createObjectGraph = (object, position) => {
     entityObjectGraph.setAttribute('networked', 'template', '#graphInit-template');
     entityObjectGraph.setAttribute('rotation', '90 0 0');
     entityObjectGraph.setAttribute('scale', '0.6 0.6 0.6');
+    entityObjectGraph.classList.add("objectRayCaster");
     entityObjectGraph.setAttribute(object, {
         'from': 'dataInicial',
         'key': 'model',
         'size': 'sales',
-        'palette': 'blues'
-    });
-
-    entityObjectGraph.addEventListener('click', function () {
-        let self = this;
-        this.parentNode.parentNode.childNodes.forEach(function (complementGraph) {
-            if (complementGraph == self.parentNode) {
-                complementGraph.classList.add("selected");
-            } else {
-                complementGraph.classList.remove("selected");
-                complementGraph.setAttribute('remove-component', 'component', 'animation');
-                complementGraph.setAttribute('animation', {
-                    'property': 'scale',
-                    'to': '0 0 0',
-                    'dur': '1000',
-                    'easing': 'linear',
-                });
-                complementGraph.addEventListener('animationcomplete', function (event) {
-                    complementGraph.parentNode.removeChild(complementGraph)
-                })
-            }
-        });
-
-        this.parentNode.parentNode.parentNode.setAttribute('creation', {
-            typeObjectSelected: CONSTANTS.TYPECREATION,
-            valueObjectSelected: object,
-        });
+        'palette': 'blues',
+        'legend_lookat': '#rig-player'
     });
 
     let entityTextObject = document.createElement('a-entity');
@@ -131,6 +107,46 @@ let createObjectGraph = (object, position) => {
     let entityBase = document.createElement('a-entity');
     entityBase.setAttribute('networked', 'template:#auxInit-template');
     entityBase.setAttribute('position', position);
+
+    //NUeva logica
+    entityBase.classList.add("objectRayCaster");
+    entityBase.setAttribute('rotation', '0 0 0');
+    entityBase.setAttribute('geometry', {
+      'primitive': 'cylinder',
+      'radius': '1',
+      'height': '1.6',
+    });
+    //entityBase.setAttribute('material', 'color', 'red');
+    //entityBase.setAttribute('material', 'opacity', '0.5');
+    entityBase.setAttribute('material', 'visible', 'false');
+
+    entityBase.addEventListener('click', function () {
+        console.log("CLICKKK EN LA CAJA AUXXXX");
+        let self = this;
+        this.parentNode.childNodes.forEach(function (complementGraph) {
+            if (complementGraph == self) {
+                complementGraph.classList.add("selected");
+            } else {
+                complementGraph.classList.remove("selected");
+                complementGraph.setAttribute('remove-component', 'component', 'animation');
+                complementGraph.setAttribute('animation', {
+                    'property': 'scale',
+                    'to': '0 0 0',
+                    'dur': '1000',
+                    'easing': 'linear',
+                });
+                complementGraph.addEventListener('animationcomplete', function (event) {
+                    complementGraph.parentNode.removeChild(complementGraph)
+                })
+            }
+        });
+
+        this.parentNode.parentNode.setAttribute('creation', {
+            typeObjectSelected: CONSTANTS.TYPECREATION,
+            valueObjectSelected: object,
+        });
+    });
+
 
     entityBase.appendChild(entityObjectGraph);
     entityBase.appendChild(entityTextObject);

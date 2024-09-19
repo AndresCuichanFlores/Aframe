@@ -17,7 +17,7 @@ AFRAME.registerComponent('spawn-in-circle', {
     var angleDeg = angleRad * 180 / Math.PI;
     var angleToCenter = -1 * angleDeg + 90;
     angleRad = THREE.MathUtils.degToRad(angleToCenter);
-    el.object3D.rotation.set(0, angleRad, 0);
+    //el.object3D.rotation.set(0, angleRad, 0);
   },
 
   getRandomAngleInRadians: function () {

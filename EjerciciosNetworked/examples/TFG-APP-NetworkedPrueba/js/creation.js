@@ -14,7 +14,7 @@ AFRAME.registerComponent('creation', {
     },
 
     update: function () {
-        //console.log("################## creation UPDATE ");
+        console.log("################## creation UPDATE ");
         this.valuesSelectded[this.data.typeObjectSelected] = this.data.valueObjectSelected;
         
         if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
@@ -116,6 +116,15 @@ AFRAME.registerComponent('creation', {
                 entityGrah = objectSelected.childNodes[0];
                 addAnimationEntity(entityGrah, 'animation', 'scale', '', '2 2 2', '2000', false);
                 addAnimationEntity(titleObject, 'animation', 'scale', '', '20 20 20', '2000', false);
+                
+                objectSelected.setAttribute('geometry', {
+                    'radius': '3',
+                    'height': '6',
+                });
+                
+                objectSelected.removeAttribute("geometry");
+
+
 
                 if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIADOUGHNUT) {
                     addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 3.5 0', '2000', false);
@@ -146,6 +155,7 @@ AFRAME.registerComponent('creation', {
                 self.addNuevosMenus();
 
                 objectSelected.addEventListener('click', function () {
+                    console.log("CLICKKK EL OBJETO CREADOOOO")
                     if (self.baseParent.childNodes.length > 1) {
                         let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
                         while (self.baseParent.childNodes.length > 0) {

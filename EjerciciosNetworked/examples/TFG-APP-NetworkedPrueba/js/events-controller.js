@@ -1,20 +1,40 @@
-import * as CONSTANTS from './constants.js';
 
-AFRAME.registerComponent('entity-generator', {
+
+AFRAME.registerComponent('events-controller', {
+  schema: {
+    activateController: { type: 'boolean', default: "" },
+    pressbuttonxa: { type: 'boolean', default: false }
+  },
+
   init: function () {
-    //console.log("################## entityGenerator INIT");
+    console.log("################## events-controller ");
     let self = this;
-    self.bButtonPressed = false;
-    self.yButtonPressed = false;
 
-    // GENERADOR PARA PC
-    document.addEventListener('keydown', function (event) {
-      if (event.code === 'Space') {
-        self.createMenuInit();
-      }
+    /*
+    document.addEventListener('raycaster-intersection', (evt) => {
+      //console.log('Intersecting with: ');
     });
 
-    // GENERADOR PARA OCULUS
+    document.addEventListener('raycaster-intersection-cleared', (evt) => {
+        //console.log('Raycast cleared from the box');
+    });
+    */
+
+    //INTERACTUAR VR
+    document.addEventListener('abuttondown', () => {
+      console.log("CLICK abuttondown")
+      self.data.pressbuttonxa = true;
+    });
+
+    document.addEventListener('xbuttondown', () => {
+      console.log("CLICK abuttondown")
+      self.data.pressbuttonxa = true;
+    });
+
+    // GENERADOR MENUS PARA VR
+    self.bButtonPressed = false;
+    self.yButtonPressed = false;
+    
     document.addEventListener('bbuttondown', function () {
       self.bButtonPressed = true;
       self.checkBothButtons();
@@ -30,10 +50,17 @@ AFRAME.registerComponent('entity-generator', {
       self.yButtonPressed = false;
     });
 
-},
+    // GENERADOR MENUS PARA PC
+    document.addEventListener('keydown', function (event) {
+      if (event.code === 'Space') {
+        self.createMenuInit();
+      }
+    });
+
+  },
 
   update: function () {
-    //console.log("################## entityGenerator UPDATE");
+    //console.log("################## remove-component UPDATE ");
   },
 
   checkBothButtons: function () {
@@ -66,7 +93,7 @@ AFRAME.registerComponent('entity-generator', {
     let position = document.querySelector("#rig-player").getAttribute('position');
     let newPosition = {
       x: position.x + direction.x * 10,
-      y: 0, // Mantener la misma altura
+      y: 0,
       z: position.z + direction.z * 10
     };
 

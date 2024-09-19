@@ -41,6 +41,7 @@
   <script type="module" src="js/create-avatar.js"></script>
   <script type="module" src="js/object3d-material.js"></script>
   <script type="module" src="js/remove-component.js"></script> 
+  <script type="module" src="js/events-controller.js"></script> 
 </head>
 
 <body>
@@ -90,10 +91,11 @@
 
     <!-- ENTITIES-->
     <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
-    <a-entity entity-generator ></a-entity>
     <a-entity create-avatar></a-entity>
+    <a-entity id="entityEventsController" events-controller ></a-entity>
 
-    </a-scene>
+
+  </a-scene>
 
     </body>
     </html>
