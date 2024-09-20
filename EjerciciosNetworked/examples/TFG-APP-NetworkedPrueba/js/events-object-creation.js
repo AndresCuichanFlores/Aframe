@@ -75,66 +75,71 @@ AFRAME.registerComponent('events-object-creation', {
 
     handleClick: function (evt) {
         //console.log("################## events-object-creation click");
-        let self = this;
-        let disco = self.el.parentNode;
-        let baseParent = disco.parentNode;
-        let objectsDisco = disco.childNodes;
+        if (!document.querySelector('#entityEventsController').getAttribute("events-controller").activateController || document.querySelector('#entityEventsController').getAttribute("events-controller").pressbuttonxa) {
+            document.querySelector('#entityEventsController').setAttribute("events-controller", "pressbuttonxa", "false");
 
-        //Eliminamos animancaciones del disco 
-        disco.setAttribute('remove-component', 'component', 'animation');
 
-        //Recorremos los objectos del disco
-        objectsDisco.forEach(function (object) {
-            if (object.classList.contains('miniDisco')) {
-                object.setAttribute('remove-component', 'component', 'animation');
-                object.setAttribute('animation', {
-                    'property': 'scale',
-                    'to': '0 0 0',
-                    'dur': '1000',
-                    'easing': 'linear',
-                });
-                object.addEventListener('animationcomplete', function (event) {
-                    disco.removeChild(object)
-                })
-            } else {
-                //Los objectos que no son selecionados cambiamos su apariencia
-                if (object !== self.el) {
-                    object.childNodes[0].setAttribute('text', 'opacity', '0.3');
-                    object.setAttribute('object3d-material', 'opacity', '0.3');
-                    object.classList.remove("selected");
+            let self = this;
+            let disco = self.el.parentNode;
+            let baseParent = disco.parentNode;
+            let objectsDisco = disco.childNodes;
 
-                    //si es de typecreation pues que desaparezca
-                    if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {
-                        object.setAttribute('remove-component', 'component', 'animation');
-                        object.setAttribute('animation', {
-                            'property': 'scale',
-                            'to': '0 0 0',
-                            'dur': '1000',
-                            'easing': 'linear',
-                        });
-                        object.addEventListener('animationcomplete', function (event) {
-                            disco.removeChild(object)
-                        })
-                    };
+            //Eliminamos animancaciones del disco 
+            disco.setAttribute('remove-component', 'component', 'animation');
 
+            //Recorremos los objectos del disco
+            objectsDisco.forEach(function (object) {
+                if (object.classList.contains('miniDisco')) {
+                    object.setAttribute('remove-component', 'component', 'animation');
+                    object.setAttribute('animation', {
+                        'property': 'scale',
+                        'to': '0 0 0',
+                        'dur': '1000',
+                        'easing': 'linear',
+                    });
+                    object.addEventListener('animationcomplete', function (event) {
+                        disco.removeChild(object)
+                    })
                 } else {
-                    //El objeto selecionado
-                    object.childNodes[0].setAttribute('text', 'opacity', '1');
-                    object.setAttribute('object3d-material', 'opacity', '1');
-                    object.classList.add("selected");
+                    //Los objectos que no son selecionados cambiamos su apariencia
+                    if (object !== self.el) {
+                        object.childNodes[0].setAttribute('text', 'opacity', '0.3');
+                        object.setAttribute('object3d-material', 'opacity', '0.3');
+                        object.classList.remove("selected");
 
-                    if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {
-                        self.el.removeEventListener('click', self.handleClick);
-                        self.el.removeAttribute('events-object-creation'); //se elimna solo el creador porque no se ha trasmitido el componente(en el otro no existe)
+                        //si es de typecreation pues que desaparezca
+                        if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {
+                            object.setAttribute('remove-component', 'component', 'animation');
+                            object.setAttribute('animation', {
+                                'property': 'scale',
+                                'to': '0 0 0',
+                                'dur': '1000',
+                                'easing': 'linear',
+                            });
+                            object.addEventListener('animationcomplete', function (event) {
+                                disco.removeChild(object)
+                            })
+                        };
+
+                    } else {
+                        //El objeto selecionado
+                        object.childNodes[0].setAttribute('text', 'opacity', '1');
+                        object.setAttribute('object3d-material', 'opacity', '1');
+                        object.classList.add("selected");
+
+                        if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {
+                            self.el.removeEventListener('click', self.handleClick);
+                            self.el.removeAttribute('events-object-creation'); //se elimna solo el creador porque no se ha trasmitido el componente(en el otro no existe)
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        //enviamos al componente creation los datos
-        this.el.parentNode.parentNode.setAttribute('creation', {
-            typeObjectSelected: this.data.objectType,
-            valueObjectSelected: this.data.objectStage,
-        });
+            //enviamos al componente creation los datos
+            this.el.parentNode.parentNode.setAttribute('creation', {
+                typeObjectSelected: this.data.objectType,
+                valueObjectSelected: this.data.objectStage,
+            });
+        }
     },
 });

@@ -116,7 +116,7 @@ AFRAME.registerComponent('create-avatar', {
     let entityInstruc = document.createElement('a-entity');
     entityInstruc.setAttribute('position', '0 -0.293 0.06');
     entityInstruc.setAttribute('text', {
-      'value': 'To create a user interface, hold down the B and Y buttons simultaneously on the VR controllers, or press the spacebar if you are on PC.\n\n To interact with the interface, use the A or X buttons on VR controllers, or click the mouse if you are on PC.',
+      'value': 'To create a user interface, hold down the B and Y buttons simultaneously on the VR controllers, or press the spacebar if you are on PC.\n\n To interact with the interface, use the triggers of VR controllers, or click the mouse if you are on PC.',
       'width': '6.5',
       'align': 'center',
       'shader': 'msdf',
@@ -139,6 +139,27 @@ AFRAME.registerComponent('create-avatar', {
 
         entitypanelinstrucciones.remove();
       }
+    });
+
+    entityCheck.addEventListener('mouseenter', function () {
+      this.object3D.traverse((value) => {
+        if (value.type === 'Mesh') {
+          const material = value.material;
+          material.transparent = true;
+          material.opacity = 0.5;
+        }
+      })
+
+    });
+
+    entityCheck.addEventListener('mouseleave', function () {
+      this.object3D.traverse((value) => {
+        if (value.type === 'Mesh') {
+          const material = value.material;
+          material.transparent = true;
+          material.opacity = 1;
+        }
+      })
     });
 
     entitypanelinstrucciones.appendChild(entityCheck)

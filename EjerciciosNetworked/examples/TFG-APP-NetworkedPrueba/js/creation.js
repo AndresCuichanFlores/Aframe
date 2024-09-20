@@ -105,6 +105,7 @@ AFRAME.registerComponent('creation', {
         setTimeout(() => {
             //eliminamos disco mainopction
             let entityGrah;
+            let entityAUX;
             this.baseParent.removeChild(discoMainOpcion);
 
             //disco en invisivle
@@ -114,25 +115,39 @@ AFRAME.registerComponent('creation', {
             let titleObject = objectSelected.querySelector('.topNameObject');
             if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.GRAPHS) {
                 entityGrah = objectSelected.childNodes[0];
-                addAnimationEntity(entityGrah, 'animation', 'scale', '', '2 2 2', '2000', false);
-                addAnimationEntity(titleObject, 'animation', 'scale', '', '20 20 20', '2000', false);
-                
-                objectSelected.setAttribute('geometry', {
-                    'radius': '3',
-                    'height': '6',
-                });
-                
+
+                //eliminar aux 1 rojo 
                 objectSelected.removeAttribute("geometry");
 
+                //a;adir aux 2 verde
+                entityAUX = document.createElement('a-entity');
+                entityAUX.classList.add("objectRayCaster");
+                entityAUX.setAttribute('rotation', '90 0 0');
+                entityAUX.setAttribute('position', '0 4.1 0');
+                entityAUX.setAttribute('geometry', {
+                  'primitive': 'cylinder',
+                  'radius': '1.4',
+                  'height': '4',
+                });
+                //entityAUX.setAttribute('material', 'color', 'green');
+                //entityAUX.setAttribute('material', 'opacity', '0.6');
+                entityAUX.setAttribute('material', 'visible', 'false');
 
+                discoTypeCreation.appendChild(entityAUX);
+
+                addAnimationEntity(titleObject, 'animation', 'scale', '', '21 21 21', '2000', false);
 
                 if (this.valuesSelectded[CONSTANTS.TYPECREATION] === CONSTANTS.BABIADOUGHNUT) {
-                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 3.5 0', '2000', false);
-                    addAnimationEntity(titleObject, 'animation__1', 'position', '', '0 3 0', '2000', false);
+                    addAnimationEntity(entityGrah, 'animation', 'scale', '', '2.5 2.5 2.5', '2000', false);
+                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 4.1 0', '2000', false);
+                    addAnimationEntity(titleObject, 'animation__1', 'position', '', '0 0 -4', '2000', false);
                 } else {
-                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 3 0', '2000', false);
-                    addAnimationEntity(titleObject, 'animation__1', 'position', '', '0 2 0', '2000', false);
+                    entityAUX.setAttribute('geometry', 'radius', '1.2');
+                    addAnimationEntity(entityGrah, 'animation', 'scale', '', '3.8 3 3.8', '2000', false);
+                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 4 0', '2000', false);
+                    addAnimationEntity(titleObject, 'animation__1', 'position', '', '0 0 -4.3', '2000', false);
                 }
+
             } else {
                 addAnimationEntity(objectSelected, 'animation', 'scale', '', '0.5 0.5 0.5', '2000', false);
                 addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 2.5 0', '2000', false);
@@ -150,24 +165,30 @@ AFRAME.registerComponent('creation', {
 
                 if (entityGrah) {
                     entityGrah.removeAttribute("animation");
+                    objectSelected = entityAUX;
                 }
                 //añadimos nuevos menus de creacion
                 self.addNuevosMenus();
 
                 objectSelected.addEventListener('click', function () {
-                    console.log("CLICKKK EL OBJETO CREADOOOO")
-                    if (self.baseParent.childNodes.length > 1) {
-                        let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
-                        while (self.baseParent.childNodes.length > 0) {
-                            var child = self.baseParent.childNodes[self.baseParent.childNodes.length - 1];
-                            if (child === discoTypeCreation) {
-                                break;
+                    if (!document.querySelector('#entityEventsController').getAttribute("events-controller").activateController || document.querySelector('#entityEventsController').getAttribute("events-controller").pressbuttonxa) {
+                        document.querySelector('#entityEventsController').setAttribute("events-controller", "pressbuttonxa", "false");
+
+
+                        console.log("CLICKKK EL OBJETO CREADOOOO o CLICKKKK EN EL AUX VERDEEEE")
+                        if (self.baseParent.childNodes.length > 1) {
+                            let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+                            while (self.baseParent.childNodes.length > 0) {
+                                var child = self.baseParent.childNodes[self.baseParent.childNodes.length - 1];
+                                if (child === discoTypeCreation) {
+                                    break;
+                                }
+                                self.baseParent.removeChild(child);
+                                self.numeroDiscosCreados -= 1;
                             }
-                            self.baseParent.removeChild(child);
-                            self.numeroDiscosCreados -= 1;
+                        } else {
+                            self.addNuevosMenus();
                         }
-                    } else {
-                        self.addNuevosMenus();
                     }
                 });
             }, 2000);
@@ -207,189 +228,101 @@ AFRAME.registerComponent('creation', {
         let entityIconInfo = this.crearEntityObject('iconInfo', 'Information');
 
         entityIconInfo.addEventListener('click', function () {
-            console.log('Icon conf clicked!');
-            let discoMenuInfo = this.parentNode;
-            let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
-            let objectBabiaCreated = discoTypeCreation.childNodes[0];
-            let nameAvatar = document.querySelector('#nameAvatar').getAttribute('text').value;
+            if (!document.querySelector('#entityEventsController').getAttribute("events-controller").activateController || document.querySelector('#entityEventsController').getAttribute("events-controller").pressbuttonxa) {
+                document.querySelector('#entityEventsController').setAttribute("events-controller", "pressbuttonxa", "false");
 
-            if (discoMenuInfo.childNodes.length === 1) {
-                //Eliminar los demas menus   
-                for (let i = self.el.childNodes.length - 1; i >= 0; i--) {
-                    var menu = self.el.childNodes[i];
-                    if (menu !== discoMenuInfo && menu !== discoTypeCreation) {
-                        self.el.removeChild(menu);
+
+                console.log('Icon conf clicked!');
+                let discoMenuInfo = this.parentNode;
+                let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+                let objectBabiaCreated = discoTypeCreation.childNodes[0];
+                let nameAvatar = document.querySelector('#nameAvatar').getAttribute('text').value;
+
+                if (discoMenuInfo.childNodes.length === 1) {
+                    //Eliminar los demas menus   
+                    for (let i = self.el.childNodes.length - 1; i >= 0; i--) {
+                        var menu = self.el.childNodes[i];
+                        if (menu !== discoMenuInfo && menu !== discoTypeCreation) {
+                            self.el.removeChild(menu);
+                        }
                     }
-                }
-                //Eliminar animaciones del disco y agregar el atributo configuration
-                discoMenuInfo.setAttribute('remove-component', 'component', 'animation');
+                    //Eliminar animaciones del disco y agregar el atributo configuration
+                    discoMenuInfo.setAttribute('remove-component', 'component', 'animation');
 
-                //ENTIDAD PADRE panelInformation
-                let entityPanelInformation = document.createElement('a-entity');
-                entityPanelInformation.setAttribute('networked', 'template:#panelInformation-template');
-                entityPanelInformation.setAttribute('look-at', '#rig-player');
-                entityPanelInformation.setAttribute('id', 'panelInformation');
-                entityPanelInformation.setAttribute('position', { x: 0, y: 6, z: 0 });
-                entityPanelInformation.setAttribute('geometry', {
-                    'primitive': 'box',
-                    'height': '4.3',
-                    'width': '7',
-                    'depth': '0.1',
-                });
-                entityPanelInformation.setAttribute('material', {
-                    'color': '#0000FF',
-                });
+                    //ENTIDAD PADRE panelInformation
+                    let entityPanelInformation = document.createElement('a-entity');
+                    entityPanelInformation.setAttribute('networked', 'template:#panelInformation-template');
+                    entityPanelInformation.setAttribute('look-at', '#rig-player');
+                    entityPanelInformation.setAttribute('id', 'panelInformation');
+                    entityPanelInformation.setAttribute('position', { x: 0, y: 6, z: 0 });
+                    entityPanelInformation.setAttribute('geometry', {
+                        'primitive': 'box',
+                        'height': '4.3',
+                        'width': '7',
+                        'depth': '0.1',
+                    });
+                    entityPanelInformation.setAttribute('material', {
+                        'color': '#0000FF',
+                    });
 
-                //ENTIDAD TEXT TITULO
-                let entityTextTitulo = document.createElement('a-entity');
-                entityTextTitulo.setAttribute('networked', 'template:#panelInformation-template');
-                entityTextTitulo.setAttribute('id', 'titulo');
-                entityTextTitulo.setAttribute('position', { x: 0, y: 1.2, z: 0.06 });
-                entityTextTitulo.setAttribute('text', {
-                    'value': self.data.valueObjectSelected.toUpperCase() + " COMPONENT",
-                    'width': '10',
-                    'align': 'center',
-                    'side': 'double',
-                    'color': 'WHITE',
-                    'shader': 'msdf',
-                    'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/bangers/Bangers-Regular.json'
-                });
+                    //ENTIDAD TEXT TITULO
+                    let entityTextTitulo = document.createElement('a-entity');
+                    entityTextTitulo.setAttribute('networked', 'template:#panelInformation-template');
+                    entityTextTitulo.setAttribute('id', 'titulo');
+                    entityTextTitulo.setAttribute('position', { x: 0, y: 1.2, z: 0.06 });
+                    entityTextTitulo.setAttribute('text', {
+                        'value': self.data.valueObjectSelected.toUpperCase() + " COMPONENT",
+                        'width': '10',
+                        'align': 'center',
+                        'side': 'double',
+                        'color': 'WHITE',
+                        'shader': 'msdf',
+                        'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/bangers/Bangers-Regular.json'
+                    });
 
-                //ENTIDAD TEXT DESCRIPCION
-                let extensionArchivo = "";
-                let txtDescripcion = "";
+                    //ENTIDAD TEXT DESCRIPCION
+                    let extensionArchivo = "";
+                    let txtDescripcion = "";
 
-                if (CONSTANTS.BABIAQUERYJSON === self.data.valueObjectSelected) {
-                    txtDescripcion = 'Component that will retrieve data from a JSON input that can be defined as an url';
-                    extensionArchivo = ".json"
-                } else if (CONSTANTS.BABIAQUERYCSV === self.data.valueObjectSelected) {
-                    txtDescripcion = 'Component that will retrieve data from a CSV input that can be defined as an url.';
-                    extensionArchivo = ".csv"
-                } else if (CONSTANTS.BABIAFILTER === self.data.valueObjectSelected) {
-                    txtDescripcion = 'This component will select a part of the data retrieved (by a key=value) in order to represent just that part of the data.';
+                    if (CONSTANTS.BABIAQUERYJSON === self.data.valueObjectSelected) {
+                        txtDescripcion = 'Component that will retrieve data from a JSON input that can be defined as an url';
+                        extensionArchivo = ".json"
+                    } else if (CONSTANTS.BABIAQUERYCSV === self.data.valueObjectSelected) {
+                        txtDescripcion = 'Component that will retrieve data from a CSV input that can be defined as an url.';
+                        extensionArchivo = ".csv"
+                    } else if (CONSTANTS.BABIAFILTER === self.data.valueObjectSelected) {
+                        txtDescripcion = 'This component will select a part of the data retrieved (by a key=value) in order to represent just that part of the data.';
 
-                    let nameFile = objectBabiaCreated.querySelector('.botNameObject').getAttribute("text").value;
-                    if (nameFile.includes(":")) {
-                        nameFile = nameFile.split(":")[0];
-                    }
-                    extensionArchivo = searchExtFileCreated(nameFile);
-                } else if (CONSTANTS.BABIAPIE === self.data.valueObjectSelected) {
-                    txtDescripcion = 'This component shows a pie chart from the filterdata/querier entity where the data for the chart is located.';
-                } else if (CONSTANTS.BABIADOUGHNUT === self.data.valueObjectSelected) {
-                    txtDescripcion = 'This component shows a doughnut chart from the filterdata/querier entity where the data for the chart is located.';
-                }
-
-                let entityTextDescripcion = document.createElement('a-entity');
-                entityTextDescripcion.setAttribute('networked', 'template:#panelInformation-template');
-                entityTextDescripcion.setAttribute('id', 'descripcion');
-                entityTextDescripcion.setAttribute('position', { x: 0, y: 0.7, z: 0.06 });
-                entityTextDescripcion.setAttribute('text', {
-                    'value': txtDescripcion,
-                    'width': '6.5',
-                    'align': 'center',
-                    'side': 'double',
-                    'color': 'WHITE',
-                    'shader': 'msdf',
-                });
-
-                //ENTIDAD TEXT CREATOR
-                let entityTextCreator = document.createElement('a-entity');
-                entityTextCreator.setAttribute('networked', 'template:#panelInformation-template');
-                entityTextCreator.setAttribute('position', { x: -1.5, y: -0.4, z: 0.06 });
-                entityTextCreator.setAttribute('text', {
-                    'value': 'CREATOR:',
-                    'width': '7',
-                    'align': 'center',
-                    'side': 'double',
-                    'color': 'WHITE',
-                    'shader': 'msdf',
-                    'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-BoldItalic.json'
-                });
-
-                //ENTIDAD TEXT CREATOR VALUE
-                let entityTextCreatorValue = document.createElement('a-entity');
-                entityTextCreatorValue.setAttribute('networked', 'template:#panelInformation-template');
-                entityTextCreatorValue.setAttribute('position', { x: 1.2, y: -0.4, z: 0.06 });
-                entityTextCreatorValue.setAttribute('text', {
-                    'value': nameAvatar,
-                    'width': '6.3',
-                    'align': 'center',
-                    'side': 'double',
-                    'color': 'WHITE',
-                    'shader': 'msdf',
-                    'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Italic.json'
-                });
-
-                //ENTIDAD TEXT URL FILE
-                let entityTextURL = document.createElement('a-entity');
-                entityTextURL.setAttribute('networked', 'template:#panelInformation-template');
-                entityTextURL.setAttribute('position', { x: -1.5, y: -0.9, z: 0.06 });
-                entityTextURL.setAttribute('text', {
-                    'value': 'URL FILE:',
-                    'width': '7',
-                    'align': 'center',
-                    'side': 'double',
-                    'color': 'WHITE',
-                    'shader': 'msdf',
-                    'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-BoldItalic.json'
-                });
-
-                //ENTIDAD TEXT URL FILE VALUE
-                let txtURLValue = "";
-                let textFilterValue = "";
-                let textKeySizeValue = "";
-
-                if (objectBabiaCreated.querySelector('.botNameObject')) {
-                    let nameFile = objectBabiaCreated.querySelector('.botNameObject').getAttribute("text").value;
-                    if (nameFile.includes(":")) {
-                        textFilterValue = nameFile.split(":")[1];;
-                        nameFile = nameFile.split(":")[0];
+                        let nameFile = objectBabiaCreated.querySelector('.botNameObject').getAttribute("text").value;
+                        if (nameFile.includes(":")) {
+                            nameFile = nameFile.split(":")[0];
+                        }
+                        extensionArchivo = searchExtFileCreated(nameFile);
+                    } else if (CONSTANTS.BABIAPIE === self.data.valueObjectSelected) {
+                        txtDescripcion = 'This component shows a pie chart from the filterdata/querier entity where the data for the chart is located.';
+                    } else if (CONSTANTS.BABIADOUGHNUT === self.data.valueObjectSelected) {
+                        txtDescripcion = 'This component shows a doughnut chart from the filterdata/querier entity where the data for the chart is located.';
                     }
 
-                    txtURLValue = " ./data/" + nameFile + extensionArchivo;
-                }
+                    let entityTextDescripcion = document.createElement('a-entity');
+                    entityTextDescripcion.setAttribute('networked', 'template:#panelInformation-template');
+                    entityTextDescripcion.setAttribute('id', 'descripcion');
+                    entityTextDescripcion.setAttribute('position', { x: 0, y: 0.7, z: 0.06 });
+                    entityTextDescripcion.setAttribute('text', {
+                        'value': txtDescripcion,
+                        'width': '6.5',
+                        'align': 'center',
+                        'side': 'double',
+                        'color': 'WHITE',
+                        'shader': 'msdf',
+                    });
 
-                if (CONSTANTS.BABIAPIE === self.data.valueObjectSelected || CONSTANTS.BABIADOUGHNUT === self.data.valueObjectSelected) {
-                    let objectBabiaCreatedComponent = objectBabiaCreated.querySelector(`[${self.data.valueObjectSelected}]`);
-                    let fromFile = objectBabiaCreatedComponent.getAttribute(self.data.valueObjectSelected).from;
-                    let keyFile = objectBabiaCreatedComponent.getAttribute(self.data.valueObjectSelected).key;
-                    let sizeFile = objectBabiaCreatedComponent.getAttribute(self.data.valueObjectSelected).size;
-
-                    if (fromFile.includes(":")) {
-                        textFilterValue = fromFile.split(":")[1];;
-                        fromFile = fromFile.split(":")[0];
-                    }
-                    extensionArchivo = searchExtFileCreated(fromFile);
-
-                    txtURLValue = " ./data/" + fromFile + extensionArchivo;
-                    textKeySizeValue = keyFile + "/" + sizeFile;
-
-                    if (fromFile === "dataInicial") {
-                        txtURLValue = "";
-                        textKeySizeValue = "";
-                    }
-                }
-
-                let entityTextURLValue = document.createElement('a-entity');
-                entityTextURLValue.setAttribute('networked', 'template:#panelInformation-template');
-                entityTextURLValue.setAttribute('position', { x: 1.2, y: -0.9, z: 0.06 });
-                entityTextURLValue.setAttribute('text', {
-                    'value': txtURLValue,
-                    'width': '6.3',
-                    'align': 'center',
-                    'side': 'double',
-                    'color': 'WHITE',
-                    'shader': 'msdf',
-                    'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Italic.json'
-                });
-
-                if (CONSTANTS.BABIAQUERYJSON !== self.data.valueObjectSelected && CONSTANTS.BABIAQUERYCSV !== self.data.valueObjectSelected) {
-                    //ENTIDAD TEXT FILTER
-                    let entityTextFilter = document.createElement('a-entity');
-                    entityTextFilter.setAttribute('networked', 'template:#panelInformation-template');
-                    entityTextFilter.setAttribute('position', { x: -1.5, y: -1.4, z: 0.06 });
-                    entityTextFilter.setAttribute('text', {
-                        'value': 'FILTER:',
+                    //ENTIDAD TEXT CREATOR
+                    let entityTextCreator = document.createElement('a-entity');
+                    entityTextCreator.setAttribute('networked', 'template:#panelInformation-template');
+                    entityTextCreator.setAttribute('position', { x: -1.5, y: -0.4, z: 0.06 });
+                    entityTextCreator.setAttribute('text', {
+                        'value': 'CREATOR:',
                         'width': '7',
                         'align': 'center',
                         'side': 'double',
@@ -398,12 +331,12 @@ AFRAME.registerComponent('creation', {
                         'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-BoldItalic.json'
                     });
 
-                    //ENTIDAD TEXT FILTER VALUE
-                    let entityTextFilterValue = document.createElement('a-entity');
-                    entityTextFilterValue.setAttribute('networked', 'template:#panelInformation-template');
-                    entityTextFilterValue.setAttribute('position', { x: 1.2, y: -1.4, z: 0.06 });
-                    entityTextFilterValue.setAttribute('text', {
-                        'value': textFilterValue,
+                    //ENTIDAD TEXT CREATOR VALUE
+                    let entityTextCreatorValue = document.createElement('a-entity');
+                    entityTextCreatorValue.setAttribute('networked', 'template:#panelInformation-template');
+                    entityTextCreatorValue.setAttribute('position', { x: 1.2, y: -0.4, z: 0.06 });
+                    entityTextCreatorValue.setAttribute('text', {
+                        'value': nameAvatar,
                         'width': '6.3',
                         'align': 'center',
                         'side': 'double',
@@ -412,13 +345,76 @@ AFRAME.registerComponent('creation', {
                         'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Italic.json'
                     });
 
+                    //ENTIDAD TEXT URL FILE
+                    let entityTextURL = document.createElement('a-entity');
+                    entityTextURL.setAttribute('networked', 'template:#panelInformation-template');
+                    entityTextURL.setAttribute('position', { x: -1.5, y: -0.9, z: 0.06 });
+                    entityTextURL.setAttribute('text', {
+                        'value': 'URL FILE:',
+                        'width': '7',
+                        'align': 'center',
+                        'side': 'double',
+                        'color': 'WHITE',
+                        'shader': 'msdf',
+                        'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-BoldItalic.json'
+                    });
+
+                    //ENTIDAD TEXT URL FILE VALUE
+                    let txtURLValue = "";
+                    let textFilterValue = "";
+                    let textKeySizeValue = "";
+
+                    if (objectBabiaCreated.querySelector('.botNameObject')) {
+                        let nameFile = objectBabiaCreated.querySelector('.botNameObject').getAttribute("text").value;
+                        if (nameFile.includes(":")) {
+                            textFilterValue = nameFile.split(":")[1];;
+                            nameFile = nameFile.split(":")[0];
+                        }
+
+                        txtURLValue = " ./data/" + nameFile + extensionArchivo;
+                    }
+
                     if (CONSTANTS.BABIAPIE === self.data.valueObjectSelected || CONSTANTS.BABIADOUGHNUT === self.data.valueObjectSelected) {
-                        //ENTIDAD TEXT KEY/SICE
-                        let entityTextKeySize = document.createElement('a-entity');
-                        entityTextKeySize.setAttribute('networked', 'template:#panelInformation-template');
-                        entityTextKeySize.setAttribute('position', { x: -1.5, y: -1.9, z: 0.06 });
-                        entityTextKeySize.setAttribute('text', {
-                            'value': 'KEY/SICE:',
+                        let objectBabiaCreatedComponent = objectBabiaCreated.querySelector(`[${self.data.valueObjectSelected}]`);
+                        let fromFile = objectBabiaCreatedComponent.getAttribute(self.data.valueObjectSelected).from;
+                        let keyFile = objectBabiaCreatedComponent.getAttribute(self.data.valueObjectSelected).key;
+                        let sizeFile = objectBabiaCreatedComponent.getAttribute(self.data.valueObjectSelected).size;
+
+                        if (fromFile.includes(":")) {
+                            textFilterValue = fromFile.split(":")[1];;
+                            fromFile = fromFile.split(":")[0];
+                        }
+                        extensionArchivo = searchExtFileCreated(fromFile);
+
+                        txtURLValue = " ./data/" + fromFile + extensionArchivo;
+                        textKeySizeValue = keyFile + "/" + sizeFile;
+
+                        if (fromFile === "dataInicial") {
+                            txtURLValue = "";
+                            textKeySizeValue = "";
+                        }
+                    }
+
+                    let entityTextURLValue = document.createElement('a-entity');
+                    entityTextURLValue.setAttribute('networked', 'template:#panelInformation-template');
+                    entityTextURLValue.setAttribute('position', { x: 1.2, y: -0.9, z: 0.06 });
+                    entityTextURLValue.setAttribute('text', {
+                        'value': txtURLValue,
+                        'width': '6.3',
+                        'align': 'center',
+                        'side': 'double',
+                        'color': 'WHITE',
+                        'shader': 'msdf',
+                        'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Italic.json'
+                    });
+
+                    if (CONSTANTS.BABIAQUERYJSON !== self.data.valueObjectSelected && CONSTANTS.BABIAQUERYCSV !== self.data.valueObjectSelected) {
+                        //ENTIDAD TEXT FILTER
+                        let entityTextFilter = document.createElement('a-entity');
+                        entityTextFilter.setAttribute('networked', 'template:#panelInformation-template');
+                        entityTextFilter.setAttribute('position', { x: -1.5, y: -1.4, z: 0.06 });
+                        entityTextFilter.setAttribute('text', {
+                            'value': 'FILTER:',
                             'width': '7',
                             'align': 'center',
                             'side': 'double',
@@ -427,12 +423,12 @@ AFRAME.registerComponent('creation', {
                             'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-BoldItalic.json'
                         });
 
-                        //ENTIDAD TEXT KEY/SICE VALUE
-                        let entityTextKeySizeValue = document.createElement('a-entity');
-                        entityTextKeySizeValue.setAttribute('networked', 'template:#panelInformation-template');
-                        entityTextKeySizeValue.setAttribute('position', { x: 1.2, y: -1.9, z: 0.06 });
-                        entityTextKeySizeValue.setAttribute('text', {
-                            'value': textKeySizeValue,
+                        //ENTIDAD TEXT FILTER VALUE
+                        let entityTextFilterValue = document.createElement('a-entity');
+                        entityTextFilterValue.setAttribute('networked', 'template:#panelInformation-template');
+                        entityTextFilterValue.setAttribute('position', { x: 1.2, y: -1.4, z: 0.06 });
+                        entityTextFilterValue.setAttribute('text', {
+                            'value': textFilterValue,
                             'width': '6.3',
                             'align': 'center',
                             'side': 'double',
@@ -441,23 +437,53 @@ AFRAME.registerComponent('creation', {
                             'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Italic.json'
                         });
 
-                        entityPanelInformation.appendChild(entityTextKeySize);
-                        entityPanelInformation.appendChild(entityTextKeySizeValue);
+                        if (CONSTANTS.BABIAPIE === self.data.valueObjectSelected || CONSTANTS.BABIADOUGHNUT === self.data.valueObjectSelected) {
+                            //ENTIDAD TEXT KEY/SICE
+                            let entityTextKeySize = document.createElement('a-entity');
+                            entityTextKeySize.setAttribute('networked', 'template:#panelInformation-template');
+                            entityTextKeySize.setAttribute('position', { x: -1.5, y: -1.9, z: 0.06 });
+                            entityTextKeySize.setAttribute('text', {
+                                'value': 'KEY/SICE:',
+                                'width': '7',
+                                'align': 'center',
+                                'side': 'double',
+                                'color': 'WHITE',
+                                'shader': 'msdf',
+                                'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-BoldItalic.json'
+                            });
+
+                            //ENTIDAD TEXT KEY/SICE VALUE
+                            let entityTextKeySizeValue = document.createElement('a-entity');
+                            entityTextKeySizeValue.setAttribute('networked', 'template:#panelInformation-template');
+                            entityTextKeySizeValue.setAttribute('position', { x: 1.2, y: -1.9, z: 0.06 });
+                            entityTextKeySizeValue.setAttribute('text', {
+                                'value': textKeySizeValue,
+                                'width': '6.3',
+                                'align': 'center',
+                                'side': 'double',
+                                'color': 'WHITE',
+                                'shader': 'msdf',
+                                'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Italic.json'
+                            });
+
+                            entityPanelInformation.appendChild(entityTextKeySize);
+                            entityPanelInformation.appendChild(entityTextKeySizeValue);
+                        }
+
+                        entityPanelInformation.appendChild(entityTextFilter);
+                        entityPanelInformation.appendChild(entityTextFilterValue);
                     }
 
-                    entityPanelInformation.appendChild(entityTextFilter);
-                    entityPanelInformation.appendChild(entityTextFilterValue);
+                    //AÑADIMOS LOS HIJOS
+                    entityPanelInformation.appendChild(entityTextTitulo);
+                    entityPanelInformation.appendChild(entityTextDescripcion);
+                    entityPanelInformation.appendChild(entityTextCreator);
+                    entityPanelInformation.appendChild(entityTextCreatorValue);
+                    entityPanelInformation.appendChild(entityTextURL);
+                    entityPanelInformation.appendChild(entityTextURLValue);
+
+                    discoMenuInfo.appendChild(entityPanelInformation);
                 }
-
-                //AÑADIMOS LOS HIJOS
-                entityPanelInformation.appendChild(entityTextTitulo);
-                entityPanelInformation.appendChild(entityTextDescripcion);
-                entityPanelInformation.appendChild(entityTextCreator);
-                entityPanelInformation.appendChild(entityTextCreatorValue);
-                entityPanelInformation.appendChild(entityTextURL);
-                entityPanelInformation.appendChild(entityTextURLValue);
-
-                discoMenuInfo.appendChild(entityPanelInformation);
             }
         });
 
@@ -477,10 +503,15 @@ AFRAME.registerComponent('creation', {
         let self = this;
         let entityIconDelte = this.crearEntityObject('iconDelete', 'Delete');
         entityIconDelte.addEventListener('click', function () {
-            addAnimationEntity(this.parentNode.parentNode, 'animation', 'scale', '', '0 0 0', '2000', false);
-            setTimeout(() => {
-                this.sceneEl.removeChild(this.parentNode.parentNode);
-            }, 2000);
+            if (!document.querySelector('#entityEventsController').getAttribute("events-controller").activateController || document.querySelector('#entityEventsController').getAttribute("events-controller").pressbuttonxa) {
+                document.querySelector('#entityEventsController').setAttribute("events-controller", "pressbuttonxa", "false");
+
+
+                addAnimationEntity(this.parentNode.parentNode, 'animation', 'scale', '', '0 0 0', '2000', false);
+                setTimeout(() => {
+                    this.sceneEl.removeChild(this.parentNode.parentNode);
+                }, 2000);
+            }
         });
         return entityIconDelte;
     },
@@ -499,26 +530,31 @@ AFRAME.registerComponent('creation', {
         let entityIconConf = this.crearEntityObject('iconConf', 'Configuration');
 
         entityIconConf.addEventListener('click', function () {
-            //console.log("CLICK ICON CONF")
-            let discoMenuConfiguration = entityIconConf.parentNode;
-            let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+            if (!document.querySelector('#entityEventsController').getAttribute("events-controller").activateController || document.querySelector('#entityEventsController').getAttribute("events-controller").pressbuttonxa) {
+                document.querySelector('#entityEventsController').setAttribute("events-controller", "pressbuttonxa", "false");
 
-            if (discoMenuConfiguration.childNodes.length === 1) {
-                //Eliminar los demas menus   
-                for (let i = self.baseParent.childNodes.length - 1; i >= 0; i--) {
-                    var menu = self.baseParent.childNodes[i];
-                    if (menu !== discoMenuConfiguration && menu !== discoTypeCreation) {
-                        self.baseParent.removeChild(menu);
+
+                //console.log("CLICK ICON CONF")
+                let discoMenuConfiguration = entityIconConf.parentNode;
+                let discoTypeCreation = self.el.querySelector('#Menu-' + CONSTANTS.TYPECREATION);
+
+                if (discoMenuConfiguration.childNodes.length === 1) {
+                    //Eliminar los demas menus   
+                    for (let i = self.baseParent.childNodes.length - 1; i >= 0; i--) {
+                        var menu = self.baseParent.childNodes[i];
+                        if (menu !== discoMenuConfiguration && menu !== discoTypeCreation) {
+                            self.baseParent.removeChild(menu);
+                        }
                     }
-                }
 
-                //Eliminar animaciones del disco y agregar el atributo configuration
-                discoMenuConfiguration.setAttribute('remove-component', 'component', 'animation');
-                
-                discoMenuConfiguration.setAttribute('configuration', {
-                    typeObjectSelected: CONSTANTS.TYPECREATION,
-                    valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION],
-                });
+                    //Eliminar animaciones del disco y agregar el atributo configuration
+                    discoMenuConfiguration.setAttribute('remove-component', 'component', 'animation');
+
+                    discoMenuConfiguration.setAttribute('configuration', {
+                        typeObjectSelected: CONSTANTS.TYPECREATION,
+                        valueObjectSelected: self.valuesSelectded[CONSTANTS.TYPECREATION],
+                    });
+                }
             }
         });
 

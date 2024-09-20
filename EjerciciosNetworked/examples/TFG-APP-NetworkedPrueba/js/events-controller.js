@@ -21,15 +21,17 @@ AFRAME.registerComponent('events-controller', {
     */
 
     //INTERACTUAR VR
-    document.addEventListener('abuttondown', () => {
+    document.addEventListener('triggerdown', () => {
       console.log("CLICK abuttondown")
       self.data.pressbuttonxa = true;
     });
 
+    /*
     document.addEventListener('xbuttondown', () => {
       console.log("CLICK abuttondown")
       self.data.pressbuttonxa = true;
     });
+    */
 
     // GENERADOR MENUS PARA VR
     self.bButtonPressed = false;
@@ -71,32 +73,30 @@ AFRAME.registerComponent('events-controller', {
 
   createMenuInit: function () {
     let scene = this.el.sceneEl;
-    let positionPlayer = document.querySelector("#rig-player").getAttribute('position');
     let entidadCreation = document.createElement('a-entity');
     entidadCreation.setAttribute('id', 'InitCreation');
     entidadCreation.setAttribute('networked', 'template:#auxInit-template');
     entidadCreation.setAttribute('creation', '');
     let newPosition = this.searchPositionMenu();
-    entidadCreation.setAttribute('position', `${newPosition.x} ${newPosition.y} ${newPosition.z}`);
+    entidadCreation.object3D.position.copy(newPosition);
 
     scene.appendChild(entidadCreation);
   },
 
   searchPositionMenu: function () {
-    let rig = document.querySelector("#player")
-    let rotation = rig.getAttribute('rotation');
-    let radianY = rotation.y * (Math.PI / 180);
-    let direction = {
-      x: -Math.sin(radianY),
-      z: -Math.cos(radianY)
-    };
-    let position = document.querySelector("#rig-player").getAttribute('position');
-    let newPosition = {
-      x: position.x + direction.x * 10,
-      y: 0,
-      z: position.z + direction.z * 10
-    };
 
+    var distance = -12; 
+    let player = document.querySelector("#player");
+    var direction = new THREE.Vector3();
+    var childWorldPosition = new THREE.Vector3();
+    var newPosition = new THREE.Vector3();
+
+    player.object3D.getWorldPosition(childWorldPosition);
+    player.object3D.getWorldDirection(direction);
+    newPosition.copy(childWorldPosition).add(direction.multiplyScalar(distance));
+    newPosition.y = 0
+
+    //console.log("Posición de la nueva entidad:", newPosition);
     return newPosition;
   },
 

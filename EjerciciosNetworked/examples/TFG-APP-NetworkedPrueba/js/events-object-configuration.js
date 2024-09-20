@@ -50,33 +50,39 @@ AFRAME.registerComponent('events-object-configuration', {
 
     handleClick: function (evt) {
         //console.log("################## menu-object click");
-        let self = this;
-        let disco = self.el.parentNode;
-        let objectsDisco = disco.childNodes;
 
-        //Eliminamos animancaciones del disco
-        disco.setAttribute('remove-component', 'component', 'animation');
+        if (!document.querySelector('#entityEventsController').getAttribute("events-controller").activateController || document.querySelector('#entityEventsController').getAttribute("events-controller").pressbuttonxa) {
+            document.querySelector('#entityEventsController').setAttribute("events-controller", "pressbuttonxa", "false");
 
-        //Recorremos los objectos del disco
-        objectsDisco.forEach(function (object) {
-            if (!object.classList.contains('miniDisco')) {
-                //Los objectos que no son selecionados cambiamos su apariencia
-                if (object !== self.el) {
-                    object.childNodes[0].setAttribute('text', 'opacity', '0.3');
-                    object.setAttribute('object3d-material', 'opacity', '0.3');
-                    object.classList.remove("selected");
-                } else {
-                    object.childNodes[0].setAttribute('text', 'opacity', '1');
-                    object.setAttribute('object3d-material', 'opacity', '1');
-                    object.classList.add("selected");
+
+            let self = this;
+            let disco = self.el.parentNode;
+            let objectsDisco = disco.childNodes;
+
+            //Eliminamos animancaciones del disco
+            disco.setAttribute('remove-component', 'component', 'animation');
+
+            //Recorremos los objectos del disco
+            objectsDisco.forEach(function (object) {
+                if (!object.classList.contains('miniDisco')) {
+                    //Los objectos que no son selecionados cambiamos su apariencia
+                    if (object !== self.el) {
+                        object.childNodes[0].setAttribute('text', 'opacity', '0.3');
+                        object.setAttribute('object3d-material', 'opacity', '0.3');
+                        object.classList.remove("selected");
+                    } else {
+                        object.childNodes[0].setAttribute('text', 'opacity', '1');
+                        object.setAttribute('object3d-material', 'opacity', '1');
+                        object.classList.add("selected");
+                    }
                 }
-            }
-        });
+            });
 
-        //enviamos al componente config los datos
-        this.menuConfiguration.setAttribute('configuration', {
-            typeObjectSelected: this.data.objectType,
-            valueObjectSelected: this.data.objectStage,
-        });
+            //enviamos al componente config los datos
+            this.menuConfiguration.setAttribute('configuration', {
+                typeObjectSelected: this.data.objectType,
+                valueObjectSelected: this.data.objectStage,
+            });
+        }
     },
 });
