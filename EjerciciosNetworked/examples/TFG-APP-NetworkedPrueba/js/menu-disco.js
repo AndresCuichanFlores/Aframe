@@ -135,7 +135,10 @@ let createObjectGraph = (object, position) => {
                         complementGraph.classList.add("selected");
                     } else {
                         complementGraph.classList.remove("selected");
-                        complementGraph.setAttribute('remove-component', 'component', 'animation');
+                        complementGraph.setAttribute('component-synchronize', {
+                            'componentShare': 'remove',
+                            'valueShare': 'animation',
+                        });
                         complementGraph.setAttribute('animation', {
                             'property': 'scale',
                             'to': '0 0 0',

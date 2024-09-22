@@ -156,12 +156,30 @@ AFRAME.registerComponent('creation', {
 
             setTimeout(() => {
                 //eliminamos todas las animaciones del disco typecrreation
-                objectSelected.setAttribute('remove-component', 'component', 'animation');
-                objectSelected.setAttribute('remove-component', 'component', 'animation__1');
-                discoTypeCreation.setAttribute('remove-component', 'component', 'geometry');
-                discoTypeCreation.setAttribute('remove-component', 'component', 'material');
-                discoTypeCreation.setAttribute('remove-component', 'component', 'animation');
-                discoTypeCreation.setAttribute('remove-component', 'component', 'animation__1');
+                objectSelected.setAttribute('component-synchronize', {
+                    'componentShare': 'remove',
+                    'valueShare': 'animation',
+                });
+                objectSelected.setAttribute('component-synchronize', {
+                    'componentShare': 'remove',
+                    'valueShare': 'animation__1',
+                });
+                discoTypeCreation.setAttribute('component-synchronize', {
+                    'componentShare': 'remove',
+                    'valueShare': 'geometry',
+                });
+                discoTypeCreation.setAttribute('component-synchronize', {
+                    'componentShare': 'remove',
+                    'valueShare': 'material',
+                });
+                discoTypeCreation.setAttribute('component-synchronize', {
+                    'componentShare': 'remove',
+                    'valueShare': 'animation',
+                });
+                discoTypeCreation.setAttribute('component-synchronize', {
+                    'componentShare': 'remove',
+                    'valueShare': 'animation__1',
+                });
 
                 if (entityGrah) {
                     entityGrah.removeAttribute("animation");
@@ -247,7 +265,10 @@ AFRAME.registerComponent('creation', {
                         }
                     }
                     //Eliminar animaciones del disco y agregar el atributo configuration
-                    discoMenuInfo.setAttribute('remove-component', 'component', 'animation');
+                    discoMenuInfo.setAttribute('component-synchronize', {
+                        'componentShare': 'remove',
+                        'valueShare': 'animation',
+                    });
 
                     //ENTIDAD PADRE panelInformation
                     let entityPanelInformation = document.createElement('a-entity');
@@ -320,7 +341,7 @@ AFRAME.registerComponent('creation', {
                     //ENTIDAD TEXT CREATOR
                     let entityTextCreator = document.createElement('a-entity');
                     entityTextCreator.setAttribute('networked', 'template:#panelInformation-template');
-                    entityTextCreator.setAttribute('position', { x: -1.5, y: -0.4, z: 0.06 });
+                    entityTextCreator.setAttribute('position', { x: -1.7, y: -0.4, z: 0.06 });
                     entityTextCreator.setAttribute('text', {
                         'value': 'CREATOR:',
                         'width': '7',
@@ -348,7 +369,7 @@ AFRAME.registerComponent('creation', {
                     //ENTIDAD TEXT URL FILE
                     let entityTextURL = document.createElement('a-entity');
                     entityTextURL.setAttribute('networked', 'template:#panelInformation-template');
-                    entityTextURL.setAttribute('position', { x: -1.5, y: -0.9, z: 0.06 });
+                    entityTextURL.setAttribute('position', { x: -1.7, y: -0.9, z: 0.06 });
                     entityTextURL.setAttribute('text', {
                         'value': 'URL FILE:',
                         'width': '7',
@@ -371,7 +392,7 @@ AFRAME.registerComponent('creation', {
                             nameFile = nameFile.split(":")[0];
                         }
 
-                        txtURLValue = " ./data/" + nameFile + extensionArchivo;
+                        txtURLValue = "  ./data/" + nameFile + extensionArchivo;
                     }
 
                     if (CONSTANTS.BABIAPIE === self.data.valueObjectSelected || CONSTANTS.BABIADOUGHNUT === self.data.valueObjectSelected) {
@@ -400,7 +421,7 @@ AFRAME.registerComponent('creation', {
                     entityTextURLValue.setAttribute('position', { x: 1.2, y: -0.9, z: 0.06 });
                     entityTextURLValue.setAttribute('text', {
                         'value': txtURLValue,
-                        'width': '6.3',
+                        'width': '6.2',
                         'align': 'center',
                         'side': 'double',
                         'color': 'WHITE',
@@ -412,7 +433,7 @@ AFRAME.registerComponent('creation', {
                         //ENTIDAD TEXT FILTER
                         let entityTextFilter = document.createElement('a-entity');
                         entityTextFilter.setAttribute('networked', 'template:#panelInformation-template');
-                        entityTextFilter.setAttribute('position', { x: -1.5, y: -1.4, z: 0.06 });
+                        entityTextFilter.setAttribute('position', { x: -1.7, y: -1.4, z: 0.06 });
                         entityTextFilter.setAttribute('text', {
                             'value': 'FILTER:',
                             'width': '7',
@@ -441,7 +462,7 @@ AFRAME.registerComponent('creation', {
                             //ENTIDAD TEXT KEY/SICE
                             let entityTextKeySize = document.createElement('a-entity');
                             entityTextKeySize.setAttribute('networked', 'template:#panelInformation-template');
-                            entityTextKeySize.setAttribute('position', { x: -1.5, y: -1.9, z: 0.06 });
+                            entityTextKeySize.setAttribute('position', { x: -1.7, y: -1.9, z: 0.06 });
                             entityTextKeySize.setAttribute('text', {
                                 'value': 'KEY/SICE:',
                                 'width': '7',
@@ -548,7 +569,10 @@ AFRAME.registerComponent('creation', {
                     }
 
                     //Eliminar animaciones del disco y agregar el atributo configuration
-                    discoMenuConfiguration.setAttribute('remove-component', 'component', 'animation');
+                    discoMenuConfiguration.setAttribute('component-synchronize', {
+                        'componentShare': 'remove',
+                        'valueShare': 'animation',
+                    });
 
                     discoMenuConfiguration.setAttribute('configuration', {
                         typeObjectSelected: CONSTANTS.TYPECREATION,
@@ -672,13 +696,6 @@ let createMiniDisco = (titleObject) => {
         'radius': '1',
         'height': '0.3',
     });
-    entityMiniDisco.setAttribute('animation', {
-        property: 'rotation',
-        to: '0 -360 0',
-        dur: 30000,
-        easing: 'linear',
-        loop: true
-    });
 
     //en gltf del objecto
     let entityObject = document.createElement('a-entity');
@@ -686,10 +703,12 @@ let createMiniDisco = (titleObject) => {
     entityObject.setAttribute('gltf-model', '3Dmodels/folder3.glb');
     entityObject.setAttribute('position', { x: 0, y: 0.6, z: 0 });
     entityObject.setAttribute('scale', '0.15 0.15 0.15');
+    entityObject.setAttribute('look-at', '#rig-player');
 
     //texto arriba del objeto
     let entityTitle = document.createElement('a-entity');
     entityTitle.setAttribute('networked', 'template:#textInit-template');
+    entityTitle.setAttribute('look-at', '#rig-player');
     entityTitle.classList.add("topNameObject");
     entityTitle.setAttribute('text', {
         'value': titleObject,
@@ -709,7 +728,10 @@ let createMiniDisco = (titleObject) => {
 };
 
 let addAnimationEntity = (entityObject, typeAnimation, property, from, to, dur, loop) => {
-    entityObject.setAttribute('remove-component', 'component', 'typeAnimation');
+    entityObject.setAttribute('component-synchronize', {
+        'componentShare': 'remove',
+        'valueShare': typeAnimation,
+    });
     entityObject.setAttribute(typeAnimation, {
         'property': property,
         'from': from,

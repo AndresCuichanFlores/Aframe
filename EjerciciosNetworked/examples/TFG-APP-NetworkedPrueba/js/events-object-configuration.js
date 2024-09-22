@@ -60,19 +60,28 @@ AFRAME.registerComponent('events-object-configuration', {
             let objectsDisco = disco.childNodes;
 
             //Eliminamos animancaciones del disco
-            disco.setAttribute('remove-component', 'component', 'animation');
+            disco.setAttribute('component-synchronize', {
+                'componentShare': 'remove',
+                'valueShare': 'animation',
+            });
 
             //Recorremos los objectos del disco
             objectsDisco.forEach(function (object) {
                 if (!object.classList.contains('miniDisco')) {
                     //Los objectos que no son selecionados cambiamos su apariencia
                     if (object !== self.el) {
-                        object.childNodes[0].setAttribute('text', 'opacity', '0.3');
-                        object.setAttribute('object3d-material', 'opacity', '0.3');
+                        object.childNodes[0].setAttribute('text', 'opacity', '0.4');
+                        object.setAttribute('component-synchronize', {
+                            'componentShare': 'opacity',
+                            'valueShare': '0.4',
+                        });
                         object.classList.remove("selected");
                     } else {
                         object.childNodes[0].setAttribute('text', 'opacity', '1');
-                        object.setAttribute('object3d-material', 'opacity', '1');
+                        object.setAttribute('component-synchronize', {
+                            'componentShare': 'opacity',
+                            'valueShare': '1',
+                        });
                         object.classList.add("selected");
                     }
                 }

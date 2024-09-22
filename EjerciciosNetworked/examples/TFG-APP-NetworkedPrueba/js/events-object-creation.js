@@ -85,12 +85,18 @@ AFRAME.registerComponent('events-object-creation', {
             let objectsDisco = disco.childNodes;
 
             //Eliminamos animancaciones del disco 
-            disco.setAttribute('remove-component', 'component', 'animation');
+            disco.setAttribute('component-synchronize', {
+                'componentShare': 'remove',
+                'valueShare': 'animation',
+            });
 
             //Recorremos los objectos del disco
             objectsDisco.forEach(function (object) {
                 if (object.classList.contains('miniDisco')) {
-                    object.setAttribute('remove-component', 'component', 'animation');
+                    object.setAttribute('component-synchronize', {
+                        'componentShare': 'remove',
+                        'valueShare': 'animation',
+                    });
                     object.setAttribute('animation', {
                         'property': 'scale',
                         'to': '0 0 0',
@@ -103,13 +109,19 @@ AFRAME.registerComponent('events-object-creation', {
                 } else {
                     //Los objectos que no son selecionados cambiamos su apariencia
                     if (object !== self.el) {
-                        object.childNodes[0].setAttribute('text', 'opacity', '0.3');
-                        object.setAttribute('object3d-material', 'opacity', '0.3');
+                        object.childNodes[0].setAttribute('text', 'opacity', '0.4');
+                        object.setAttribute('component-synchronize', {
+                            'componentShare': 'opacity',
+                            'valueShare': '0.4',
+                        });
                         object.classList.remove("selected");
 
                         //si es de typecreation pues que desaparezca
                         if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {
-                            object.setAttribute('remove-component', 'component', 'animation');
+                            object.setAttribute('component-synchronize', {
+                                'componentShare': 'remove',
+                                'valueShare': 'animation',
+                            });
                             object.setAttribute('animation', {
                                 'property': 'scale',
                                 'to': '0 0 0',
@@ -124,7 +136,10 @@ AFRAME.registerComponent('events-object-creation', {
                     } else {
                         //El objeto selecionado
                         object.childNodes[0].setAttribute('text', 'opacity', '1');
-                        object.setAttribute('object3d-material', 'opacity', '1');
+                        object.setAttribute('component-synchronize', {
+                            'componentShare': 'opacity',
+                            'valueShare': '1',
+                        });
                         object.classList.add("selected");
 
                         if (object.getAttribute('events-object-creation').objectType === CONSTANTS.TYPECREATION) {

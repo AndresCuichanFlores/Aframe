@@ -46,7 +46,7 @@ AFRAME.registerComponent('configuration', {
                 url: ['./data/laptops.json', './data/plants.json', './data/cafes.json'],
             },
             [CONSTANTS.BABIAQUERYCSV]: {
-                url: ['./data/cuentas.csv', './data/hacienda.csv', './data/nomina.csv'],
+                url: ['./data/cuentas.csv', './data/hacienda.csv', './data/nomina.csv', './data/lenguajesProgramacion.csv'],
             },
         },
 
@@ -317,13 +317,6 @@ AFRAME.registerComponent('configuration', {
             'radius': '1',
             'height': '0.3',
         });
-        entityMiniDisco.setAttribute('animation', {
-            property: 'rotation',
-            to: '0 -360 0',
-            dur: 30000,
-            easing: 'linear',
-            loop: true
-        });
 
         //en gltf del objecto
         let entityObject = document.createElement('a-entity');
@@ -331,11 +324,13 @@ AFRAME.registerComponent('configuration', {
         entityObject.setAttribute('gltf-model', '3Dmodels/folder3.glb');
         entityObject.setAttribute('position', { x: 0, y: 0.6, z: 0 });
         entityObject.setAttribute('scale', '0.15 0.15 0.15');
+        entityObject.setAttribute('look-at', '#rig-player');
 
         //texto arriba del objeto
         let entityTitle = document.createElement('a-entity');
         entityTitle.setAttribute('networked', 'template:#textInit-template');
         entityTitle.classList.add("topNameObject");
+        entityTitle.setAttribute('look-at', '#rig-player');
         entityTitle.setAttribute('text', {
             'value': titleObject,
             'align': 'center',
