@@ -3,7 +3,6 @@ AFRAME.registerComponent('events-object-configuration', {
     schema: {
         objectStage: { type: 'string', default: '' },
         objectType: { type: 'string', default: '' },
-        nameObjectGLB: { type: 'string', default: '' },
     },
 
     init: function () {
@@ -21,7 +20,7 @@ AFRAME.registerComponent('events-object-configuration', {
     customizeObjectStage: function () {
         //console.log("################## menu-object customizeObjectStage ##################");
         //this.el.setAttribute('id', this.data.objectStage);
-        this.el.setAttribute('gltf-model', '3Dmodels/' + this.data.nameObjectGLB + '.glb');
+        this.el.setAttribute('gltf-model', '3Dmodels/folder1.glb');
         this.el.setAttribute('scale', '0.2 0.2 0.2');
         this.el.setAttribute('animation', {
             'property': 'rotation',

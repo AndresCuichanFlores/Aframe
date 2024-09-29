@@ -13,9 +13,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
   <!-- Libreria de EasyRTC -->
   <script src="/easyrtc/easyrtc.js"></script>
-  <!-- Babia -->
+  <!-- Libreria de BabiaXR -->
   <script src="https://unpkg.com/aframe-babia-components/dist/aframe-babia-components.min.js"></script>
-  <!-- libreria extra -->
+  <!-- libreria Aframe-extra -->
   <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.2.0/dist/aframe-extras.min.js"></script>
   <!-- Enviorement -->
   <script src="https://unpkg.com/aframe-environment-component@1.3.4/dist/aframe-environment-component.min.js"></script>
@@ -44,7 +44,7 @@
 
 <body>
 
-  <a-scene environment="preset: default; playArea: 3" networked-scene="room: basic-persistent; debug: true; adapter: easyrtc;">
+  <a-scene environment="preset: default; playArea: 3" networked-scene="room: user-interface; debug: true; adapter: easyrtc;">
 
     <!-- ASSETS -->
     <a-assets>
@@ -91,6 +91,7 @@
     <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
     <a-entity create-avatar></a-entity>
     <a-entity id="entityEventsController" events-controller ></a-entity>
+
 
   </a-scene>
 

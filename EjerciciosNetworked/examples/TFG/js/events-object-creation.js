@@ -4,7 +4,6 @@ AFRAME.registerComponent('events-object-creation', {
     schema: {
         objectStage: { type: 'string', default: '' },
         objectType: { type: 'string', default: '' },
-        nameObjectGLB: { type: 'string', default: '' },
     },
 
     init: function () {
@@ -20,8 +19,35 @@ AFRAME.registerComponent('events-object-creation', {
 
     customizeObjectStage: function () {
         //console.log("################## menu-object customizeObjectStage ##################");
-        this.el.setAttribute('gltf-model', '3Dmodels/' + this.data.nameObjectGLB + '.glb');
-        this.el.setAttribute('scale', '0.2 0.2 0.2');
+
+        let scalaPadre = 0.2;
+        let positionHijo = {x: 0, y: 2.5, z: 0};
+        if(this.data.objectType == CONSTANTS.MAINOPCION){
+            let posicionActual = this.el.getAttribute('position');
+            this.el.setAttribute('gltf-model', '3Dmodels/' + this.data.objectStage + '.glb');
+
+            if(this.data.objectStage == CONSTANTS.QUERYES){
+                posicionActual.y = posicionActual.y + 0.3;
+                scalaPadre = 0.8;
+                positionHijo.y = 0.4;
+                this.el.setAttribute('scale', {x: scalaPadre, y: scalaPadre, z: scalaPadre});
+            }else if(this.data.objectStage == CONSTANTS.GRAPHS){
+                posicionActual.y = posicionActual.y + (-0.2);
+                scalaPadre = 0.3
+                positionHijo.y = 2.7;
+                this.el.setAttribute('scale', {x: scalaPadre, y: scalaPadre, z: scalaPadre});
+            }else if(this.data.objectStage == CONSTANTS.FILTERS){
+                posicionActual.y = posicionActual.y + (-0.5);
+                scalaPadre = 0.150
+                positionHijo.y = 7.20;
+                positionHijo.x = -3;
+                this.el.setAttribute('scale', {x: scalaPadre, y: scalaPadre, z: scalaPadre});
+            }
+        }else{
+            this.el.setAttribute('gltf-model', '3Dmodels/folder1.glb');
+            this.el.setAttribute('scale', '0.2 0.2 0.2');
+        }
+
         this.el.setAttribute('animation', {
             'property': 'rotation',
             'to': '0 360 0',
@@ -68,8 +94,8 @@ AFRAME.registerComponent('events-object-creation', {
             'shader': 'msdf',
             'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
         });
-        entityObjectChildren.setAttribute('scale', '50 50 50');
-        entityObjectChildren.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y + 1.3, z: 0 });
+        entityObjectChildren.setAttribute('scale', { x: 10/scalaPadre, y: 10/scalaPadre, z: 10/scalaPadre });
+        entityObjectChildren.setAttribute('position', positionHijo);
         this.el.appendChild(entityObjectChildren);
     },
 

@@ -669,7 +669,8 @@ let createNewMenuDisco = (self, objects, objectType, colorDisco, miniDisco) => {
     entityMenuDisco.setAttribute('menu-disco', {
         'objectsStage': objects,
         'objectType': objectType,
-        'colorDisco': colorDisco
+        'colorDisco': colorDisco,
+        'eventObject': 'events-object-creation'
     });
 
     if (miniDisco) {

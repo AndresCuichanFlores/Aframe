@@ -289,7 +289,7 @@ AFRAME.registerComponent('configuration', {
             'objectsStage': objects,
             'objectType': objectType,
             'colorDisco': colorDisco,
-            'eventComplement': 'events-object-configuration'
+            'eventObject': 'events-object-configuration'
         });
         
         let entityMiniDisco;

@@ -5,12 +5,13 @@ AFRAME.registerComponent('menu-disco', {
         colorDisco: { type: 'string', default: '' },
         objectsStage: { type: 'array', default: [] },
         objectType: { type: 'string', default: '' },
+        eventObject: { type: 'string', default: '' },
     },
 
     init: function () {
         //console.log("################## menu-disco INIT ");
         this.customizeDiscoStage();
-        this.createObjectsStage('folder1');
+        this.createObjectsStage();
     },
 
     update: function () {
@@ -41,7 +42,7 @@ AFRAME.registerComponent('menu-disco', {
         });
     },
 
-    createObjectsStage: function (nameObjectGLB) {
+    createObjectsStage: function () {
         //console.log("################## menu-disco createObjectsStage  ##################");
         let self = this;
         let radius = 3.2;
@@ -62,7 +63,7 @@ AFRAME.registerComponent('menu-disco', {
             if (complementsGraph.includes(object)) {
                 entityObject = createObjectGraph(object, posicionNueva);
             } else {
-                entityObject = createObject(self, object, nameObjectGLB, posicionNueva);
+                entityObject = createObject(self, object, posicionNueva);
             }
 
             self.el.appendChild(entityObject);
@@ -165,7 +166,7 @@ let createObjectGraph = (object, position) => {
     return entityBase;
 };
 
-let createObject = (self, object, nameObjectGLB, position) => {
+let createObject = (self, object, position) => {
     //console.log("################## menu-disco createObject  ##################");
     position.y = 1.3;
 
@@ -173,9 +174,8 @@ let createObject = (self, object, nameObjectGLB, position) => {
     entityObject.setAttribute('networked', 'template', '#objectInit-template');
     entityObject.classList.add("objectRayCaster");
     entityObject.setAttribute('position', position);
-    entityObject.setAttribute('events-object-creation', {
+    entityObject.setAttribute(self.data.eventObject, {
         'objectStage': object,
-        'nameObjectGLB': nameObjectGLB,
         'objectType': self.data.objectType
     });
     return entityObject;
