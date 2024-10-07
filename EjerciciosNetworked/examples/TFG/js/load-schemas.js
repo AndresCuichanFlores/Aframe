@@ -6,6 +6,7 @@ NAF.schemas.getComponents = (template) => {
       template: '#platoInit-template',
       components: [
         'position',
+        'rotation',
         'scale',
         'geometry',
         'animation',
@@ -20,6 +21,7 @@ NAF.schemas.getComponents = (template) => {
       template: '#objectInit-template',
       components: [
         'position',
+        'rotation',
         'scale',
         'gltf-model',
         'animation',
@@ -28,6 +30,7 @@ NAF.schemas.getComponents = (template) => {
         'babia-querycsv',
         'babia-filter',
         'look-at',
+        'id',
       ]
     });
   }
@@ -77,6 +80,7 @@ NAF.schemas.getComponents = (template) => {
       template: '#panelInformation-template',
       components: [
         'position',
+        'rotation',
         'geometry',
         'material',
         'text',

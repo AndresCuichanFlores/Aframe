@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+.divSeparador{
+    width: 100%;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.divFijo {
+    display: flex;
+    position: fixed;
+    width: 100vw;
+    height: 50px;
+    background-color: #fff;
+    z-index: 2;
+}
+
+.divMenu {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.divInicial {
+    width: 100vw;
+    height: 50px;
+}
+
+.divMenuItem {
+    font-family: 'Cinzel', serif;
+    color: #092852;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.divImagenMain {
+    width: 100vw; 
+    height: 99vh; 
+    position: relative;
+    overflow: hidden;
+}
+
+.backgroundVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.divPanel{
+    width: 100%;
+    height: 200px;
+    display: flex;
+}
+
+.divPanelLateral{
+    width: 10%;
+    height: 100%;
+}
+
+.divPanelCentral{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    gap: 40px;
+}
+
+.divPanelCentralColumna{
+    width: 33.3%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    overflow: hidden;
+    align-items: center;
+}
+
+.divPanelCentralItemLargo{
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.divPanelCentralItemLargo:hover {
+    transform: scale(1.2);
+}
+
+.divPanelCentralItemCorto{
+    width: 100%;
+    height: 40%;
+    transition: transform 0.3s ease;
+}
+
+.divPanelCentralItemCorto:hover {
+    transform: scale(1.3);
+}
+
+.divBottonPanel{
+    width: 100%;
+    height: 13%;
+    margin-top: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#imagenGitHub {
+    background-image: url('/Web/images/github.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#imagenPresentacion {
+    background-image: url('/Web/images/presentacion.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#imagenDiapositivas {
+    background-image: url('/Web/images/diapositivas.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#buttonPanel{
+    width: 50%;
+    height: 100%;
+    font-family: 'Cinzel', serif;
+    color: #092852; 
+    background-color: #fff;
+    font-size: medium;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#buttonPanel:hover {
+    background-color: rgb(223, 85, 85);
+    color: #fff;
+}
+
+.divSeccion {
+    display: flex;
+    width: 100vw;
+    height: 40vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.divSeccionTexto {
+    width: 90%;
+    height: 90%;
+    color: #ffffff;
+    text-align: center;
+}
+
+.textoGrande {
+    font-size: 20px; 
+}
+
+.divSeccionVideos {
+    display: flex;
+    width: 100vw;
+    height: 500px;
+    justify-content: center;
+    align-items: center;
+}
+
+.divSeccionMitad {
+    width: 50%;
+    height: 100%;
+}
+
+.divSeccionImagen {
+    background-color: #72dfeb;
+    background-image: url('/Web/images/demo.png');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
