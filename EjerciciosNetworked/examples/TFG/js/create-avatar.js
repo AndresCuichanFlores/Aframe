@@ -66,15 +66,12 @@ AFRAME.registerComponent('create-avatar', {
       document.querySelector('#entityEventsController').setAttribute('events-controller', 'activateController', 'false');
     }
 
-    entityRig.appendChild(this.addPanelIntruc())
+    //entityRig.appendChild(this.addPanelIntruc())
 
     entityAvatar.appendChild(entityAvatarTitle);
     entityAvatar.appendChild(entityAvatarGLB);
     entityRig.appendChild(entityCursor);
     entityRig.appendChild(entityAvatar);
-
-    //Para probarlo en pc
-
 
     scene.appendChild(entityRig);
   },

@@ -93,6 +93,7 @@ let createObjectGraph = (object, position) => {
     let entityTextObject = document.createElement('a-entity');
     entityTextObject.setAttribute('networked', 'template:#textInit-template');
     entityTextObject.classList.add("topNameObject");
+    entityTextObject.setAttribute('look-at', '#rig-player');
     entityTextObject.setAttribute('text', {
         'value': object,
         'align': 'center',

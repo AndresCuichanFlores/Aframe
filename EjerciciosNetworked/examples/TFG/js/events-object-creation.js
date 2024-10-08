@@ -48,13 +48,6 @@ AFRAME.registerComponent('events-object-creation', {
             this.el.setAttribute('scale', '0.2 0.2 0.2');
         }
 
-        this.el.setAttribute('animation', {
-            'property': 'rotation',
-            'to': '0 360 0',
-            'dur': '15000',
-            'easing': 'linear',
-            'loop': 'true'
-        });
 
         let topName = this.data.objectStage;
         let botName;
@@ -86,6 +79,7 @@ AFRAME.registerComponent('events-object-creation', {
         let entityObjectChildren = document.createElement('a-entity');
         entityObjectChildren.setAttribute('networked', 'template:#textInit-template');
         entityObjectChildren.classList.add("topNameObject");
+        entityObjectChildren.setAttribute('look-at', '#rig-player');
         entityObjectChildren.setAttribute('text', {
             'value': topName,
             'align': 'center',

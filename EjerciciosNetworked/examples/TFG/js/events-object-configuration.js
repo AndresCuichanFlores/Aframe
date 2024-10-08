@@ -22,18 +22,12 @@ AFRAME.registerComponent('events-object-configuration', {
         //this.el.setAttribute('id', this.data.objectStage);
         this.el.setAttribute('gltf-model', '3Dmodels/folder1.glb');
         this.el.setAttribute('scale', '0.2 0.2 0.2');
-        this.el.setAttribute('animation', {
-            'property': 'rotation',
-            'to': '0 360 0',
-            'dur': '15000',
-            'easing': 'linear',
-            'loop': 'true'
-        });
 
         //top name object
         let entityObjectChildren = document.createElement('a-entity');
         entityObjectChildren.setAttribute('networked', 'template:#textInit-template');
         entityObjectChildren.classList.add("topNameObject");
+        entityObjectChildren.setAttribute('look-at', '#rig-player');
         entityObjectChildren.setAttribute('text', {
             'value': this.data.objectStage,
             'align': 'center',

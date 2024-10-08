@@ -12,12 +12,15 @@ AFRAME.registerComponent('configuration', {
 
         if (Object.keys(this.dashboard[CONSTANTS.QUERYES]).includes(this.data.valueObjectSelected)) {
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.QUERYES;
+            this.colorDiscoAnterior = '#00d8db';
         } else if (Object.keys(this.dashboard[CONSTANTS.GRAPHS]).includes(this.data.valueObjectSelected)) {
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.GRAPHS;
+            this.colorDiscoAnterior = '#0a9900';
         } else if (Object.keys(this.dashboard[CONSTANTS.FILTERS]).includes(this.data.valueObjectSelected)) {
             let nameFile = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;
             this.extractDataFile(nameFile);
             this.valuesSelectded[CONSTANTS.MAINOPCION] = CONSTANTS.FILTERS;
+            this.colorDiscoAnterior = '#ffa200';
         }
     },
 
@@ -85,6 +88,7 @@ AFRAME.registerComponent('configuration', {
         this.baseParent = this.el.parentNode;
         this.objectBabiaCreated = this.baseParent.querySelector('#Menu-' + CONSTANTS.TYPECREATION).childNodes[0];
         this.subProperties = {};
+        this.colorDiscoAnterior;
     },
 
     extractDataFile: function (nameFile) {
@@ -108,9 +112,11 @@ AFRAME.registerComponent('configuration', {
 
     executeMenuQueryes: function () {
         if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-            this.createNewMenuDisco(Object.keys(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.data.valueObjectSelected]), CONSTANTS.PROPERTY, '#fcb983');
+            this.createNewMenuDisco(Object.keys(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.data.valueObjectSelected]), CONSTANTS.PROPERTY, '#85d0ff');
+            this.colorDiscoAnterior = '#85d0ff';
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
-            this.createNewMenuDisco(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.valuesSelectded[CONSTANTS.TYPECREATION]][this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#9efc83');
+            this.createNewMenuDisco(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.valuesSelectded[CONSTANTS.TYPECREATION]][this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#85a3ff');
+            this.colorDiscoAnterior = '#85a3ff';
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
             this.updateComplementBabia()
         }
@@ -118,7 +124,8 @@ AFRAME.registerComponent('configuration', {
 
     executeMenuGraphs: function () {
         if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
-            this.createNewMenuDisco(Object.keys(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.data.valueObjectSelected]), CONSTANTS.PROPERTY, '#fcb983');
+            this.createNewMenuDisco(Object.keys(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.data.valueObjectSelected]), CONSTANTS.PROPERTY, '#afff7a');
+            this.colorDiscoAnterior = '#afff7a';
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
             let discoValueProperty = this.el.querySelector('#Menu-' + CONSTANTS.VALUEPROPERTY);
             if (discoValueProperty) {
@@ -134,9 +141,11 @@ AFRAME.registerComponent('configuration', {
 
             if (this.data.valueObjectSelected === CONSTANTS.FROM) {
                 let idQuerys = searchQuerysCreated(CONSTANTS.BABIAQUERYJSON, CONSTANTS.BABIAQUERYCSV, CONSTANTS.BABIAFILTER);
-                this.createNewMenuDisco(idQuerys, CONSTANTS.VALUEPROPERTY, '#9efc83');
+                this.createNewMenuDisco(idQuerys, CONSTANTS.VALUEPROPERTY, '#fff47a');
+                this.colorDiscoAnterior = '#fff47a';
             } else {
-                this.createNewMenuDisco(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.valuesSelectded[CONSTANTS.TYPECREATION]][this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#9efc83');
+                this.createNewMenuDisco(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.valuesSelectded[CONSTANTS.TYPECREATION]][this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#fff47a');
+                this.colorDiscoAnterior = '#fff47a';
             }
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
             if (this.valuesSelectded[CONSTANTS.PROPERTY] === CONSTANTS.FROM) {
@@ -160,7 +169,8 @@ AFRAME.registerComponent('configuration', {
                     }
                 }
                 this.subProperties = {};
-                this.createNewMenuDisco([CONSTANTS.KEY, CONSTANTS.SIZE], CONSTANTS.SUBPROPERTY, '#85faf4');
+                this.createNewMenuDisco([CONSTANTS.KEY, CONSTANTS.SIZE], CONSTANTS.SUBPROPERTY, '#ffa97a');
+                this.colorDiscoAnterior = '#ffa97a';
             } else {
                 this.updateComplementBabia();
             }
@@ -172,9 +182,11 @@ AFRAME.registerComponent('configuration', {
             }
             if (this.valuesSelectded[CONSTANTS.VALUEPROPERTY].includes(":")) {
                 let nameDocument = this.valuesSelectded[CONSTANTS.VALUEPROPERTY].split(":")[0];
-                this.createNewMenuDisco(Object.keys(this.documentsCreated[nameDocument][this.data.valueObjectSelected]), CONSTANTS.SUBVALUEPROPERTY, '#85faf4');
+                this.createNewMenuDisco(Object.keys(this.documentsCreated[nameDocument][this.data.valueObjectSelected]), CONSTANTS.SUBVALUEPROPERTY, '#ff7a7a');
+                this.colorDiscoAnterior = '#ff7a7a';
             } else {
-                this.createNewMenuDisco(Object.keys(this.documentsCreated[this.valuesSelectded[CONSTANTS.VALUEPROPERTY]][this.data.valueObjectSelected]), CONSTANTS.SUBVALUEPROPERTY, '#85faf4');
+                this.createNewMenuDisco(Object.keys(this.documentsCreated[this.valuesSelectded[CONSTANTS.VALUEPROPERTY]][this.data.valueObjectSelected]), CONSTANTS.SUBVALUEPROPERTY, '#ff7a7a');
+                this.colorDiscoAnterior = '#ff7a7a';
             }
         } else if (this.data.typeObjectSelected === CONSTANTS.SUBVALUEPROPERTY) {
             this.subProperties[this.valuesSelectded[CONSTANTS.SUBPROPERTY]] = this.valuesSelectded[CONSTANTS.SUBVALUEPROPERTY];
@@ -193,7 +205,8 @@ AFRAME.registerComponent('configuration', {
         if (this.data.typeObjectSelected === CONSTANTS.TYPECREATION) {
             setTimeout(() => {
                 console.log('Han pasado 0.3 segundos');
-                this.createNewMenuDisco(Object.keys(this.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fcb983', nameDocumentFilter);
+                this.createNewMenuDisco(Object.keys(this.documentsCreated[nameDocumentFilter].key), CONSTANTS.PROPERTY, '#fea681', nameDocumentFilter);
+                this.colorDiscoAnterior = '#fea681';
             }, 300); 
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
             if (this.el.childNodes[1]) {
@@ -207,7 +220,8 @@ AFRAME.registerComponent('configuration', {
                 }
             }
 
-            this.createNewMenuDisco(this.documentsCreated[nameDocumentFilter].key[this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#9efc83');
+            this.createNewMenuDisco(this.documentsCreated[nameDocumentFilter].key[this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#fe8181');
+            this.colorDiscoAnterior = '#fe8181';
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
             this.updateComplementBabia()
         }
@@ -284,7 +298,7 @@ AFRAME.registerComponent('configuration', {
         let entityMenuDisco = document.createElement('a-entity');
         entityMenuDisco.setAttribute('networked', 'template:#platoInit-template');
         entityMenuDisco.setAttribute('id', 'Menu-' + objectType);
-        entityMenuDisco.setAttribute('position', { x: 0, y: 4 + (3 * this.numeroDiscosCreados), z: 0 });
+        entityMenuDisco.setAttribute('position', { x: 0, y: 3.5 + (2.8 * this.numeroDiscosCreados), z: 0 });
         entityMenuDisco.setAttribute('menu-disco', {
             'objectsStage': objects,
             'objectType': objectType,
@@ -310,22 +324,21 @@ AFRAME.registerComponent('configuration', {
         entityMiniDisco.setAttribute('networked', 'template:#platoInit-template');
         entityMiniDisco.classList.add("miniDisco");
         entityMiniDisco.setAttribute('scale', '1 1 1');
-        entityMiniDisco.setAttribute('material', 'color', '#FB6542');
+        entityMiniDisco.setAttribute('material', 'color', this.colorDiscoAnterior);
         entityMiniDisco.setAttribute('position', { x: 0, y: 0.3, z: 0 });
         entityMiniDisco.setAttribute('geometry', {
             'primitive': 'cylinder',
             'radius': '1',
-            'height': '0.3',
+            'height': '0.25',
         });
 
         //en gltf del objecto
         let entityObject = document.createElement('a-entity');
         entityObject.setAttribute('networked', 'template', '#objectInit-template');
-        entityObject.setAttribute('gltf-model', '3Dmodels/folder3.glb');
-        entityObject.setAttribute('position', { x: 0, y: 0.6, z: 0 });
-        entityObject.setAttribute('scale', '0.15 0.15 0.15');
-        entityObject.setAttribute('look-at', '#rig-player');
-
+        entityObject.setAttribute('gltf-model', '3Dmodels/response.glb');
+        entityObject.setAttribute('position', { x: 0, y: 0.8, z: 0 });
+        entityObject.setAttribute('scale', '0.35 0.35 0.35');
+        
         //texto arriba del objeto
         let entityTitle = document.createElement('a-entity');
         entityTitle.setAttribute('networked', 'template:#textInit-template');
@@ -340,7 +353,7 @@ AFRAME.registerComponent('configuration', {
             'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
         });
         entityTitle.setAttribute('scale', '8 8 8');
-        entityTitle.setAttribute('position', { x: 0, y: 1, z: 0 });
+        entityTitle.setAttribute('position', { x: 0, y: 1.15, z: 0 });
 
         entityMiniDisco.appendChild(entityTitle);
         entityMiniDisco.appendChild(entityObject);
