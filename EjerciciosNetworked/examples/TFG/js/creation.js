@@ -153,9 +153,16 @@ AFRAME.registerComponent('creation', {
                 }
 
             } else {
-                addAnimationEntity(objectSelected, 'animation', 'scale', '', '0.5 0.5 0.5', '2000', false);
-                addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 2.5 0', '2000', false);
-                addAnimationEntity(titleObject, 'animation', 'scale', '', '40 40 40', '2000', false);
+
+                if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES) {
+                    addAnimationEntity(objectSelected, 'animation', 'scale', '', '1.8 1.8 1.8', '2000', false);
+                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 3.6 0', '2000', false);
+                    addAnimationEntity(titleObject, 'animation__1', 'position', '', '0 0.5 0', '2000', false);
+                }else{
+                    addAnimationEntity(objectSelected, 'animation', 'scale', '', '0.4 0.4 0.4', '2000', false);
+                    addAnimationEntity(objectSelected, 'animation__1', 'position', '', '0 1.6 0', '2000', false);
+                    addAnimationEntity(titleObject, 'animation', 'scale', '', '50 50 50', '2000', false);
+                }
             }
 
             setTimeout(() => {

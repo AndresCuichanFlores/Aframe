@@ -278,6 +278,7 @@ AFRAME.registerComponent('configuration', {
         }
         let entityObjectChildren = document.createElement('a-entity');
         entityObjectChildren.setAttribute('networked', 'template:#textInit-template');
+        entityObjectChildren.setAttribute('look-at', '#rig-player');
         entityObjectChildren.classList.add('botNameObject');
         entityObjectChildren.setAttribute('text', {
             'value': botNameObject,
@@ -287,8 +288,16 @@ AFRAME.registerComponent('configuration', {
             'shader': 'msdf',
             'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
         });
-        entityObjectChildren.setAttribute('scale', '30 30 30');
-        entityObjectChildren.setAttribute('position', { x: 0, y: this.objectBabiaCreated.getAttribute('position').y - 6.9, z: 0 });
+
+
+        if(this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.QUERYES ){
+            entityObjectChildren.setAttribute('scale', '10.5 10.5 10.5');
+            entityObjectChildren.setAttribute('position', { x: 0, y: -1.8, z: 0 });
+        }else{
+            entityObjectChildren.setAttribute('scale', '50 50 50');
+            entityObjectChildren.setAttribute('position', { x: -2, y: -3.6, z: 0 });
+        }
+
         this.objectBabiaCreated.appendChild(entityObjectChildren);
     },
 

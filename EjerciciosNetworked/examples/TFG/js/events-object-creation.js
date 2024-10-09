@@ -43,24 +43,39 @@ AFRAME.registerComponent('events-object-creation', {
                 positionHijo.x = -3;
                 this.el.setAttribute('scale', {x: scalaPadre, y: scalaPadre, z: scalaPadre});
             }
-        }else{
-            this.el.setAttribute('gltf-model', '3Dmodels/folder1.glb');
-            this.el.setAttribute('scale', '0.2 0.2 0.2');
+        }else if(this.data.objectType == CONSTANTS.TYPECREATION){
+            let posicionActual = this.el.getAttribute('position');
+
+            if(this.data.objectStage == CONSTANTS.BABIAQUERYJSON || this.data.objectStage == CONSTANTS.BABIAQUERYCSV){
+                posicionActual.y = posicionActual.y + 0.3;
+                scalaPadre = 0.8;
+                positionHijo.y = 0.4;
+                this.el.setAttribute('gltf-model', '3Dmodels/Queryes.glb');
+                this.el.setAttribute('scale', {x: scalaPadre, y: scalaPadre, z: scalaPadre});
+            }else{
+                posicionActual.y = posicionActual.y + (-0.5);
+                scalaPadre = 0.150
+                positionHijo.y = 7.20;
+                positionHijo.x = -2;
+                this.el.setAttribute('gltf-model', '3Dmodels/Filters.glb');
+                this.el.setAttribute('scale', {x: scalaPadre, y: scalaPadre, z: scalaPadre});
+            }
         }
 
 
         let topName = this.data.objectStage;
         let botName;
         if (this.data.objectStage.includes(":")) {
+            //texto abajo del objeto solo para babia filter
             let parts = this.data.objectStage.split(":");
             topName = parts[0];
             botName = parts[1];
 
-            //texto abajo del objeto
             let entityBotName = document.createElement('a-entity');
             entityBotName.setAttribute('networked', 'template:#textInit-template');
             entityBotName.classList.add("botNameObject");
             entityBotName.classList.add(parts[2]);
+            entityBotName.setAttribute('look-at', '#rig-player');
             entityBotName.setAttribute('text', {
                 'value': botName,
                 'align': 'center',
@@ -69,12 +84,15 @@ AFRAME.registerComponent('events-object-creation', {
                 'shader': 'msdf',
                 'font': 'https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/berkshireswash/BerkshireSwash-Regular.json'
             });
-            entityBotName.setAttribute('scale', '35 35 35');
-            entityBotName.setAttribute('position', { x: 0, y: this.el.getAttribute('position').y - 6, z: 0 });
+
+
+            entityBotName.setAttribute('scale', '50 50 50');
+            entityBotName.setAttribute('position', { x: -2, y: -3.6, z: 0 });
 
             this.data.objectStage = topName;
             this.el.appendChild(entityBotName);
         }
+
         //texto arriba del objeto
         let entityObjectChildren = document.createElement('a-entity');
         entityObjectChildren.setAttribute('networked', 'template:#textInit-template');

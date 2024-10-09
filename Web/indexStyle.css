@@ -18,8 +18,7 @@ body {
     display: flex;
     position: fixed;
     width: 100vw;
-    height: 50px;
-    background-color: #fff;
+    height: 35px;
     z-index: 2;
 }
 
@@ -34,7 +33,7 @@ body {
 
 .divInicial {
     width: 100vw;
-    height: 50px;
+    height: 35px;
 }
 
 .divMenuItem {

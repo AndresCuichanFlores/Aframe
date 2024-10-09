@@ -169,7 +169,7 @@ AFRAME.registerComponent('create-avatar', {
   addModelGLB: function (randomModel) {
     let entityAvatarGLB = document.createElement('a-entity');
     entityAvatarGLB.setAttribute('networked', 'template', '#avatar-user-template');
-    //entityAvatarGLB.setAttribute('animation-mixer', '',);
+    entityAvatarGLB.setAttribute('animation-mixer', '',);
     entityAvatarGLB.setAttribute('visible', 'false');
     entityAvatarGLB.setAttribute('gltf-model', '3Dmodels/' + randomModel);
 
