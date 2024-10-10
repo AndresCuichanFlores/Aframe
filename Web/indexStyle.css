@@ -158,27 +158,29 @@ body {
 }
 
 .divSeccionTexto {
-    width: 90%;
-    height: 90%;
+    width: 100%;
+    height: 100%;
     color: #ffffff;
     text-align: center;
 }
 
 .textoGrande {
-    font-size: 20px; 
+    text-align: justify;  
+    margin-left: 20px; 
+    margin-right: 20px;
+    font-size: 21px; 
 }
 
 .divSeccionVideos {
     display: flex;
     width: 100vw;
-    height: 500px;
-    justify-content: center;
-    align-items: center;
+    height: 55vh;
 }
 
 .divSeccionMitad {
     width: 50%;
     height: 100%;
+    
 }
 
 .divSeccionImagen {
@@ -189,6 +191,20 @@ body {
     height: 100%;
     width: 100%;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

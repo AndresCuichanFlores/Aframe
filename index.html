@@ -42,9 +42,22 @@
     </div>
 
     <div id="VideosSeccion" class="divSeccionVideos" style="background-color: #00293C;">
-        <div class="divSeccionTexto">
-            <h1><strong>VIDEOS</strong></h1>
-            <br>
+        <div class="divSeccionMitad">
+            <div class="divSeccionTexto">
+                <h1><strong>VIDEOS</strong></h1>
+                <br>
+                <p style="text-align: justify;  margin-left: 20px; margin-right: 20px;">
+                    En este video se muestra el proceso completo de creación de una <span style="color: rgb(122, 191, 231);">escena básica</span> para el sistema de visualización de datos interactivo en un <span style="color: rgb(122, 191, 231);">navegador web</span>.<br><br>
+                    El proceso comienza con la creación y configuración de un <span style="color: rgb(122, 191, 231);">babia-queryjson</span>, que se utiliza para extraer los datos del archivo seleccionado. A continuación, se configura un <span style="color: rgb(122, 191, 231);">babia-filter</span> para filtrar esos datos de manera más precisa.<br><br>
+                    Finalmente, se generan dos gráficos con <span style="color: rgb(122, 191, 231);">babia-pie</span> y <span style="color: rgb(122, 191, 231);">babia-doughnut</span> que visualizan tanto los datos extraídos mediante el babia-queryjson como los resultados obtenidos a través del babia-filter. Todo esto permite una visualización clara y dinámica de los datos en la escena del navegador.
+                </p> 
+            </div>
+        </div>
+        <div class="divSeccionMitad" >
+            <video id="videoControl" controls muted class="backgroundVideo">
+                <source src="Web/assets/creacionEscenaSimple.mp4" type="video/mp4">
+                Tu navegador no soporta la etiqueta de video.
+            </video>
         </div>
     </div>
 
@@ -122,7 +135,6 @@
             </h6>
         </div>
     </div>
-
 
 </body>
 
