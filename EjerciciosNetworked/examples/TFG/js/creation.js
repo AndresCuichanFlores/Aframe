@@ -474,7 +474,7 @@ AFRAME.registerComponent('creation', {
                             entityTextKeySize.setAttribute('networked', 'template:#panelInformation-template');
                             entityTextKeySize.setAttribute('position', { x: -1.7, y: -1.9, z: 0.06 });
                             entityTextKeySize.setAttribute('text', {
-                                'value': 'KEY/SICE:',
+                                'value': 'KEY/SIZE:',
                                 'width': '7',
                                 'align': 'center',
                                 'side': 'double',
