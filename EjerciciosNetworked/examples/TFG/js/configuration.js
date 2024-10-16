@@ -115,6 +115,13 @@ AFRAME.registerComponent('configuration', {
             this.createNewMenuDisco(Object.keys(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.data.valueObjectSelected]), CONSTANTS.PROPERTY, '#85d0ff');
             this.colorDiscoAnterior = '#85d0ff';
         } else if (this.data.typeObjectSelected === CONSTANTS.PROPERTY) {
+
+            let discoValueProperty = this.el.querySelector('#Menu-' + CONSTANTS.VALUEPROPERTY);
+            if (discoValueProperty) {
+                this.el.removeChild(discoValueProperty);
+                this.numeroDiscosCreados -= 1;
+            }
+
             this.createNewMenuDisco(this.dashboard[this.valuesSelectded[CONSTANTS.MAINOPCION]][this.valuesSelectded[CONSTANTS.TYPECREATION]][this.data.valueObjectSelected], CONSTANTS.VALUEPROPERTY, '#85a3ff');
             this.colorDiscoAnterior = '#85a3ff';
         } else if (this.data.typeObjectSelected === CONSTANTS.VALUEPROPERTY) {
@@ -250,11 +257,21 @@ AFRAME.registerComponent('configuration', {
                 this.objectBabiaCreated.childNodes[0].setAttribute(this.valuesSelectded[CONSTANTS.TYPECREATION],
                     this.valuesSelectded[CONSTANTS.PROPERTY], this.valuesSelectded[CONSTANTS.VALUEPROPERTY]);
             }else{
-                this.objectBabiaCreated.childNodes[0].setAttribute(this.valuesSelectded[CONSTANTS.TYPECREATION], {
-                    [this.valuesSelectded[CONSTANTS.PROPERTY]]: this.valuesSelectded[CONSTANTS.VALUEPROPERTY],
-                    [CONSTANTS.KEY]: this.subProperties[CONSTANTS.KEY],
-                    [CONSTANTS.SIZE]: this.subProperties[CONSTANTS.SIZE],
-                });
+
+                if(this.valuesSelectded[CONSTANTS.PROPERTY] === CONSTANTS.FROM){
+                    this.objectBabiaCreated.childNodes[0].setAttribute(this.valuesSelectded[CONSTANTS.TYPECREATION], {
+                        [this.valuesSelectded[CONSTANTS.PROPERTY]]: this.valuesSelectded[CONSTANTS.VALUEPROPERTY],
+                        [CONSTANTS.KEY]: this.subProperties[CONSTANTS.KEY],
+                        [CONSTANTS.SIZE]: this.subProperties[CONSTANTS.SIZE],
+                        'legend': true
+                    });
+                }else{
+                    this.objectBabiaCreated.childNodes[0].setAttribute(this.valuesSelectded[CONSTANTS.TYPECREATION], {
+                        [this.valuesSelectded[CONSTANTS.PROPERTY]]: this.valuesSelectded[CONSTANTS.VALUEPROPERTY],
+                        [CONSTANTS.KEY]: this.subProperties[CONSTANTS.KEY],
+                        [CONSTANTS.SIZE]: this.subProperties[CONSTANTS.SIZE],
+                    });
+                }
             }
         } else if (this.valuesSelectded[CONSTANTS.MAINOPCION] === CONSTANTS.FILTERS) {
             let nameDocumentFilter = this.objectBabiaCreated.querySelector('.botNameObject').getAttribute('text').value;

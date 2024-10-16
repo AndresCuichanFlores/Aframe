@@ -147,10 +147,10 @@ AFRAME.registerComponent('events-object-creation', {
                 } else {
                     //Los objectos que no son selecionados cambiamos su apariencia
                     if (object !== self.el) {
-                        object.childNodes[0].setAttribute('text', 'opacity', '0.4');
+                        object.childNodes[0].setAttribute('text', 'opacity', '0.45');
                         object.setAttribute('component-synchronize', {
                             'componentShare': 'opacity',
-                            'valueShare': '0.4',
+                            'valueShare': '0.45',
                         });
                         object.classList.remove("selected");
 

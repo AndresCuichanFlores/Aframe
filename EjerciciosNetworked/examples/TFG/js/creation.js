@@ -537,7 +537,6 @@ AFRAME.registerComponent('creation', {
             if (!document.querySelector('#entityEventsController').getAttribute("events-controller").activateController || document.querySelector('#entityEventsController').getAttribute("events-controller").pressbuttonxa) {
                 document.querySelector('#entityEventsController').setAttribute("events-controller", "pressbuttonxa", "false");
 
-
                 addAnimationEntity(this.parentNode.parentNode, 'animation', 'scale', '', '0 0 0', '2000', false);
                 setTimeout(() => {
                     this.sceneEl.removeChild(this.parentNode.parentNode);

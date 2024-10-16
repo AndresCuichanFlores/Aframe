@@ -89,6 +89,17 @@ NAF.schemas.getComponents = (template) => {
     });
   }
 
+  if (!NAF.schemas.hasTemplate('#auxInit-template')) {
+    NAF.schemas.add({
+      template: '#auxInit-template',
+      components: [
+        'position',
+        'rotation',
+        'animation'
+      ]
+    });
+  }
+
   const components = NAF.schemas.getComponentsOriginal(template);
   return components;
 };

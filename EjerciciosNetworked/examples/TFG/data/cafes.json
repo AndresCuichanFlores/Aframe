@@ -64,19 +64,11 @@
         "rating": 4.4
     },
     {
-        "brand": "Kicking Horse Coffee",
+        "brand": "Horse Coffee",
         "type": "Kick Ass",
         "origin": "South America and Africa",
         "roast": "Dark",
         "price(usd/kg)": 30.0,
         "rating": 4.8
-    },
-    {
-        "brand": "Intelligentsia Coffee",
-        "type": "Black Cat Espresso",
-        "origin": "South America and Africa",
-        "roast": "Medium",
-        "price(usd/kg)": 34.0,
-        "rating": 4.7
     }
 ]

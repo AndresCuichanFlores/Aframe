@@ -15,7 +15,7 @@ AFRAME.registerComponent('create-avatar', {
     entityRig.setAttribute('spawn-in-circle', 'radius', '15');
 
     let entityAvatar = document.createElement('a-entity');
-    entityAvatar.setAttribute('networked', 'template', '#auxInit-template');
+    entityAvatar.setAttribute('networked', 'template', '#micro-template');
     entityAvatar.setAttribute('id', 'player');
     entityAvatar.setAttribute('camera', '');
     entityAvatar.setAttribute('look-controls', '');
@@ -44,7 +44,7 @@ AFRAME.registerComponent('create-avatar', {
     //MANDO Left OCULUSTS 
     let entityOculutsLeft = document.createElement('a-entity');
     entityOculutsLeft.setAttribute('oculus-touch-controls', 'hand', 'left');
-    entityOculutsLeft.setAttribute('laser-controls', 'hand', 'left');
+    //entityOculutsLeft.setAttribute('laser-controls', 'hand', 'left');
     entityOculutsLeft.setAttribute('raycaster', {
       'showLine': 'true',
       'objects': '.objectRayCaster, .babiaxraycasterclass',

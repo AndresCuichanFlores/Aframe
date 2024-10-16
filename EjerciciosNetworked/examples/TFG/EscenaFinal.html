@@ -44,7 +44,7 @@
 
 <body>
 
-  <a-scene environment="preset: default; playArea: 3" networked-scene="room: user-interface; debug: true; adapter: easyrtc;">
+  <a-scene environment="preset: default; playArea: 3" networked-scene="room: user-interface; debug: true; adapter: easyrtc; audio: true">
 
     <!-- ASSETS -->
     <a-assets>
@@ -84,6 +84,11 @@
         </a-entity>
       </template>
 
+      <template id="micro-template">
+        <a-entity networked-audio-source>
+        </a-entity>
+      </template>
+
     </a-assets>
 
 
@@ -91,7 +96,6 @@
     <a-entity id="dataInicial" babia-queryjson="url: ./data/dataInit.json" visible="false"></a-entity>
     <a-entity create-avatar></a-entity>
     <a-entity id="entityEventsController" events-controller ></a-entity>
-
 
   </a-scene>
 
